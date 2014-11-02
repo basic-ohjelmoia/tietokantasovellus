@@ -16,13 +16,13 @@
     </style>
   </head>
   <body>
-    <h1>Tietokantasovelluksen esittelysivu</h1>
+    <h1>MechLab-tietokantasovelluksen esittelysivu</h1>
     <p>Yleisiä linkkejä</p>
     <ul>
       <!-- Korvaa ohessa olevat sanat GITHUBTUNNUS ja 
            REPOSITORIO omilla tiedoillasi: -->
       <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus">Työn repositorio</a></li>
-      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a></li>
+      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a></li>
 
       <!-- Viikolla 2 voit laittaa kommentoidut linkitkin sivuille. 
            Ota kommenttimerkit pois sen kielen ympäriltä, jota käytät -->
