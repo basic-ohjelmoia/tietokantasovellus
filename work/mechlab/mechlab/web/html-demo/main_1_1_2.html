@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/bootstrap-theme.css" rel="stylesheet">
+    <link href="../css/main.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+
+<title></title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    </head>
+    
+      <body>
+          <nav class="navbar navbar-inverse" role="navigation">
+  <ul class="nav nav-tabs">
+    <li><a href="#">MechLab.SELAA</a></li>
+    <li><a href="#">MechLab.RAKENNA</a></li>
+    <li class="active"><a href="#">Admin.YLLÄPITO</a></li>
+    <li><a href="#">Käyttäjä.ASETUKSET</a></li>
+    <li><a href="#">Käyttäjä.POISTU</a></li>
+  </ul>
+          </nav>
+          
+          
+    
+          
+      <ul class="nav nav-pills" role="tablist">
+        <li role="presentation"><a href="#">Selaa komponentteja</a></li>
+        <li role="presentation" class="active"><a href="#">Lisää komponentti</a></li>
+        <li role="presentation"><a href="#">Muokkaa komponenttia</a></li>
+        <li role="presentation"><a href="#">Poista komponentti</a></li>
+      </ul>
+          
+       <ul class="nav nav-pills" role="tablist">
+        <li role="presentation" class="active"><a href="#">Ase</a></li>
+        <li role="presentation" ><a href="#">Varuste</a></li>
+        <li role="presentation"><a href="#">Reaktori</a></li>
+        <li role="presentation"><a href="#">Peruskomponentti</a></li>
+      </ul>
+          
+      <ul class="nav nav-pills" role="tablist">
+          <li>
+               <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Nimi">
+        </div>
+               </li>
+          
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Aselaji<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li ><a href="#">Energy Weapon</a></li>
+            <li ><a href="#">Kinetic Weapon</a></li>
+            <li ><a href="#">Missile Weapon</a></li>
+            <li ><a href="#">Melee Weapon</a></li>
+             </ul>
+        </li>
+        
+             <li>
+               <form class="navbar-form navbar-left" role="damage">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Damage Value">
+        </div>
+               </li>
+               
+                       <li>
+               <form class="navbar-form navbar-left" role="maxrange">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Max Range">
+        </div>
+               </li>
+                       <li>
+               <form class="navbar-form navbar-left" role="minrange">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Min Range">
+        </div>
+               </li>
+                            <li>
+               <form class="navbar-form navbar-left" role="ammo">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Ammo Count (0=infinite)">
+        </div>
+               </li>
+                            <li>
+               <form class="navbar-form navbar-left" role="heat">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Heat Generated">
+        </div>
+               </li>
+        
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Component Size<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Small (1)</a></li>
+            <li><a href="#">Medium (2)</a></li>
+            <li><a href="#">Large (3)</a></li>
+            <li><a href="#">Extra Large (6)</a></li>
+           </ul>
+        </li>
+        
+               <li>
+               <form class="navbar-form navbar-left" role="heat">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Component Weight">
+        </div>
+               </li>
+        
+     
+        <li><button type="submit" class="btn btn-default">Add Component</button></li>
+        </ul>
+           
+    
+
+          <p>
+             
+               
+     <div class="table-responsive">
+  <table class="table">
+      <tr>
+          <td>Name</td><td>Type</td><td>Damage Value</td><td>Max Range</td><td>Min Range</td><td>Ammo</td><td>Heat Generated</td><td>Size</td><td>Weigth</td>
+      </tr>
+      <tr>
+          <td>Small Laser</td><td>Energy Weapon</td><td>3</td><td>3</td><td>1</td><td>00</td><td>1</td><td>Small</td><td>0,5</td>
+      </tr>
+            <tr>
+          <td>Medium Laser</td><td>Energy Weapon</td><td>5</td><td>5</td><td>1</td><td>00</td><td>3</td><td>Medium</td><td>1</td>
+      </tr>
+            <tr>
+          <td>Large Laser</td><td>Energy Weapon</td><td>8</td><td>9</td><td>1</td><td>00</td><td>5</td><td>Large</td><td>4</td>
+      </tr>
+             <tr>
+          <td>Particle Projection Cannon</td><td>Energy Weapon</td><td>10</td><td>12</td><td>3</td><td>00</td><td>8</td><td>Extra Large</td><td>10</td>
+      </tr>
+                   <tr>
+          <td>Long Range Missile 20/5</td><td>Missile Weapon</td><td>20</td><td>18</td><td>9</td><td>5</td><td>7</td><td>Extra Large</td><td>10</td>
+      </tr>
+                         <tr>
+          <td>Auto Cannon/10</td><td>Kinetic Weapon</td><td>10</td><td>15</td><td>3</td><td>10</td><td>5</td><td>Extra Large</td><td>12</td>
+      </tr>
+      
+  </table>
+</div>
+     
+          
+          
+          
+ 
+</body>
+    
+</html>
