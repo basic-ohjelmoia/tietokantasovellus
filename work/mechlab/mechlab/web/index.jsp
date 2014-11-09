@@ -16,13 +16,16 @@
     </style>
   </head>
   <body>
+      
+      
+      
     <h1>MechLab-tietokantasovelluksen esittelysivu</h1>
     <p>Yleisiä linkkejä</p>
     <ul>
       <!-- Korvaa ohessa olevat sanat GITHUBTUNNUS ja 
            REPOSITORIO omilla tiedoillasi: -->
       <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus">Työn repositorio</a></li>
-      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a></li>
+      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a> (päivitetty 9.11.2014)</li>
 
       <!-- Viikolla 2 voit laittaa kommentoidut linkitkin sivuille. 
            Ota kommenttimerkit pois sen kielen ympäriltä, jota käytät -->
@@ -32,11 +35,18 @@
            Tietokantasovellus tietokantasovelluksesi usersille 
            pystytetyllä nimellä: 
       -->
-      <!--
-      <li><a href="http://t-cstunnus.users.cs.helsinki.fi/ConnectionTest">Connectiontest-ohjelma</a></li>
-      <li><a href="http://t-cstunnus.users.cs.helsinki.fi/Tietokantasovellus/html-demo/index.jsp">HTML-demosivujen etusivu</a></li>
-      <li><a href="http://t-cstunnus.users.cs.helsinki.fi/Tietokantasovellus/Listaustesti">Ensimmäinen oma tietokantalistaus</a></li>
-      -->
+    </ul>
+      <p>
+          Uutta viikolla 2:<br>
+      <p>
+      <ul>
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/ConnectionTest">Connectiontest-ohjelma</a> - ei toimi!</li>
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/html-demo/main.html">HTML-demosivujen etusivu</a></li>
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/html-demo/main_1.html">HTML-demosivu 2 </a></li>
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/html-demo/main_1_1.html">HTML-demosivu 3 </a></li>
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/html-demo/main_1_1_2.html">HTML-demosivu 4 </a></li>
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/Kayttaja">Kayttaja-servlet, joka kaiketi jollain tasolla toimii, mutta ei tee mitään näkyvää</a></li>
+      
       <!-- Linkit PHP-kielelle.
            Korvaa sana cstunnus omalla tktl-tunnuksellasi ja sana 
            Tietokantasovellus sen hakemiston nimellä, missä 
@@ -54,11 +64,7 @@
       -->
     </ul>
 
-    <h2>Työn aihe</h2>
-    Laita tähän aihekuvaus tai 
-    <a href="http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Pokemon-kanta.html">
-      linkki valmiiseen aiheeseen</a>.
-
+    
     <!--
     <h2>Kirjautumistunnuksia testausta varten</h2>
 
