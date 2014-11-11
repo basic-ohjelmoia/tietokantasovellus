@@ -32,7 +32,7 @@ public class Testi2Servlet extends HttpServlet {
      */
    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException, NamingException, SQLException {
-  Connection yhteys = new Yhteys().getConnection(); //Haetaan tietokantaluokalta yhteysolio
+ // Connection yhteys = new Yhteys().getConnection(); //Haetaan tietokantaluokalta yhteysolio
   PreparedStatement kysely = null;
   ResultSet tulokset = null;
   PrintWriter out = response.getWriter(); 
@@ -42,8 +42,8 @@ public class Testi2Servlet extends HttpServlet {
     //Alustetaan muuttuja jossa on Select-kysely, joka palauttaa lukuarvon:
     String sqlkysely = "SELECT 1+1 as two";
 
-    kysely = yhteys.prepareStatement(sqlkysely);
-    tulokset = kysely.executeQuery();
+    //kysely = yhteys.prepareStatement(sqlkysely);
+  //  tulokset = kysely.executeQuery();
     if(tulokset.next()) {
       //Tuloksen arvoksi pitäisi tulla numero kaksi.
       int tulos = tulokset.getInt("two");

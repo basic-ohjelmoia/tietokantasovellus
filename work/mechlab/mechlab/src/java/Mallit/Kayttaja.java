@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
 /**
  *
@@ -37,7 +39,8 @@ public class Kayttaja extends HttpServlet {
     public static List<Kayttaja> getKayttajat() throws NamingException, SQLException {
   String sql = "SELECT kayttaja_id, nimi, salasana from kayttaja";
   
-  Connection yhteys = new Yhteys().getConnection();
+  Yhteys yhteys0 = new Yhteys();
+  Connection yhteys = yhteys0.getConnection();
   PreparedStatement kysely = yhteys.prepareStatement(sql);
   ResultSet tulokset = kysely.executeQuery();
 
@@ -52,6 +55,8 @@ public class Kayttaja extends HttpServlet {
     kayttajat.add(k);
     
   }   
+  kayttajat.add(new Kayttaja(999, "none", "nopw"));
+  
   //Suljetaan kaikki resutuloksetsit:
   try { tulokset.close(); } catch (Exception e) {}
   try { kysely.close(); } catch (Exception e) {}
@@ -98,8 +103,9 @@ public class Kayttaja extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NamingException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
+        List<Kayttaja> kayttajat = getKayttajat();
         PrintWriter out = response.getWriter();
         try {
             /* TODO output your page here. You may use following sample code. */
@@ -111,7 +117,9 @@ public class Kayttaja extends HttpServlet {
             out.println("<h1>Servlet Kayttaja at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-            
+            for (Kayttaja kayttaja : kayttajat) {
+                out.println(kayttaja.getTunnus()+"<br>");
+            }
       
         } finally {            
             out.close();
@@ -131,7 +139,13 @@ public class Kayttaja extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(Kayttaja.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Kayttaja.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -146,7 +160,13 @@ public class Kayttaja extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(Kayttaja.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Kayttaja.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
