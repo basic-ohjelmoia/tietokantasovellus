@@ -1,14 +1,12 @@
+package Mechlab.Servlets;
 
-import Mechlab.Tietokanta.Tietokanta_2;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mikromafia
  */
-public class Testi2Servlet extends HttpServlet {
+public class MechSelaa extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -30,33 +28,28 @@ public class Testi2Servlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException, NamingException, SQLException {
- // Connection yhteys = new Yhteys().getConnection(); //Haetaan tietokantaluokalta yhteysolio
-  PreparedStatement kysely = null;
-  ResultSet tulokset = null;
-  PrintWriter out = response.getWriter(); 
-  response.setContentType("text/plain;charset=UTF-8");
-
-  try {
-    //Alustetaan muuttuja jossa on Select-kysely, joka palauttaa lukuarvon:
-    String sqlkysely = "SELECT 1+1 as two";
-
-    //kysely = yhteys.prepareStatement(sqlkysely);
-  //  tulokset = kysely.executeQuery();
-    if(tulokset.next()) {
-      //Tuloksen arvoksi pitäisi tulla numero kaksi.
-      int tulos = tulokset.getInt("two");
-      out.println("Tulos: "+tulos); 
-    } else {
-      out.println("Virhe!"); 
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            
+       throws ServletException, IOException, NamingException, SQLException {
+        response.setContentType("text/html;charset=UTF-8");
+    naytaJSP("sivu.jsp", request, response);
+                 
+    
     }
-  } catch (Exception e) {
-    out.println("Virhe: "+e.getMessage()); 
-  }
+    
+      public void naytaJSP(String sivu, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, NamingException, SQLException {
+        response.setContentType("text/html;charset=UTF-8");
+          
+  /* Luodaan RequestDispatcher-olio, joka osaa näyttää lista.jsp:n */
+      RequestDispatcher dispatcher = request.getRequestDispatcher(sivu);
+      
+    
 
-  tulokset.close(); kysely.close();
-}
+  /* Pyydetään dispatcher-oliota näyttämään JSP-sivunsa */
+      dispatcher.forward(request, response);
+      
+     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -72,11 +65,13 @@ public class Testi2Servlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
+                    try {
+                        processRequest(request, response);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MechSelaa.class.getName()).log(Level.SEVERE, null, ex);
+                    }
         } catch (NamingException ex) {
-            Logger.getLogger(Testi2Servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Testi2Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MechSelaa.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -93,11 +88,13 @@ public class Testi2Servlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
+                    try {
+                        processRequest(request, response);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MechSelaa.class.getName()).log(Level.SEVERE, null, ex);
+                    }
         } catch (NamingException ex) {
-            Logger.getLogger(Testi2Servlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Testi2Servlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MechSelaa.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

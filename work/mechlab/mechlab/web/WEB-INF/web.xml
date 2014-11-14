@@ -9,12 +9,16 @@
         <servlet-class>TestiServlet2</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Connection</servlet-name>
-        <servlet-class>Tietokanta.Yhteys</servlet-class>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>Mechlab.Servlets.Login</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Kayttaja</servlet-name>
-        <servlet-class>Mallit.Kayttaja</servlet-class>
+        <servlet-name>SelaaMech</servlet-name>
+        <servlet-class>Mechlab.Servlets.SelaaMech</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MechSelaa</servlet-name>
+        <servlet-class>Mechlab.Servlets.MechSelaa</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TestiServelet</servlet-name>
@@ -24,13 +28,17 @@
         <servlet-name>Testi2Servlet</servlet-name>
         <url-pattern>/Testi2Servlet</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Connection</servlet-name>
-        <url-pattern>/Connection</url-pattern>
+     <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Kayttaja</servlet-name>
-        <url-pattern>/Kayttaja</url-pattern>
+        <servlet-name>SelaaMech</servlet-name>
+        <url-pattern>/SelaaMech</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MechSelaa</servlet-name>
+        <url-pattern>/MechSelaa</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

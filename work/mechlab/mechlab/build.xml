@@ -9,6 +9,8 @@
 <!-- in the project's Project Properties dialog box.-->
 <project name="mechlab" default="default" basedir=".">
     <description>Builds, tests, and runs the project mechlab.</description>
+ <!--   <property name="catalina.home" value="/usr/share/tomcat6/"/> -->
+    
     <import file="nbproject/build-impl.xml"/>
     <!--
 
