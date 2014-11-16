@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -32,8 +33,28 @@ public class Login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NamingException, SQLException {
         
+        request.setAttribute("navimechselaa", "");
+        request.setAttribute("navilogin", "active");
+        request.setAttribute("naviloginmoodi", "KIRJAUDU");
+        request.setAttribute("naviloginosoite", "login");
+        //request.setAttribute("kirjautuneenNimi", "Et ole kirjautunut sisään!");
+        
+     //   String istunnoton = "";
      String salasana = request.getParameter("password");
   String kayttaja = request.getParameter("username");
+   //istunnoton = request.getParameter("istunnoton");
+  //if (!istunnoton.equals("") || istunnoton != null) {
+      
+      //if( istunnoton != null || istunnoton.trim().length() > 0 ) {
+   //if (istunnoton()>0) {
+  if (null != request.getParameter("istunnoton")) {
+      //istunnoton = request.getParameter("istunnoton");
+      if (request.getParameter("istunnoton").equals("kylla")) {
+      asetaVirhe("MechLabin käyttö edellyttää kirjautumista!", request);} else {
+      asetaVirhe("Olet kirjautunut ulos Mechlabista!", request);    
+      }
+  //}
+  }
 //  Kayttaja kukalie = null;
 //        kukalie = Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana);
   /* Välitetään näkymille tieto siitä, mikä tunnus yritti kirjautumista */
@@ -67,7 +88,7 @@ public class Login extends HttpServlet {
       
       if (Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana)!=null) { // oli null
   //kayttaja.e
-  
+          Kayttaja kirjautuja = Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana);
   /* Tarkistetaan onko parametrina saatu oikeat tunnukset */
   //if (kayttaja.equals("svinhufvud") && salasana.equals("kissakartano")) {
     /* Jos tunnus on oikea, ohjataan käyttäjä HTTP-ohjauksella kissalistaan. */
@@ -84,7 +105,21 @@ public class Login extends HttpServlet {
 //      asetaVirhe("Kirjautuminen onnistui!", request);
 //          naytaJSP("login.jsp", request, response);
 //    return;
+          HttpSession session = request.getSession();
+        
+
+                if (kayttaja != null) {
+                     //Tallennetaan istuntoon käyttäjäolio
+                    //HttpServletResponse tallennaResponse = response;
+                    
+                    //response = tallennaResponse;
+                    session.setAttribute("kirjautunut", kirjautuja);
+                 
+                }
+          
+          
       response.sendRedirect("MechSelaa");
+      Kayttaja.lisaaVierailuTauluun(kirjautuja);
   }
   
   else // (Kayttaja.etsiKayttajaTunnuksilla(kayttaja, salasana)==null)
@@ -120,6 +155,9 @@ public class Login extends HttpServlet {
     public void asetaVirhe(String virheteksti, HttpServletRequest request) {
         request.setAttribute("virheViesti", virheteksti);
     }
+    
+       
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

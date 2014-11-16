@@ -1,5 +1,6 @@
 package Mechlab.Servlets;
 
+import Mechlab.Models.Kayttaja;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,9 +33,25 @@ public class MechSelaa extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             
        throws ServletException, IOException, NamingException, SQLException {
+        HttpServletRequest sivu = request;
+        request.setAttribute("navimechselaa", "active");
+        request.setAttribute("navilogin", "");
+        request.setAttribute("naviloginmoodi", "POISTU");
+        request.setAttribute("naviloginosoite", "Uloskirjaudu");
+       // request.setAttribute("kirjautuneenNimi", "Et ole kirjautunut sisään!");
+        
         response.setContentType("text/html;charset=UTF-8");
-    naytaJSP("sivu.jsp", request, response);
-                 
+        Istunto istunto = new Istunto(request);
+            if (istunto.onkoKirjautunut(request, response)) {
+                    HttpSession session = request.getSession();
+                    //Kayttaja kayttaja = (Kayttaja) session..getAttribute("kayttaja");
+                    //sivu.setAttribute("kirjautuneenNimi", session.getAttribute("nimi"));
+                
+                    if (istunto.onkoAdmin(request, response)) {
+                        //sivu.setAttribute("naviadmin", "true");
+                    }
+                    naytaJSP("sivu.jsp", request, response);
+            }
     
     }
     

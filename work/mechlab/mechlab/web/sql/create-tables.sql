@@ -41,6 +41,7 @@ CREATE TABLE kayttaja(
 	email	CHAR(80)	NOT NULL,
 	salasana CHAR(80)	NOT NULL,
 	oikeustaso	INTEGER,
+	vierailukerta INTEGER DEFAULT 1,
 	collection_id INTEGER REFERENCES mechkokoelma(mechkokoelma_id) ON DELETE CASCADE,
 	PRIMARY KEY (kayttaja_id)
 

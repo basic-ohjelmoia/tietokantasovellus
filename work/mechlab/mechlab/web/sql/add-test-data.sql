@@ -1,8 +1,11 @@
 INSERT INTO kayttaja (kayttaja_id, nimi, email, salasana, oikeustaso) VALUES (1, 'Testi Testaaja', 'test@test.test', '12345', 0);
-INSERT INTO kayttaja (kayttaja_id, nimi, email, salasana, oikeustaso) VALUES (999, 'Admin', 'admin@test.test', '123456', 1);
+INSERT INTO kayttaja (kayttaja_id, nimi, email, salasana, oikeustaso) VALUES (2, 'abc', 'test2@test.test', '123', 0);
+INSERT INTO kayttaja (kayttaja_id, nimi, email, salasana, oikeustaso) VALUES (999, 'admin', 'admin@test.test', 'admin', 1);
 
 INSERT INTO MECHKOKOELMA (mechkokoelma_id) VALUES
     (1);
+INSERT INTO MECHKOKOELMA (mechkokoelma_id) VALUES
+    (2);
 
 
 

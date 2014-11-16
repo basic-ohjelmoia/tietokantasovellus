@@ -18,6 +18,8 @@ public class Kayttaja {
      private int id;
     private String nimi;
     private String salasana;
+    private int oikeustaso;
+    private int vierailukerta;
     
     public Kayttaja() {
         
@@ -27,10 +29,12 @@ public class Kayttaja {
         this.id=id;
         this.nimi=tunnus;
         this.salasana=salasana;
+        this.oikeustaso=0;
+        this.vierailukerta=0;
     }
     
     public static List<Kayttaja> getKayttajat() throws NamingException, SQLException {
-  String sql = "SELECT kayttaja_id, nimi, salasana from kayttaja";
+  String sql = "SELECT kayttaja_id, nimi, salasana, oikeustaso, vierailukerta from kayttaja";
   
   //Tietokanta yhteys0 = new Tietokanta();
   Connection yhteys = Tietokanta.getYhteys();
@@ -44,7 +48,8 @@ public class Kayttaja {
     k.setID(tulokset.getInt("kayttaja_id"));
     k.setNimi(tulokset.getString("nimi"));
     k.setSalasana(tulokset.getString("salasana"));
-
+    if (tulokset.getInt("oikeustaso")>0) {k.setOikeustaso(tulokset.getInt("oikeustaso"));}
+    k.setVierailukerta(tulokset.getInt("vierailukerta"));
     kayttajat.add(k);
     
   }   
@@ -60,10 +65,28 @@ public class Kayttaja {
   
   return kayttajat;
 }
+    /**
+     * Lisää vierialun SQL-tauluun.
+     */
+    public static void lisaaVierailuTauluun(Kayttaja vierailija) throws NamingException, SQLException {
+  String sql = "UPDATE kayttaja SET vierailukerta = vierailukerta + 1 WHERE kayttaja_id = "+vierailija.getID();
+        Connection yhteys = Tietokanta.getYhteys();
+             PreparedStatement kysely = yhteys.prepareStatement(sql);
+             //kysely.setString(1, Integer.toString(vierailija.getID()));
+             ResultSet rs = kysely.executeQuery();
+             vierailija.lisaaVierailukerta();
+             
+      
+  try { rs.close(); } catch (Exception e) {}
+  try { kysely.close(); } catch (Exception e) {}
+  try { yhteys.close(); } catch (Exception e) {}
+  
+  //return vierailija;
+}
     
     
     public static Kayttaja etsiKayttajaTunnuksilla(String nimi, String salasana) throws NamingException, SQLException {
-  String sql = "SELECT kayttaja_id,nimi, salasana from kayttaja where nimi = ? AND salasana = ?";
+  String sql = "SELECT kayttaja_id,nimi,salasana,oikeustaso,vierailukerta from kayttaja where nimi = ? AND salasana = ?";
         Connection yhteys = Tietokanta.getYhteys();
              PreparedStatement kysely = yhteys.prepareStatement(sql);
              kysely.setString(1, nimi);
@@ -85,6 +108,8 @@ public class Kayttaja {
     kirjautunut.setID(rs.getInt("kayttaja_id"));
     kirjautunut.setNimi(rs.getString("nimi"));
     kirjautunut.setSalasana(rs.getString("salasana"));
+    if (rs.getInt("oikeustaso")>0) {kirjautunut.setOikeustaso(rs.getInt("oikeustaso"));}
+    kirjautunut.setVierailukerta(rs.getInt("vierailukerta"));
   }
 
   //Jos kysely ei tuottanut tuloksia käyttäjä on nyt vielä null.
@@ -98,6 +123,18 @@ public class Kayttaja {
   return kirjautunut;
 }
     
+    public boolean onkoAdmin() {
+        if (this.oikeustaso>0) {return true;}
+        return false;
+    }
+    
+    public void setOikeustaso(int oikeustaso) {
+        this.oikeustaso=oikeustaso;
+    }
+    
+    public int getOikeustaso() {
+        return this.oikeustaso;
+    }
     
     public void setID(int id) {
         this.id=id;
@@ -121,4 +158,17 @@ public class Kayttaja {
     public int getID() {
         return this.id;
     }
+    
+    public void lisaaVierailukerta() {
+        this.vierailukerta++;
+    }
+    
+    public void setVierailukerta(int montako) {
+        this.vierailukerta=montako;
+    }
+    
+    public int getVierailukerta() {
+        return this.vierailukerta;
+    }
+    
 }

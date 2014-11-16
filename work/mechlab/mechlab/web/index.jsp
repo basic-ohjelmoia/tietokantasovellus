@@ -25,7 +25,7 @@
       <!-- Korvaa ohessa olevat sanat GITHUBTUNNUS ja 
            REPOSITORIO omilla tiedoillasi: -->
       <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus">Työn repositorio</a></li>
-      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a> (päivitetty 9.11.2014)</li>
+      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a> (päivitetty 16.11.2014)</li>
 
       <!-- Viikolla 2 voit laittaa kommentoidut linkitkin sivuille. 
            Ota kommenttimerkit pois sen kielen ympäriltä, jota käytät -->
@@ -37,16 +37,16 @@
       -->
     </ul>
       <p>
-          Uutta viikolla 2:<br>
-      <p>
+  <u> Uutta viikolla 2:</u><br>
+      </p>
       <ul>
-      <li><a href="http://t-tuho.users.cs.helsinki.fi/ConnectionTest">Connectiontest-ohjelma</a> - ei toimi!</li>
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/ConnectionTest">Connectiontest-ohjelma</a></li>
       <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/html-demo/main.html">HTML-demosivujen etusivu</a></li>
       <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/html-demo/main_1.html">HTML-demosivu 2 </a></li>
       <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/html-demo/main_1_1.html">HTML-demosivu 3 </a></li>
       <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/html-demo/main_1_1_2.html">HTML-demosivu 4 </a></li>
-      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/Kayttaja">Kayttaja-servlet, joka kaiketi jollain tasolla toimii, mutta ei tee mitään näkyvää</a></li>
-      
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/Kayttaja">Kayttaja-servlet</a> (servletin toimintaa muutettu, joten linkki on obsolete)</li>
+      </ul>
       <!-- Linkit PHP-kielelle.
            Korvaa sana cstunnus omalla tktl-tunnuksellasi ja sana 
            Tietokantasovellus sen hakemiston nimellä, missä 
@@ -59,10 +59,30 @@
       -->
       
       <!-- Viikolla 3 laita alla kommentoitu linkki osoittamaan omaan kirjautumissivuusi. -->
-      <!--
-      <li><a href="http://cstunnus.users.cs.helsinki.fi/Tietokantasovellus/index.php">Sovelluksen kirjautumissivu</a></li>
-      -->
-    </ul>
+      
+       <p>
+  <u>Uutta viikolla 3:</u><br>
+      </p>
+      <ul>
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/login">Sovelluksen kirjautumissivu</a></li>
+      </ul>
+      <p>
+          Onnistunut sisäänkirjautuminen vie <a href="http://t-tuho.users.cs.helsinki.fi/mechlab/mechselaa">mechselaa-näkymään</a>, jossa ei sinänsä ole enempää toiminnallisuutta kuin uloskirjautuminen.<br>
+      </p>
+          Toimivia <b>käyttäjätunnus</b> : salasana -yhdistelmiä:<br>
+      <ul>
+          <li><b>Testi Testaaja</b> : 12345</li>
+          <li><b>abc</b> : 123</li>
+          <li><b>admin</b> : admin</li>
+      </ul>
+      </p>
+      <p>
+          Huomionarvoisia yksityiskohtia:<br>
+      <ul><li> Navikko muuttuu sen mukaan onko käyttäjä kirjautuneena vai ei ("kirjaudu" vs "poistu"). Kirjautunutta käyttäjää tervehditään nimeltä ja ilmoitetaan vierailukerta (vierailukerrat tallennetaan Postgresql:n kayttaja-tauluun).</li>
+          <li> Jos käyttäjällä on admin-status (kuten käyttäjätunnuksella "admin" on), navikkoon lisätään ylimääräinen ylläpito-painike.</li>
+          <li> Login-sivu osaa reagoida, jos käyttäjä on juuri kirjautunut ulos ("Olet kirjautunut ulos Mechlabista!").</li>
+          <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/mechselaa">Mechselaa</a>-sivulle ei pääse sisäänkirjautumatta. Jos sivulle pyrkii suoraan ilman kirjautumista, sovellus palauttaa käyttäjän automaattisesti login-sivulle ja muistuttaa sisäänkirjautumisen pakollisuudesta.</li>
+      </ul>          
 
     
     <!--

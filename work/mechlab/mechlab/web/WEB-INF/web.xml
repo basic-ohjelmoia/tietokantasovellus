@@ -20,6 +20,14 @@
         <servlet-name>MechSelaa</servlet-name>
         <servlet-class>Mechlab.Servlets.MechSelaa</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Istunto</servlet-name>
+        <servlet-class>Mechlab.Servlets.Istunto</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Uloskirjaudu</servlet-name>
+        <servlet-class>Mechlab.Servlets.Uloskirjaudu</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestiServelet</servlet-name>
         <url-pattern>/TestiServelet</url-pattern>
@@ -28,9 +36,13 @@
         <servlet-name>Testi2Servlet</servlet-name>
         <url-pattern>/Testi2Servlet</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SelaaMech</servlet-name>
@@ -39,6 +51,18 @@
     <servlet-mapping>
         <servlet-name>MechSelaa</servlet-name>
         <url-pattern>/MechSelaa</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MechSelaa</servlet-name>
+        <url-pattern>/mechselaa</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Istunto</servlet-name>
+        <url-pattern>/Istunto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Uloskirjaudu</servlet-name>
+        <url-pattern>/Uloskirjaudu</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
