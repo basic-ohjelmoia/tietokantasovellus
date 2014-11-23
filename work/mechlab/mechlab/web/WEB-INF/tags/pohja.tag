@@ -26,9 +26,9 @@
           <%-- </c:if><c:if test="${kirjautuneenNimi == null}">Et ole kirjautunut sisään!</c:if>--%>
           <nav class="navbar navbar-inverse" role="navigation">
   <ul class="nav nav-tabs">
-    <li class="${navimechselaa}"><a href="/mechselaa">MechLab.SELAA</a></li>
+    <li class="${navimechselaa}"><a href="mechselaa">MechLab.SELAA</a></li>
     <li><a href="main_1_1.html">MechLab.RAKENNA</a></li>
-    <c:if test="${naviadmin != null}"><li><a href="main_1_1_2.html">Admin.YLLÄPITO</a></li></c:if>
+    <c:if test="${naviadmin != null}"><li class="${naviyllapito}"><a href="komponenttiselaa">Admin.YLLÄPITO</a></li></c:if>
     <li><a href="#">Käyttäjä.ASETUKSET</a></li>
     <li class="${navilogin}"><a href="${naviloginosoite}">Käyttäjä.${naviloginmoodi}</a></li>
     <li><c:if test="${kirjautuneenNimi != null}"><span class="label label-default">Tervetuloa, ${kirjautuneenNimi}! Tämä on ${vierailukerta}. vierailusi.</span></c:if><c:if test="${kirjautuneenNimi == null}"><span class="label label-info">Et ole kirjautunut sisään!</span></c:if></li>
@@ -39,8 +39,7 @@
             <c:if test="${virheViesti != null}">
                 <div class="alert alert-danger">${virheViesti}</div>
             </c:if>
-           
-            
+                    
             
             <jsp:doBody/>
         </div>

@@ -33,24 +33,41 @@ public class MechSelaa extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             
        throws ServletException, IOException, NamingException, SQLException {
+        
+        
+        Istunto istunto = new Istunto();
+        HttpSession session = request.getSession();
+        Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
+        
         HttpServletRequest sivu = request;
+        
         request.setAttribute("navimechselaa", "active");
+       // request.setAttribute("naviadmin", "");
         request.setAttribute("navilogin", "");
         request.setAttribute("naviloginmoodi", "POISTU");
         request.setAttribute("naviloginosoite", "Uloskirjaudu");
        // request.setAttribute("kirjautuneenNimi", "Et ole kirjautunut sisään!");
         
         response.setContentType("text/html;charset=UTF-8");
-        Istunto istunto = new Istunto(request);
+        
             if (istunto.onkoKirjautunut(request, response)) {
-                    HttpSession session = request.getSession();
+                    //HttpSession session = request.getSession();
                     //Kayttaja kayttaja = (Kayttaja) session..getAttribute("kayttaja");
                     //sivu.setAttribute("kirjautuneenNimi", session.getAttribute("nimi"));
                 
-                    if (istunto.onkoAdmin(request, response)) {
+                  //  if (istunto.onkoAdmin(request, response)) {
                         //sivu.setAttribute("naviadmin", "true");
-                    }
-                    naytaJSP("sivu.jsp", request, response);
+                  //  }
+                if (kayttaja.getOikeustaso()>0) {
+                        
+                    
+                }
+                
+                 
+                
+                
+                    naytaJSP("mechselaa.jsp", request, response);
+                    session.setAttribute("kirjautunut", kayttaja);
             }
     
     }

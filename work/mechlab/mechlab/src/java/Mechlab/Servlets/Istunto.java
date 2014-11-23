@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 public class Istunto extends HttpServlet {
 
     HttpServletRequest nykyinenSivu;
+   // HttpSession session;
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -29,6 +30,14 @@ public class Istunto extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
+    public Istunto() {
+        
+    }
+    
+    public Istunto(HttpSession session) {
+        //this.session = session;
+    }
+    
     public Istunto (HttpServletRequest request) {
         this.nykyinenSivu = request;
     }
@@ -36,20 +45,22 @@ public class Istunto extends HttpServlet {
     protected boolean onkoKirjautunut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NamingException, SQLException {
       
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(true);
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
         
         if (kayttaja != null) {
-            session.setAttribute("kirjautunut", kayttaja); // oli request.
-            session.setAttribute("nimi", kayttaja.getNimi());  // oli request.
-            session.setAttribute("vierailukerta", kayttaja.getVierailukerta());
+            request.setAttribute("kirjautunut", kayttaja); // oli request.
+              request.setAttribute("kirjautuneenNimi", kayttaja.getNimi());  // oli request.
+             request.setAttribute("vierailukerta", kayttaja.getVierailukerta());
+                
+            if (kayttaja.getOikeustaso()>0) {
+                
+                request.setAttribute("admin", true);    // oli request.
+                request.setAttribute("naviadmin", "true");
+            } else {
+                request.setAttribute("admin", "false");
+            }
             
-            nykyinenSivu.setAttribute("kirjautuneenNimi", session.getAttribute("nimi"));
-            
-            if (kayttaja.onkoAdmin()) {
-                session.setAttribute("admin", true);    // oli request.
-                nykyinenSivu.setAttribute("naviadmin", "true");
-            } else {session.setAttribute("admin", false);}   // oli request.
             return true;
         }
         

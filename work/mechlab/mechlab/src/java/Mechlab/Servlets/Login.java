@@ -105,20 +105,21 @@ public class Login extends HttpServlet {
 //      asetaVirhe("Kirjautuminen onnistui!", request);
 //          naytaJSP("login.jsp", request, response);
 //    return;
+          response.sendRedirect("MechSelaa");
           HttpSession session = request.getSession();
         
 
-                if (kayttaja != null) {
+               // if (kayttaja != null) {
                      //Tallennetaan istuntoon käyttäjäolio
                     //HttpServletResponse tallennaResponse = response;
                     
                     //response = tallennaResponse;
                     session.setAttribute("kirjautunut", kirjautuja);
                  
-                }
+              //  }
           
-          
-      response.sendRedirect("MechSelaa");
+          //response.encodeRedirectURL("MechSelaa");
+      
       Kayttaja.lisaaVierailuTauluun(kirjautuja);
   }
   

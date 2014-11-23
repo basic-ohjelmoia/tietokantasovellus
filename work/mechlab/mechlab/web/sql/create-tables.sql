@@ -1,7 +1,7 @@
 
 CREATE TABLE reaktori(
 	reaktori_id INTEGER NOT NULL,
-	nimi	CHAR(40)	NOT NULL,
+	nimi	VARCHAR(40)	NOT NULL,
 	cooling	INTEGER		NOT NULL,
 	teho	INTEGER		NOT NULL,
 	massa	INTEGER		NOT NULL,
@@ -11,20 +11,20 @@ CREATE TABLE reaktori(
 
 CREATE TABLE komponentti(
 	komponentti_id	INTEGER NOT NULL,
-	nimi	CHAR(40)	NOT NULL,
+	nimi	VARCHAR(40)	NOT NULL,
 	massa	INTEGER		NOT NULL,
-	kokoluokka	CHAR(20)	NOT NULL,
+	kokoluokka	VARCHAR(20)	NOT NULL,
 	heat	INTEGER		NOT NULL,
-	kategoria	CHAR(20)	NOT NULL,
-	sijoituspaikka 	CHAR(20)	NOT NULL,
+	kategoria	VARCHAR(20)	NOT NULL,
+	sijoituspaikka 	VARCHAR(20)	NOT NULL,
 	weapon_damage	INTEGER,
 	weapon_maxrange	INTEGER,
 	weapon_minrange	INTEGER,
-	weapon_type	CHAR(20),
+	weapon_type	VARCHAR(20),
 	weapon_ammo	INTEGER,
-	varuste_type	CHAR(20),
+	varuste_type	VARCHAR(20),
 	varuste_tier	INTEGER,
-	varuste_activity CHAR(20),
+	varuste_activity VARCHAR(20),
 	PRIMARY KEY (komponentti_id)
 
 );
@@ -37,9 +37,9 @@ CREATE TABLE mechkokoelma(
 
 CREATE TABLE kayttaja(
 	kayttaja_id	INTEGER NOT NULL,
- 	nimi 	CHAR(80)	NOT NULL,
-	email	CHAR(80)	NOT NULL,
-	salasana CHAR(80)	NOT NULL,
+ 	nimi 	VARCHAR(80)	NOT NULL,
+	email	VARCHAR(80)	NOT NULL,
+	salasana VARCHAR(80)	NOT NULL,
 	oikeustaso	INTEGER,
 	vierailukerta INTEGER DEFAULT 1,
 	collection_id INTEGER REFERENCES mechkokoelma(mechkokoelma_id) ON DELETE CASCADE,
@@ -52,7 +52,7 @@ CREATE TABLE kayttaja(
 
 CREATE TABLE mech(
 	mech_id	INTEGER NOT NULL ,
-	nimi	CHAR(40)	NOT NULL,
+	nimi	VARCHAR(40)	NOT NULL,
 	collection_id INTEGER REFERENCES mechkokoelma(mechkokoelma_id) ON DELETE CASCADE,
 	user_id INTEGER REFERENCES kayttaja(kayttaja_id) ON DELETE CASCADE,
 	reactor_id INTEGER REFERENCES reaktori(reaktori_id) ON DELETE CASCADE,
@@ -67,7 +67,7 @@ CREATE TABLE komponentisto(
 	komponentisto_id	INTEGER NOT NULL,
 	battlemech_id INTEGER REFERENCES mech(mech_id) ON DELETE CASCADE,
 	component_id INTEGER REFERENCES komponentti(komponentti_id) ON DELETE CASCADE,
-	sijainti CHAR(20)	NOT NULL,
+	sijainti VARCHAR(20)	NOT NULL,
 	PRIMARY KEY (komponentisto_id)
 	
 );

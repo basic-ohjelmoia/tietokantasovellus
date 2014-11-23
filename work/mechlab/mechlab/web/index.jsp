@@ -25,7 +25,7 @@
       <!-- Korvaa ohessa olevat sanat GITHUBTUNNUS ja 
            REPOSITORIO omilla tiedoillasi: -->
       <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus">Työn repositorio</a></li>
-      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a> (päivitetty 16.11.2014)</li>
+      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a> (päivitetty 23.11.2014)</li>
 
       <!-- Viikolla 2 voit laittaa kommentoidut linkitkin sivuille. 
            Ota kommenttimerkit pois sen kielen ympäriltä, jota käytät -->
@@ -85,6 +85,36 @@
       </ul>          
 
     
+        <p>
+  <u>Uutta viikolla 4:</u><br>
+      </p>
+      <ul>
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/login">Sovelluksen kirjautumissivu</a></li>
+      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus">Työn repositorio</a></li>
+      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a> (päivitetty 23.11.2014)</li>
+      </ul>
+      <p>
+          ADMIN.Ylläpito on projektin ensimmäinen toimiva selaa/luo/muokkaa/poista (CRUD) -näkymä. Siellä voi syöttää komponentteja (aseita) tietokantaan. Varuste-tyyppisten komponenttien lisäämisen on määrä tapahtua samalla sivulla, mutta sitä ei ole vielä implementoitu loppuun asti. Tietokannan kannalta aseet ja varusteet tallennetaan samaan Komponentti-tauluun (niistä vain luetaan vähän eri parametreja).<br>
+      </p>
+         Edellisviikolta tutut <b>käyttäjätunnus</b> : salasana -yhdistelmät toimivat yhä. Huomaa, että ainoastaan admin-tunnuksella pääsee edellä mainittuun Admin.Ylläpito-näkymään (komponentti-CRUD).<br>
+      <ul>
+          <li><b>Testi Testaaja</b> : 12345</li>
+          <li><b>abc</b> : 123</li>
+          <li><b>admin</b> : admin</li>
+      </ul>
+      </p>
+      <p>
+          Huomionarvoisia yksityiskohtia:<br>
+      <ul><li> Komponenttien luominen ja editointi tapahtuu valmiiksi rajattujen vaihtoehtojen puitteissa, joten käyttäjän ei ole mahdollista antaa "vääriä" syötteitä. Nimi-kentän implementaatio on tosin vielä sikäli keskeneräinen, että SQL-injektiot lienevät vielä mahdollisia (aika loppui kesken...).</li>
+          <li> Jos käyttäjä jättää nimen syöttämättä komponentilleen, komponentti saa nimekseen designaatio-tunnuksensa. Designaatiota ei "arvota" randomisti, vaan se perustuu komponentin parametreihin. Taulua ei siis tarvitse täyttää "Unnamed Componeteilla."</li>
+          <li> Komponentteja luodessa/editoidessa käyttäjän ei tarvitse klikata kaikkia parametreja läpi, vaan ainostaan niitä, joita on muuttamassa. Esimerkiksi jos haluaa muuttaa aseen vahinkoarvoa, pelkkä uuden vahinkoarvon klikkaaminen ja tallentaminen riittää.</li>
+          <li> Uusi komponentti luodaan Admin.Ylläpito-näkymän Weapon Lab -alasivulla (haku-toiminto ei vielä tee mitään).</li>
+          <li> Sivusto käyttää tällä hetkellä englantia ja suomea sekaisin, mutta tarkoitus on muokata kaikki näkymät englanninkielisiksi.</li>
+          <li> Admin.Ylläpito/Komponentti-näkymän sivutus on implementoimatta (sivunumerointi on placeholder), tosin en ole täysin vakuuttunut, että kyseinen näkymä edes tarvitsee sivutusta (lopputuotteessa "oikea" komponenttimäärä jäänee muutamaan kymmeneen).</li>
+          <li> Login-ruudun jälkeinen MechSelaa-näkymän Mech-listaus on yhä pelkkä placeholder. Mech-näkymää ei liene järkevää toteuttaa ennen kuin kaikki rakennuspalikat (komponentit, reaktorit jne.) on implementoitu.</li>
+      </ul>          
+
+      
     <!--
     <h2>Kirjautumistunnuksia testausta varten</h2>
 
