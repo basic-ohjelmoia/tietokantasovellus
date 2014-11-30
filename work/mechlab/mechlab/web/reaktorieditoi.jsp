@@ -89,43 +89,46 @@ type: <input type="text" name="weapontype"  value="default"/>
                         <label for="Component Name">Cooling Factor</label>
 
                               <label class="radio-inline">
-  <input type="radio" name="cooling" id="cooling" value="0"> 0
+  <input type="radio" name="cooling" id="cooling" value="5"> 5
 </label>
                         <label class="radio-inline">
-  <input type="radio" name="cooling" id="cooling" value="2"> 2
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="cooling" id="cooling" value="4"> 4
-</label>
-      <label class="radio-inline">
   <input type="radio" name="cooling" id="cooling" value="6"> 6
+</label>
+      <label class="radio-inline">
+  <input type="radio" name="cooling" id="cooling" value="7"> 7
 </label>
       <label class="radio-inline">
   <input type="radio" name="cooling" id="cooling" value="8"> 8
 </label>
       <label class="radio-inline">
+  <input type="radio" name="cooling" id="cooling" value="9"> 9
+</label>
+      <label class="radio-inline">
   <input type="radio" name="cooling" id="cooling" value="10"> 10
 </label><label class="radio-inline">
+  <input type="radio" name="cooling" id="cooling" value="11"> 11
+</label>
+      <label class="radio-inline">
   <input type="radio" name="cooling" id="cooling" value="12"> 12
 </label>
       <label class="radio-inline">
+  <input type="radio" name="cooling" id="cooling" value="13"> 13
+</label>
+ <label class="radio-inline">
   <input type="radio" name="cooling" id="cooling" value="14"> 14
 </label>
       <label class="radio-inline">
-  <input type="radio" name="cooling" id="cooling" value="16"> 16
-</label>
- <label class="radio-inline">
-  <input type="radio" name="cooling" id="cooling" value="18"> 18
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="cooling" id="cooling" value="20"> 20
+  <input type="radio" name="cooling" id="cooling" value="15"> 15
 </label>
                         
       <label class="radio-inline">
-  <input type="radio" name="cooling" id="cooling" value="25"> 25
+  <input type="radio" name="cooling" id="cooling" value="16"> 16
 </label>
       <label class="radio-inline">
-  <input type="radio" name="cooling" id="cooling" value="30"> 30
+  <input type="radio" name="cooling" id="cooling" value="18"> 18
+</label>
+                            <label class="radio-inline">
+  <input type="radio" name="cooling" id="cooling" value="20"> 20
 </label>
       
                              <label class="radio-inline">
@@ -138,22 +141,22 @@ type: <input type="text" name="weapontype"  value="default"/>
                         <label for="Component Name">Power Generated</label>
 
                               <label class="radio-inline">
-  <input type="radio" name="power" id="power" value="60"> 60
-</label>
-                        <label class="radio-inline">
   <input type="radio" name="power" id="power" value="80"> 80
 </label>
-      <label class="radio-inline">
+                        <label class="radio-inline">
   <input type="radio" name="power" id="power" value="100"> 100
 </label>
       <label class="radio-inline">
-  <input type="radio" name="power" id="power" value="125"> 125
+  <input type="radio" name="power" id="power" value="120"> 120
 </label>
       <label class="radio-inline">
-  <input type="radio" name="power" id="power" value="150"> 150
+  <input type="radio" name="power" id="power" value="140"> 140
 </label>
       <label class="radio-inline">
-  <input type="radio" name="power" id="power" value="175"> 175
+  <input type="radio" name="power" id="power" value="160"> 160
+</label>
+      <label class="radio-inline">
+  <input type="radio" name="power" id="power" value="180"> 180
 </label><label class="radio-inline">
   <input type="radio" name="power" id="power" value="200"> 200
 </label>
@@ -182,8 +185,14 @@ type: <input type="text" name="weapontype"  value="default"/>
                               <label class="radio-inline">
   <input type="radio" name="power" id="power" value="400"> 400
 </label>
+                                                 <label class="radio-inline">
+  <input type="radio" name="power" id="power" value="425"> 425
+</label>
                               <label class="radio-inline">
   <input type="radio" name="power" id="power" value="450"> 450
+</label>
+                                                 <label class="radio-inline">
+  <input type="radio" name="power" id="power" value="475"> 475
 </label>
                                          <label class="radio-inline">
   <input type="radio" name="power" id="power" value="500"> 550
@@ -223,14 +232,32 @@ type: <input type="text" name="weapontype"  value="default"/>
       <label class="radio-inline">
   <input type="radio" name="weight" id="weight" value="8"> 8 t
 </label>
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="9"> 9 t
+</label>
 <label class="radio-inline">
   <input type="radio" name="weight" id="weight" value="10"> 10 t
+</label>
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="11"> 11 t
 </label>
       <label class="radio-inline">
   <input type="radio" name="weight" id="weight" value="12"> 12 t
 </label>
       <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="13"> 13 t
+</label>
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="14"> 14 t
+</label>
+      <label class="radio-inline">
   <input type="radio" name="weight" id="weight" value="15"> 15 t
+</label>
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="16"> 16 t
+</label>
+          <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="18"> 18 t
 </label>
       <label class="radio-inline">
   <input type="radio" name="weight" id="weight" value="20"> 20 t

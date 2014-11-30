@@ -200,39 +200,7 @@ public class KomponenttiEditoi extends HttpServlet {
              String ilmoitus="";
         HttpSession session = request.getSession();
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
-//        try {
-//            processRequest(request, response);
-//        } catch (NamingException ex) {
-//            Logger.getLogger(KomponenttiEditoi.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(KomponenttiEditoi.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        
-//        request.setCharacterEncoding("UTF-8"); 
-//          
-////         if (!onKirjautunut(request,response)) { // tarkistetaan, että on kirjautunut adminina 
-////             return; 
-////         } 
-//         String weaponid  = request.getParameter("weaponid"); 
-//        String weaponname = request.getParameter("weaponname"); 
-//         String weapontype = request.getParameter("weapontype"); 
-//        try {
-//            Komponentti.paivitaKomponentti(weaponid, weaponname,weapontype);
-//   //          
-//   //         if ((kuvaus.length() > 0 && kuvaus.length() <= 300) && (ohjeet.length() > 0 && ohjeet.length() <= 300)) { 
-//   //             kuvaus = estaCrossSiteScripting(kuvaus); 
-//   //             ohjeet = estaCrossSiteScripting(ohjeet); 
-//   //             drinkId = estaCrossSiteScripting(drinkId); 
-//   //              
-//   //             long drinkinId = Long.parseLong(drinkId); 
-//   //              
-//   //             rekisteri.paivitaDrinkki(drinkinId, kuvaus, ohjeet); 
-//   //             response.sendRedirect(request.getContextPath()+"/DrinkinTiedot?id="+drinkinId); 
-//   //         } else { 
-//   //             request.setAttribute("virhe", "Et syöttänyt kaikkia tietoja!"); 
-//   //             processRequest(request, response, drinkId); // jos tietoja puuttuu, ohjataan samalle sivulle 
-//   //         } 
-   //         }
+
 boolean olikoAse=false;
 boolean olikoVaruste=false;
 

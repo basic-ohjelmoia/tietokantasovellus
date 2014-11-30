@@ -135,14 +135,32 @@ type: <input type="text" name="weapontype"  value="default"/>
       <label class="radio-inline">
   <input type="radio" name="weight" id="weight" value="8"> 8 t
 </label>
+        <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="9"> 9 t
+</label>
 <label class="radio-inline">
   <input type="radio" name="weight" id="weight" value="10"> 10 t
+</label>
+        <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="11"> 11 t
 </label>
       <label class="radio-inline">
   <input type="radio" name="weight" id="weight" value="12"> 12 t
 </label>
+        <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="13"> 13 t
+</label>
+        <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="14"> 14 t
+</label>
       <label class="radio-inline">
   <input type="radio" name="weight" id="weight" value="15"> 15 t
+</label>
+        <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="16"> 16 t
+</label>
+        <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="18"> 18 t
 </label>
       <label class="radio-inline">
   <input type="radio" name="weight" id="weight" value="20"> 20 t
@@ -186,14 +204,26 @@ type: <input type="text" name="weapontype"  value="default"/>
       <label class="radio-inline">
   <input type="radio" name="damage" id="damage" value="8"> 8
 </label>
+                        <label class="radio-inline">
+  <input type="radio" name="damage" id="damage" value="9"> 9
+</label>
                       <label class="radio-inline">
   <input type="radio" name="damage" id="damage" value="10"> 10
+</label>
+                        <label class="radio-inline">
+  <input type="radio" name="damage" id="damage" value="11"> 11
 </label>
       <label class="radio-inline">
   <input type="radio" name="damage" id="damage" value="12"> 12
 </label>
+                        <label class="radio-inline">
+  <input type="radio" name="damage" id="damage" value="13"> 13
+</label>
       <label class="radio-inline">
   <input type="radio" name="damage" id="damage" value="15"> 15
+</label>
+                        <label class="radio-inline">
+  <input type="radio" name="damage" id="damage" value="18"> 18
 </label>
         <label class="radio-inline">
   <input type="radio" name="damage" id="damage" value="20"> 20
@@ -242,8 +272,14 @@ type: <input type="text" name="weapontype"  value="default"/>
       <label class="radio-inline">
   <input type="radio" name="heat" id="heat" value="8"> 8
 </label>
+                         <label class="radio-inline">
+  <input type="radio" name="heat" id="heat" value="9"> 9
+</label>
  <label class="radio-inline">
   <input type="radio" name="heat" id="heat" value="10"> 10
+</label>
+                         <label class="radio-inline">
+  <input type="radio" name="heat" id="heat" value="11"> 11
 </label>
       <label class="radio-inline">
   <input type="radio" name="heat" id="heat" value="12"> 12

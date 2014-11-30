@@ -504,7 +504,7 @@ public class Mech {
         if ((heatTotal) > (getHeatsinks()+10)) {rating = rating - (rating/3);}
         else if ((heatTotal) > (getHeatsinks()+5)) {rating = rating - (rating/4);}
         else if ((heatTotal) > getHeatsinks()) {rating = rating - (rating/6);}
-        else if (heatTotal < getHeatsinks()) {rating += (getHeatsinks()-(heatTotal));}
+        else if (heatTotal < getHeatsinks()) {int heatbonus = (getHeatsinks()-(heatTotal)); if (heatbonus<=5) {rating+=heatbonus;} else {rating+=5;}}
         
         return rating;
     }
@@ -790,7 +790,9 @@ public class Mech {
                hinta=hinta/1000000;
                takaliite = "M";
                palaute = ""+hinta;
-               palaute = palaute.substring(0, 3);
+               if (hinta>=0.955) {
+               palaute = palaute.substring(0, 3);}
+               else {palaute = palaute.substring(0, 4);}
            }
            else if (hinta>=10000) {
                hinta=hinta/1000;
