@@ -20,6 +20,7 @@ public class Kayttaja {
     private String salasana;
     private int oikeustaso;
     private int vierailukerta;
+    private int collection_id;
     
     public Kayttaja() {
         
@@ -31,6 +32,7 @@ public class Kayttaja {
         this.salasana=salasana;
         this.oikeustaso=0;
         this.vierailukerta=0;
+        this.collection_id=id;
     }
     
     public static List<Kayttaja> getKayttajat() throws NamingException, SQLException {
@@ -73,13 +75,46 @@ public class Kayttaja {
         Connection yhteys = Tietokanta.getYhteys();
              PreparedStatement kysely = yhteys.prepareStatement(sql);
              //kysely.setString(1, Integer.toString(vierailija.getID()));
-             ResultSet rs = kysely.executeQuery();
+             //kysely.executeQuery();
+             kysely.executeUpdate();
              vierailija.lisaaVierailukerta();
              
       
-  try { rs.close(); } catch (Exception e) {}
+  
   try { kysely.close(); } catch (Exception e) {}
   try { yhteys.close(); } catch (Exception e) {}
+  
+  Komponentisto.siivoaKomponentisto();  // siivotaan ennen kirjautumista
+  //return vierailija;
+  lisaaMechKokoelma(vierailija.getID());
+}
+    
+     public static void lisaaMechKokoelma(int id) throws NamingException, SQLException {
+         
+  String sql = "INSERT INTO MECHKOKOELMA (mechkokoelma_id) VALUES ("+id+")";
+        Connection yhteys = Tietokanta.getYhteys();
+             PreparedStatement kysely = yhteys.prepareStatement(sql);
+             //kysely.setString(1, Integer.toString(vierailija.getID()));
+             kysely.executeUpdate();
+             
+             
+      
+  
+  try { kysely.close(); } catch (Exception e) {}
+  try { yhteys.close(); } catch (Exception e) {}
+         
+   sql = "UPDATE kayttaja SET collection_id = "+id+" WHERE kayttaja_id = "+id;
+         yhteys = Tietokanta.getYhteys();
+              kysely = yhteys.prepareStatement(sql);
+             //kysely.setString(1, Integer.toString(vierailija.getID()));
+             kysely.executeUpdate();
+             
+             
+      
+  
+  try { kysely.close(); } catch (Exception e) {}
+  try { yhteys.close(); } catch (Exception e) {}
+  
   
   //return vierailija;
 }
@@ -122,6 +157,56 @@ public class Kayttaja {
   //Käyttäjä palautetaan vasta täällä, kun resurssit on suljettu onnistuneesti.
   return kirjautunut;
 }
+    
+    
+    
+    
+    
+    
+    public static Kayttaja getKayttaja(int kayttaja_id) throws NamingException, SQLException {
+  Kayttaja k = null;
+  
+  String sql = "SELECT kayttaja_id, nimi from kayttaja where kayttaja_id = "+kayttaja_id;
+  
+      
+
+        Connection yhteys = Tietokanta.getYhteys();
+             PreparedStatement kysely = yhteys.prepareStatement(sql);
+    
+             ResultSet tulokset = kysely.executeQuery();
+  
+  
+  
+
+ 
+  if (tulokset.next()) { 
+
+    k = new Kayttaja();
+    k.setID(tulokset.getInt("kayttaja_id"));
+    k.setNimi(tulokset.getString("nimi"));
+
+  }
+     try { tulokset.close(); } catch (Exception e) {}
+  try { kysely.close(); } catch (Exception e) {}
+  try { yhteys.close(); } catch (Exception e) {}
+  
+  if (k == null) 
+   { 
+    k = new Kayttaja();
+    k.setID(-1);
+    k.setNimi("User Not Found!");
+    
+    
+  }
+  //Jos kysely ei tuottanut tuloksia käyttäjä on nyt vielä null.
+
+  //Suljetaan kaikki resurssit:
+
+  
+  //Käyttäjä palautetaan vasta täällä, kun resurssit on suljettu onnistuneesti.
+  return k;
+}
+    
     
     public boolean onkoAdmin() {
         if (this.oikeustaso>0) {return true;}
@@ -170,5 +255,7 @@ public class Kayttaja {
     public int getVierailukerta() {
         return this.vierailukerta;
     }
-    
+    public int getCollection_id() {
+        return this.id;     // Collection_id ja userin oma id on käytännössä sama asia
+    }
 }

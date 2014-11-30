@@ -2,6 +2,7 @@ package Mechlab.Servlets;
 
 import Mechlab.Models.Kayttaja;
 import Mechlab.Models.Komponentti;
+import Mechlab.Models.Reaktori;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -88,17 +89,33 @@ public class KomponenttiEditoi extends HttpServlet {
                             komponentti_id = 0;
                             }
                          
-                          if (null != request.getParameter("poista")) {
-                              ilmoitusSisalto = ""+Komponentti.getKomponentti(komponentti_id).getNimi()+" has been deleted from database!";
-                              ilmoitus= true;
-                              //  if (request.getParameter("poista").equals("kylla")) {
-                                    Komponentti.poistaKomponentti(komponentti_id);
-                                    //response.encodeRedirectURL("KomponenttiSelaa");
-//                                    response.sendRedirect("KomponenttiSelaa");
-//                                    session.setAttribute("kirjautunut", kayttaja);
-                              //  }
+                          if (null != request.getParameter("reactor")) {   // oli: "poista"
+                              
+                               Reaktori reactor = Reaktori.getReaktori(komponentti_id);   // "komponentti_id" on Reaktori-luokan kannalta sama asia kuin reactor_id
+                        
+                                 sivu.setAttribute("reaktori", reactor);  
+                        
+                                     naytaJSP("reaktorieditoi.jsp", sivu, response);
+                              session.setAttribute("kirjautunut", kayttaja);
+                              
+                
+                                    
                            
-                          } else {
+                          } else  if (null != request.getParameter("equipment")) {   // oli: "poista"
+                              
+                               Komponentti equipment = Komponentti.getKomponentti(komponentti_id, true);
+                        
+                                 sivu.setAttribute("komponentti", equipment);  
+                        
+                                     naytaJSP("varusteeditoi.jsp", sivu, response);
+                              session.setAttribute("kirjautunut", kayttaja);
+                              
+                        
+                           
+                          } 
+                          
+                          
+                          else {
                             
                         Komponentti komponentti = Komponentti.getKomponentti(komponentti_id);
                         
@@ -216,11 +233,62 @@ public class KomponenttiEditoi extends HttpServlet {
 //   //             processRequest(request, response, drinkId); // jos tietoja puuttuu, ohjataan samalle sivulle 
 //   //         } 
    //         }
+boolean olikoAse=false;
+boolean olikoVaruste=false;
 
+
+ if (null !=      request.getParameter("reactorid")) {
+           
+     String reactorname = "";
+         String reactorid  = request.getParameter("reactorid"); 
+         reactorname = request.getParameter("equipmentname"); 
+         String cooling = request.getParameter("cooling");
+         String power = request.getParameter("power");
+         String weight = request.getParameter("weight");
+         
+         
+         
+         ilmoitus = reactorname +" has been saved to the database!";
+         if (reactorname.length()==0) {ilmoitus="Reactor #"+reactorid+" has been saved to the database and given a new common name!";}
+                    try {
+                        Reaktori.paivitaReaktori(reactorid, reactorname, cooling, power, weight);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(KomponenttiEditoi.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (NamingException ex) {
+                        Logger.getLogger(KomponenttiEditoi.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            }
+
+
+  if (null !=      request.getParameter("equipmentid")) {
+           
+     
+         String equipmentid  = request.getParameter("equipmentid"); 
+        String equipmentname = request.getParameter("equipmentname"); 
+         String equipmenttype = request.getParameter("equipmenttype"); 
+         String weight = request.getParameter("weight");
+         String equipmenttier = request.getParameter("equipmenttier");
+         String equipmentactivity = request.getParameter("equipmentactivity");
+         String heat = request.getParameter("heat");
+         String volume = request.getParameter("volume");
+         String location = request.getParameter("location");
+         
+         
+         ilmoitus = equipmentname +" has been saved to the database!";
+         if (equipmentname.length()==0) {ilmoitus="Equipment #"+equipmentid+" has been saved to the database and given a new common name!";}
+                    try {
+                        Komponentti.paivitaVarusteKomponentti(equipmentid, equipmentname,equipmenttype, weight, equipmenttier, equipmentactivity, heat, volume, location);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(KomponenttiEditoi.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (NamingException ex) {
+                        Logger.getLogger(KomponenttiEditoi.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            }
+
+        
             if (null !=      request.getParameter("weaponid")) {
            
-                
-                
+     
          String weaponid  = request.getParameter("weaponid"); 
         String weaponname = request.getParameter("weaponname"); 
          String weapontype = request.getParameter("weapontype"); 

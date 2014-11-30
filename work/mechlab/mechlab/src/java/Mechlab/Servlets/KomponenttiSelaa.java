@@ -2,6 +2,7 @@ package Mechlab.Servlets;
 
 import Mechlab.Models.Kayttaja;
 import Mechlab.Models.Komponentti;
+import Mechlab.Models.Reaktori;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -85,6 +86,12 @@ public class KomponenttiSelaa extends HttpServlet {
                         //sivu.setAttribute("naviadmin", "true");
                         List<Komponentti> komponentit = Komponentti.getAseKomponentit();
                         sivu.setAttribute("asekomponentit", komponentit);  
+                        
+                        List<Komponentti> varustekomponentit = Komponentti.getVarusteKomponentit();
+                        sivu.setAttribute("varustekomponentit", varustekomponentit);  
+                        
+                        List<Reaktori> reaktorit = Reaktori.getReaktorit();
+                        sivu.setAttribute("reaktorit", reaktorit);  
                         
                         naytaJSP("komponenttiselaa.jsp", sivu, response);
                         session.setAttribute("kirjautunut", kayttaja);

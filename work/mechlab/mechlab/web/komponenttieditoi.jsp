@@ -12,8 +12,10 @@
     <h1>Mechlab!</h1>
     
     <ul class="nav nav-pills" role="tablist">
-        <li role="presentation"><a href="komponenttiselaa#">List Weapons</a></li>
+        <li role="presentation"><a href="komponenttiselaa">List Weapons</a></li>
         <li role="presentation" class="active"><a href="komponenttieditoi?id=0">Weapon Lab</a></li>
+        <li role="presentation"><a href="komponenttieditoi?id=0&equipment=kylla">Equipment Lab</a></li>
+        <li role="presentation"><a href="komponenttieditoi?id=0&reactor=kylla">Reactor Lab</a></li>
         <li role="presentation"><a href="#">Search</a></li>
         </ul>
           <p>
@@ -33,7 +35,7 @@
             
       <tr>
           <td>id#</td><td>Name</td><td>Designation</td><td>Weapon Type</td><td>Weigth</td><td>Damage</td><td>Heat</td>
-          <td>Max. Range</td><td>Min. Range</td><td>Ammo Count</td><td>Physical Volume</td><td>Locations Allowed</td><td>Unit Cost</td><td>ACTION</td>
+          <td>Max. Range</td><td>Min. Range</td><td>Ammo Count</td><td>Physical Volume</td><td>Locations Allowed</td><td>Unit Cost</td>
       </tr>
     
       
@@ -102,7 +104,7 @@ type: <input type="text" name="weapontype"  value="default"/>
   <input type="radio" name="weapontype" id="weapontype" value="melee"> MELEE
 </label>
          <label class="radio-inline">
-  <input type="radio" name="weapontype" id="weapontype" value="keep" checked> Keep it the same
+  <input type="radio" name="weapontype" id="weapontype" value="keep" checked> Current: <c:out value="${komponentti.weapontype}"/>
 </label>
       
     </div>
@@ -150,7 +152,7 @@ type: <input type="text" name="weapontype"  value="default"/>
 </label>
 
       <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="keep" checked> Keep it the same
+  <input type="radio" name="weight" id="weight" value="keep" checked> Current: <c:out value="${komponentti.massa}"/>
 </label>
       
 </div>
@@ -203,7 +205,7 @@ type: <input type="text" name="weapontype"  value="default"/>
   <input type="radio" name="damage" id="damage" value="100"> 100
 </label>
                              <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="keep" checked> Keep it the same
+  <input type="radio" name="damage" id="damage" value="keep" checked> Current: <c:out value="${komponentti.weapondamage}"/>
 </label>
 
 
@@ -259,60 +261,60 @@ type: <input type="text" name="weapontype"  value="default"/>
   <input type="radio" name="heat" id="heat" value="20"> 20
 </label>
                              <label class="radio-inline">
-  <input type="radio" name="heat" id="heat" value="keep" checked> Keep it the same
+  <input type="radio" name="heat" id="heat" value="keep" checked> Current: <c:out value="${komponentti.heat}"/>
 </label>
       
 </div>
   
    <div class="form-group">
-      <label for="Component Name">Weapon range</label>
+      <label for="Component Name">Weapon range (max/min)</label>
 <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="cqb" > Close Quarters
+  <input type="radio" name="range" id="range" value="cqb" > Close Quarters (1/1)
 </label>
       <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="short"> Short
+  <input type="radio" name="range" id="range" value="short"> Short (3/1)
 </label>
       <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="med"> Medium
+  <input type="radio" name="range" id="range" value="med"> Medium (5/1)
 </label>
       <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="long"> Long
+  <input type="radio" name="range" id="range" value="long"> Long (9/2)
 </label>
          <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="vlng"> Very long
+  <input type="radio" name="range" id="range" value="vlng"> Very long (12/3)
 </label>
          <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="arty"> Artillery
+  <input type="radio" name="range" id="range" value="arty"> Artillery (15/5)
 </label>
          <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="keep" checked> Keep it the same
+  <input type="radio" name="range" id="range" value="keep" checked> Current: <c:out value="${komponentti.weaponmaxrange}"/> (max)/<c:out value="${komponentti.weaponminrange}"/> (min)
 </label>
       
     </div>
   
      <div class="form-group">
-                        <label for="Component Name">Ammo</label>
+                        <label for="Component Name">Ammo (#)</label>
 
                               <label class="radio-inline">
   <input type="radio" name="ammo" id="ammo" value="infinite"> INFINITE
 </label>
                         <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="single"> SINGLE SHOT
+  <input type="radio" name="ammo" id="ammo" value="single"> SINGLE SHOT (1)
 </label>
       <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="limited"> LIMITED
+  <input type="radio" name="ammo" id="ammo" value="limited"> LIMITED (5)
 </label>
       <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="standard"> STANDARD
+  <input type="radio" name="ammo" id="ammo" value="standard"> STANDARD (10)
 </label>
       <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="extended"> EXTENDED
+  <input type="radio" name="ammo" id="ammo" value="extended"> EXTENDED (15)
 </label>
    <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="plentiful"> PLENTIFUL
+  <input type="radio" name="ammo" id="ammo" value="plentiful"> PLENTIFUL (25)
 </label>
     <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="keep" checked> Keep it the same
+  <input type="radio" name="ammo" id="ammo" value="keep" checked> Current: <c:out value="${komponentti.weaponammo}"/>
 </label>
       
 </div>
@@ -334,7 +336,7 @@ type: <input type="text" name="weapontype"  value="default"/>
 </label>
   
          <label class="radio-inline">
-  <input type="radio" name="volume" id="volume" value="keep" checked> Keep it the same
+  <input type="radio" name="volume" id="volume" value="keep" checked> Current: <c:out value="${komponentti.kokoluokka}"/>
 </label>
           </div>
   
@@ -355,14 +357,17 @@ type: <input type="text" name="weapontype"  value="default"/>
       <label class="radio-inline">
   <input type="radio" name="location" id="location" value="ARMS_TORSO"> ARMS_TORSO
 </label>
+              <label class="radio-inline">
+  <input type="radio" name="location" id="location" value="HEAD_TORSO"> HEAD_TORSO
+</label>
     <label class="radio-inline">
   <input type="radio" name="location" id="location" value="NOT_LEGS"> NOT_LEGS
 </label>
           <label class="radio-inline">
-  <input type="radio" name="location" id="location" value="NOT_HEAD"> NOT_HEAD
+  <input type="radio" name="location" id="location" value="ARMS_LEGS"> ARMS_LEGS
 </label>
          <label class="radio-inline">
-  <input type="radio" name="location" id="location" value="keep" checked> Keep it the same
+  <input type="radio" name="location" id="location" value="keep" checked> Current: <c:out value="${komponentti.sijoituspaikka}"/>
 </label>
       
     </div>

@@ -1,9 +1,13 @@
 package Mechlab.Servlets;
 
 import Mechlab.Models.Kayttaja;
+import Mechlab.Models.Komponentti;
+import Mechlab.Models.Mech;
+import Mechlab.Models.Reaktori;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -38,6 +42,7 @@ public class MechSelaa extends HttpServlet {
         Istunto istunto = new Istunto();
         HttpSession session = request.getSession();
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
+         String ilmoitus = (String) session.getAttribute("ilmoitus");
         
         HttpServletRequest sivu = request;
         
@@ -58,8 +63,25 @@ public class MechSelaa extends HttpServlet {
                   //  if (istunto.onkoAdmin(request, response)) {
                         //sivu.setAttribute("naviadmin", "true");
                   //  }
-                if (kayttaja.getOikeustaso()>0) {
+                   if (null != ilmoitus) {
+                     // Samalla kun viesti haetaan, se poistetaan istunnosta,
+                        // ettei se näkyisi myöhemmin jollain toisella sivulla uudestaan.
+                        session.removeAttribute("ilmoitus");
+
+                         sivu.setAttribute("ilmoitus", ilmoitus);
+                     }
+                
+                if (kayttaja.getOikeustaso()>=0) {
                         
+                      List<Mech> mechit = Mech.getMechit();
+                        sivu.setAttribute("mechit", mechit);  
+                        
+//                        List<Komponentti> varustekomponentit = Komponentti.getVarusteKomponentit();
+//                        sivu.setAttribute("varustekomponentit", varustekomponentit);  
+//                        
+//                        List<Reaktori> reaktorit = Reaktori.getReaktorit();
+//                        sivu.setAttribute("reaktorit", reaktorit);  
+                       
                     
                 }
                 

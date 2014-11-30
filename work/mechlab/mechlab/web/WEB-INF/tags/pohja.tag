@@ -9,11 +9,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-theme.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
+      
+<!--<script src="../js/bootstrap.min.js"></script>-->
+
+
+
         
         <title></title>
+          <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+               <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     
@@ -26,12 +35,12 @@
           <%-- </c:if><c:if test="${kirjautuneenNimi == null}">Et ole kirjautunut sisään!</c:if>--%>
           <nav class="navbar navbar-inverse" role="navigation">
   <ul class="nav nav-tabs">
-    <li class="${navimechselaa}"><a href="mechselaa">MechLab.SELAA</a></li>
-    <li><a href="main_1_1.html">MechLab.RAKENNA</a></li>
-    <c:if test="${naviadmin != null}"><li class="${naviyllapito}"><a href="komponenttiselaa">Admin.YLLÄPITO</a></li></c:if>
-    <li><a href="#">Käyttäjä.ASETUKSET</a></li>
-    <li class="${navilogin}"><a href="${naviloginosoite}">Käyttäjä.${naviloginmoodi}</a></li>
-    <li><c:if test="${kirjautuneenNimi != null}"><span class="label label-default">Tervetuloa, ${kirjautuneenNimi}! Tämä on ${vierailukerta}. vierailusi.</span></c:if><c:if test="${kirjautuneenNimi == null}"><span class="label label-info">Et ole kirjautunut sisään!</span></c:if></li>
+    <li class="${navimechselaa}"><a href="mechselaa">MechLab.BROWSE</a></li>
+    <li class="${navimechedit}"><a href="mechluouusi">MechLab.BUILD</a></li>
+    <c:if test="${naviadmin != null}"><li class="${naviyllapito}"><a href="komponenttiselaa">Mechlab.COMPONENTS</a></li></c:if>
+    <li><a href="#">User.SETTINGS</a></li>
+    <li class="${navilogin}"><a href="${naviloginosoite}">User.${naviloginmoodi}</a></li>
+    <li><c:if test="${kirjautuneenNimi != null}"><span class="label label-default">Welcome, ${kirjautuneenNimi}! This is your visit number ${vierailukerta}.</span></c:if><c:if test="${kirjautuneenNimi == null}"><span class="label label-info">You are not logged in!</span></c:if></li>
   </ul>
           </nav>
             

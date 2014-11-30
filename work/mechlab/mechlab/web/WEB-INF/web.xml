@@ -37,8 +37,20 @@
         <servlet-class>Mechlab.Servlets.KomponenttiEditoi</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>MechEdit</servlet-name>
+        <servlet-class>Mechlab.Servlets.MechEdit</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>KomponenttiPoista</servlet-name>
         <servlet-class>Mechlab.Servlets.KomponenttiPoista</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MechAsennaKomponentti</servlet-name>
+        <servlet-class>Mechlab.Servlets.MechAsennaKomponentti</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MechLuoUusi</servlet-name>
+        <servlet-class>Mechlab.Servlets.MechLuoUusi</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TestiServelet</servlet-name>
@@ -81,12 +93,24 @@
         <url-pattern>/Uloskirjaudu</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>MechEdit</servlet-name>
+        <url-pattern>/mechedit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>KomponenttiEditoi</servlet-name>
         <url-pattern>/komponenttieditoi</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>KomponenttiPoista</servlet-name>
         <url-pattern>/komponenttipoista</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MechAsennaKomponentti</servlet-name>
+        <url-pattern>/mechasennakomponentti</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MechLuoUusi</servlet-name>
+        <url-pattern>/mechluouusi</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

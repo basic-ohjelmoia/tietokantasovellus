@@ -112,9 +112,42 @@
           <li> Sivusto käyttää tällä hetkellä englantia ja suomea sekaisin, mutta tarkoitus on muokata kaikki näkymät englanninkielisiksi.</li>
           <li> Admin.Ylläpito/Komponentti-näkymän sivutus on implementoimatta (sivunumerointi on placeholder), tosin en ole täysin vakuuttunut, että kyseinen näkymä edes tarvitsee sivutusta (lopputuotteessa "oikea" komponenttimäärä jäänee muutamaan kymmeneen).</li>
           <li> Login-ruudun jälkeinen MechSelaa-näkymän Mech-listaus on yhä pelkkä placeholder. Mech-näkymää ei liene järkevää toteuttaa ennen kuin kaikki rakennuspalikat (komponentit, reaktorit jne.) on implementoitu.</li>
-      </ul>          
+      </ul>      
+      <p>
+          <b>Deadlinen jälkeisenä maanantaina lisättyä:</b> Varuste-tyyppiset komponentit implementoitu ("Equipment Lab"). Kaiken tyyppisillä komponenteilla on nyt automaattinen nimeämisjärjestelmä. Kun nimikentän jättää tyhjäksi, järjestelmä määrittää komponentille sopivan nimen (ts. järjestelmä generoi  kullekin komponentille paitsi nimen myös designaation).<br>
+      <p>
+       <u>Uutta viikolla 5:</u><br>
+      </p>
+      <ul>
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/login">Sovelluksen kirjautumissivu</a></li>
+      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus">Työn repositorio</a></li>
+      <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a> (päivitetty 30.11.2014)</li>
+      </ul>
+      <p>
+          MechLab on nyt lähes feature-complete, joskin toimintavarmuus on vielä varsin ailahtelevaista. Sovelluksella on taipumusta avata liian monia tietokantayhteyksiä yhdellä kertaa, mikä saattaa ennen pitkää johtaa epäresonsiivisuuteen (sivut eivät lataudu). Ohjelma toimii varmimmin, kun sitä käyttää suht verkkaisesti eli esimerkiksi Build-näkymässä ("mechedit") ei yritä kliksuttaa kompontteja paikoilleen minään nopeuskilpailuna.<br>
+      </p>
+         Edellisviikolta tutut <b>käyttäjätunnus</b> : salasana -yhdistelmät toimivat yhä. Ainoastaan Admin pääsee COMPONENTS-näkymään, jossa voi määritellä (ja luoda) komponentteja. Admin on myös ainoa, joka voi deletoida KAIKKIA mechejä (muut käyttäjät voivat deletoida ainoastaan omia mechejään).<br>
+      <ul>
+          <li><b>Testi Testaaja</b> : 12345</li>
+          <li><b>abc</b> : 123</li>
+          <li><b>admin</b> : admin</li>
+      </ul>
+         Uusia käyttäjiä ei pysty vielä rekisteröimään, mutta tämä toiminto implementoitaneen pian.
+      <p>      
+          Huomionarvoisia yksityiskohtia:<br>
+      <ul><li> Uusia Mechejä voi nyt rakentaa klikkaamalla päänavikosta "BUILD" ja sitten BROWSE-sivun Mech-listaukseen ilmestyneen uuden Unnamed Mechin -kohdalta Edit.</li>
+          <li> Mechin toimintakyky ja suoritusarvot noudattavat johdonmukaisia sääntöjä. Pyrin selittämään niitä tarkemmin auki sovelluksen päivitetyssä dokumentaatiossa.</li>
+          <li> Mechin Weapon Rating ja Armor Rating -arvoja voi pitää jonkinlaisina yleismittareina Mechin kyvykkyydestä, ne perustuvat Mechiin asennettuihin komponentteihin.</li>
+          <li> Mecheille ei vielä tehdä kunnollisia tarkistuksia konstruktion "laillisuudesta". Eli komponentteja voi asentaa sallittua enemmän ja jopa painorajat ylittää. </li>
+          <li> Mechien uudelleennimeämis-toiminnon yhteyteen on liitetty kokeellinen alfanumerics-tarkistus. A-ö, 0-9 pitäisi kelvata, mutta mitkään muut merkit ei.</li> 
+          <li> Sivuston englannistaminen edistyy, mutta ei ole vielä valmis.</li>
+          <li> Yhdellekään sivulle ei ole vielä implementoitu oikeaa tietonäkymien sivutusta. Kaikki sivunumero-linkit ovat vielä placeholderia.</li>
+          <li> Sovellukseen on lisätty lukuisia tarkistuksia väärien syötteiden varalta. Vääriä syötteitä sisältävien komponenttien luonti ei pitäisi enää olla mahdollista. Mechien editoinnissa väärät syötteet lienevät vielä mahdollisia.</li>
+          <li> BUILD-osiosta (Mechien editointi) löytyy joitakin servlettejä, joita kutsuessa sovellus ei tarkista sisäänkirjautumista. Tämän korjaaminen on "To-do-listallano".</li>
+          <li> Sovellus ei vielä osaa siivota komponentisto-taulua sen jälkeen, kun mechejä poistetaan kannasta. Poistetussa mechissä olleet komponentit (tai niiden viitteet) jäävät siis roikkumaan tauluun tyhjän panttina.</li>
+      </ul>      
+      <p>
 
-      
     <!--
     <h2>Kirjautumistunnuksia testausta varten</h2>
 

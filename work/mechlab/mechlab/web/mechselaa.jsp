@@ -20,8 +20,43 @@
       Täältä löydät kaikki MechLabiin tallennetut BattleMechit.
      </div>
           <p>
+              <c:if test="${ilmoitus != null}">
+                <div class="alert alert-danger">${ilmoitus}</div>
+            </c:if>  
               
          <div class="table-responsive">
+             
+             <h2>Oikeat Mechit Tietokannassa</h2>       
+             <table class="table">
+            
+      <tr>
+          <td>id#</td><td>Name</td><td>Weight</td><td>Weapon Rating</td><td>Armor Rating</td><td>Heat Sinks</td>
+          <td>Walk (Run) Speed</td><td>Jump Rating</td><td>Owner</td><td>Unit Cost</td><td>Edit</td><td>Delete</td>
+      </tr>
+      
+      <c:forEach var="mech" items="${mechit}">
+          
+             <div class="mech"><tr>
+                <td>${mech.mech_id}</td>
+                <td><c:out value="${mech.nimi}"/></td>
+                <td><c:out value="${mech.nettopaino}"/>t / <c:out value="${mech.paino}"/>t</td>
+                <td><c:out value="${mech.weaponrating}"/></td>
+                <td><c:out value="${mech.armorrating}"/></td>
+                <td><c:out value="${mech.heatsinks}"/></td>
+                <td><c:out value="${mech.walkingspeed}"/> km/h (<c:out value="${mech.runningspeed}"/> km/h)</td>
+                <td><c:out value="${mech.jumprating}"/> m</td>
+                <td><c:out value="${mech.ownername}"/></td>
+                <td><c:out value="${mech.coststring}"/> CR</td>
+                <td><a href="mechedit?id=${mech.mech_id}">EDIT</a></td>
+                <td><a href="mechluouusi?poista=${mech.mech_id}">DELETE</a></td>
+                    
+                    
+                 
+                 </tr></div>
+      </c:forEach>
+  </table>
+             
+             <h2>Static List</h2>       
   <table class="table">
       <tr>
           <td>#</td><td>Name</td><td>Weight</td><td>Max.Speed</td><td>Jump Jets</td><td>Armor Rating</td><td>Weapon Rating</td><td>Heat Sinks</td><td>Cost</td><td>Owner</td><td>...</td><td>,,,</td>

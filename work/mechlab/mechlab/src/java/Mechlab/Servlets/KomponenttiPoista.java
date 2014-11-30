@@ -2,6 +2,7 @@ package Mechlab.Servlets;
 
 import Mechlab.Models.Kayttaja;
 import Mechlab.Models.Komponentti;
+import Mechlab.Models.Reaktori;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -79,12 +80,17 @@ public class KomponenttiPoista extends HttpServlet {
                                 //if (komponentti != null) {poistettu=komponentti.getNimi();}
                                 poistettiin = ""+komponentti_id;// Komponentti.getKomponentti(komponentti_id).getNimi();
                                 poistettiinkoJotain = true;
+                                if (null != request.getParameter("reactor")) { 
+                                                                    String ilmoitusSisalto = ""+Reaktori.getReaktori(komponentti_id).getNimi()+" has been deleted from database!";
+                                                                session.setAttribute("ilmoitus", ilmoitusSisalto);
+                                                                Reaktori.poistaReaktori(komponentti_id);
+                                } else {
                                 
                                 String ilmoitusSisalto = ""+Komponentti.getKomponentti(komponentti_id).getNimi()+" has been deleted from database!";
                               session.setAttribute("ilmoitus", ilmoitusSisalto);
                                 
                                     Komponentti.poistaKomponentti(komponentti_id);
-
+                                }
                                     
                                     //       }
                             }

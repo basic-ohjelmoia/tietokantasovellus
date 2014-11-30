@@ -12,8 +12,10 @@
     <h1>Mechlab!</h1>
     
     <ul class="nav nav-pills" role="tablist">
-        <li role="presentation"><a href="komponenttiselaa#">List Weapons</a></li>
-        <li role="presentation" class="active"><a href="komponenttieditoi?id=0">Weapon Lab</a></li>
+        <li role="presentation"><a href="komponenttiselaa">List Weapons</a></li>
+        <li role="presentation"><a href="komponenttieditoi?id=0">Weapon Lab</a></li>
+        <li role="presentation" class="active"><a href="komponenttieditoi?id=0&equipment=kylla">Equipment Lab</a></li>
+        <li role="presentation"><a href="komponenttieditoi?id=0&reactor=kylla">Reactor Lab</a></li>
         <li role="presentation"><a href="#">Search</a></li>
         </ul>
           <p>
@@ -22,7 +24,7 @@
                  <div class="container">      
       <h1> <c:if test="${komponentti.kategoria != null}"><span class="label label-default">EDIT: <c:out value="${komponentti.nimi}"/></c:if>
           <c:if test="${komponentti.kategoria == null}"><span class="label label-default">CREATE NEW: <c:out value="${komponentti.nimi}"/></c:if>    </h1>
-      Select parameters for a new weapon component (admin access only).
+      Select parameters for a new non-weapon component (equipment) (admin access only).
      </div>
           <p>
               
@@ -35,7 +37,7 @@
      
         <tr>
           <td>id#</td><td>Name</td><td>Designation</td><td>Equipment Type</td><td>Equipment Tier</td><td>Active/Passive</td><td>Heat</td>
-          <td>Weigth</td><td>Physical Volume</td><td>Locations Allowed</td><td>Unit Cost</td><td>ACTION</td>
+          <td>Weigth</td><td>Physical Volume</td><td>Locations Allowed</td><td>Unit Cost</td>
       </tr>
       
       
@@ -44,15 +46,15 @@
                 <td>${komponentti.komponentti_id}</td>
                 <td><c:out value="${komponentti.nimi}"/></td>
                 <td><c:out value="${komponentti.lyhenne}"/></td>
-                <td><c:out value="${komponentti.equipmenttype}"/></td>
-                <td><c:out value="${komponentti.equipmenttier}"/></td>
-                <td><c:out value="${komponentti.equipmentactivity}"/></td>
+                <td><c:out value="${komponentti.varustetype}"/></td>
+                <td><c:out value="${komponentti.varustetier}"/></td>
+                <td><c:out value="${komponentti.varusteactivity}"/></td>
                 <td><c:out value="${komponentti.heat}"/></td>
                 <td><c:out value="${komponentti.massa}"/></td>
                 <td><c:out value="${komponentti.kokoluokka}"/></td>
                 <td><c:out value="${komponentti.sijoituspaikka}"/></td>
                 <td><c:out value="${komponentti.cost}"/> CR</td>
-                <td><a href="komponenttieditoi?id=${komponentti.komponentti_id}">EDIT</a></td>
+                
                     
                     
                  
@@ -74,15 +76,17 @@ type: <input type="text" name="weapontype"  value="default"/>
                 
                     <div class="form-group">
                       <label class="radio-inline">
-  <input type="radio" name="weaponid" id="weaponid" value="${komponentti.komponentti_id}" checked> id: ${komponentti.komponentti_id}
+  <input type="radio" name="equipmentid" id="equipmentid" value="${komponentti.komponentti_id}" checked> id: ${komponentti.komponentti_id}
 </label>
                           </div>
 
                     
   <div class="form-group">
     <label for="Component Name">Equipment name</label>
-    <input type="nimi" class="form-control" name="equipmentname" id="equipmentname" value="${komponentti.nimi}">
+    <input type="nimi" class="form-control" name="equipmentname" id="equipmentname" value="${komponentti.nimi}"><br>
+    Leave empty to generate a common name.<br>
   </div>
+  
     <div class="form-group">
       <label for="Component Name">Equipment type</label>
 <label class="radio-inline">
@@ -116,116 +120,45 @@ type: <input type="text" name="weapontype"  value="default"/>
   <input type="radio" name="equipmenttype" id="equipmenttype" value="ACTUATORS"> Actuators
 </label>
          <label class="radio-inline">
-  <input type="radio" name="equipmenttype" id="equipmenttype" value="keep" checked> Keep it the same
+  <input type="radio" name="equipmenttype" id="equipmenttype" value="keep" checked> Current: <c:out value="${komponentti.varustetype}"/>
 </label>
-      
-    </div>
-      
-      
-  <div class="form-group">
-      <label for="Component Name">Component weigth</label>
-<label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="1"> 1 t
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="2"> 2 t
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="3"> 3 t
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="4"> 4 t
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="5"> 5 t
-</label><label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="6"> 6 t
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="7"> 7 t
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="8"> 8 t
-</label>
-<label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="10"> 10 t
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="12"> 12 t
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="15"> 15 t
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="20"> 20 t
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="25"> 25 t
-</label>
+          </div>
 
-      <label class="radio-inline">
-  <input type="radio" name="weight" id="weight" value="keep" checked> Keep it the same
-</label>
-      
-</div>
-  
-  
-   <div class="form-group">
-                        <label for="Component Name">Damage</label>
+
+ <div class="form-group">
+                        <label for="Component Name">Equipment Tier</label>
 
                               <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="1"> 1
+  <input type="radio" name="equipmenttier" id="equipmenttier" value="1"> 1 (best)
 </label>
                         <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="2"> 2
+  <input type="radio" name="equipmenttier" id="equipmenttier" value="2"> 2
 </label>
       <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="3"> 3
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="4"> 4
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="5"> 5
-</label>
-      
-                        <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="6"> 6
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="7"> 7
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="8"> 8
-</label>
-                      <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="10"> 10
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="12"> 12
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="15"> 15
-</label>
-        <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="20"> 20
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="25"> 25
-</label>
-<label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="100"> 100
+  <input type="radio" name="equipmenttier" id="equipmenttier" value="3"> 3 (worst)
 </label>
                              <label class="radio-inline">
-  <input type="radio" name="damage" id="damage" value="keep" checked> Keep it the same
+  <input type="radio" name="equipmenttier" id="equipmenttier" value="keep" checked> Current: <c:out value="${komponentti.varustetier}"/>
 </label>
-
-
-      
 </div>
+<%--Note: Tier is used to determine the general effectiveness rating of most equipment types (e.g. Tier I armor plating is tougher than Tier III armor plating).<br>--%>
+      
+
+<div class="form-group">
+                        <label for="Component Name">Equipment Activity</label>
+
+                              <label class="radio-inline">
+  <input type="radio" name="equipmentactivity" id="equipmentactivity" value="1"> Active ("activate on demand")</label>
+                        <label class="radio-inline">
+  <input type="radio" name="equipmentactivity" id="equipmentactivity" value="2"> Passive ("always on")</label>
   
-                    
-                    <div class="form-group">
+                             <label class="radio-inline">
+  <input type="radio" name="equipmentactivity" id="equipmentactivity" value="keep" checked> Current: <c:out value="${komponentti.varusteactivity}"/>
+</label>
+</div>
+<%--Note: PASSIVE equipment will generate heat each turn. Most equipment types (e.g. heat sinks, armor plating, sensors) will automatically default to PASSIVE.<br>--%>
+
+   <div class="form-group">
                         <label for="Component Name">Heat generated</label>
 
                               <label class="radio-inline">
@@ -273,63 +206,60 @@ type: <input type="text" name="weapontype"  value="default"/>
   <input type="radio" name="heat" id="heat" value="20"> 20
 </label>
                              <label class="radio-inline">
-  <input type="radio" name="heat" id="heat" value="keep" checked> Keep it the same
+  <input type="radio" name="heat" id="heat" value="keep" checked> Current: <c:out value="${komponentti.heat}"/>
 </label>
-      
 </div>
-  
-   <div class="form-group">
-      <label for="Component Name">Weapon range</label>
+  <%--Note: Some equipment types will automatically default to heat rating of 0 (e.g. armor plating, actuators, heat sinks).<br>--%>
+      
+  <div class="form-group">
+      <label for="Component Name">Equipment weigth</label>
 <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="cqb" > Close Quarters
+  <input type="radio" name="weight" id="weight" value="1"> 1 t
 </label>
       <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="short"> Short
+  <input type="radio" name="weight" id="weight" value="2"> 2 t
 </label>
       <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="med"> Medium
+  <input type="radio" name="weight" id="weight" value="3"> 3 t
 </label>
       <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="long"> Long
+  <input type="radio" name="weight" id="weight" value="4"> 4 t
 </label>
-         <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="vlng"> Very long
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="5"> 5 t
 </label>
-         <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="arty"> Artillery
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="6"> 6 t
 </label>
-         <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="keep" checked> Keep it the same
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="7"> 7 t
 </label>
-      
-    </div>
-  
-     <div class="form-group">
-                        <label for="Component Name">Ammo</label>
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="8"> 8 t
+</label>
+<label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="10"> 10 t
+</label>
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="12"> 12 t
+</label>
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="15"> 15 t
+</label>
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="20"> 20 t
+</label>
+      <label class="radio-inline">
+  <input type="radio" name="weight" id="weight" value="25"> 25 t
+</label>
 
-                              <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="infinite"> INFINITE
-</label>
-                        <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="single"> SINGLE SHOT
-</label>
       <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="limited"> LIMITED
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="standard"> STANDARD
-</label>
-      <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="extended"> EXTENDED
-</label>
-   <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="plentiful"> PLENTIFUL
-</label>
-    <label class="radio-inline">
-  <input type="radio" name="ammo" id="ammo" value="keep" checked> Keep it the same
+  <input type="radio" name="weight" id="weight" value="keep" checked> Current: <c:out value="${komponentti.massa}"/>
 </label>
       
 </div>
+  
+  
   
                    
     <div class="form-group">
@@ -348,7 +278,7 @@ type: <input type="text" name="weapontype"  value="default"/>
 </label>
   
          <label class="radio-inline">
-  <input type="radio" name="volume" id="volume" value="keep" checked> Keep it the same
+  <input type="radio" name="volume" id="volume" value="keep" checked> Current: <c:out value="${komponentti.kokoluokka}"/>
 </label>
           </div>
   
@@ -369,17 +299,20 @@ type: <input type="text" name="weapontype"  value="default"/>
       <label class="radio-inline">
   <input type="radio" name="location" id="location" value="ARMS_TORSO"> ARMS_TORSO
 </label>
+          <label class="radio-inline">
+  <input type="radio" name="location" id="location" value="HEAD_TORSO"> HEAD_TORSO
+</label>
     <label class="radio-inline">
   <input type="radio" name="location" id="location" value="NOT_LEGS"> NOT_LEGS
 </label>
           <label class="radio-inline">
-  <input type="radio" name="location" id="location" value="NOT_HEAD"> NOT_HEAD
+  <input type="radio" name="location" id="location" value="ARMS_LEGS"> ARMS_LEGS
 </label>
          <label class="radio-inline">
-  <input type="radio" name="location" id="location" value="keep" checked> Keep it the same
+  <input type="radio" name="location" id="location" value="keep" checked> Current: <c:out value="${komponentti.sijoituspaikka}"/>
 </label>
-      
     </div>
+  <%--<br>Note: Some equipment types will automatically default to certain location allowances (e.g. cockpit must be located in head).</br>--%>
   
   
 
