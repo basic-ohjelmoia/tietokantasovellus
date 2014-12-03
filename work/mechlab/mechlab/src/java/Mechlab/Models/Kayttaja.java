@@ -86,7 +86,7 @@ public class Kayttaja {
   
   Komponentisto.siivoaKomponentisto();  // siivotaan ennen kirjautumista
   //return vierailija;
-  lisaaMechKokoelma(vierailija.getID());
+ // lisaaMechKokoelma(vierailija.getID());
 }
     
      public static void lisaaMechKokoelma(int id) throws NamingException, SQLException {

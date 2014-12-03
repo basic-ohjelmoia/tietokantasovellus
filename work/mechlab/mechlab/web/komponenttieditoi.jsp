@@ -232,6 +232,9 @@ type: <input type="text" name="weapontype"  value="default"/>
   <input type="radio" name="damage" id="damage" value="25"> 25
 </label>
 <label class="radio-inline">
+  <input type="radio" name="damage" id="damage" value="30"> 30
+</label>
+<label class="radio-inline">
   <input type="radio" name="damage" id="damage" value="100"> 100
 </label>
                              <label class="radio-inline">
@@ -317,7 +320,7 @@ type: <input type="text" name="weapontype"  value="default"/>
   <input type="radio" name="range" id="range" value="long"> Long (9/2)
 </label>
          <label class="radio-inline">
-  <input type="radio" name="range" id="range" value="vlng"> Very long (12/3)
+  <input type="radio" name="range" id="range" value="vlng"> Extended (12/3)
 </label>
          <label class="radio-inline">
   <input type="radio" name="range" id="range" value="arty"> Artillery (15/5)

@@ -36,7 +36,6 @@
           <nav class="navbar navbar-inverse" role="navigation">
   <ul class="nav nav-tabs">
     <li class="${navimechselaa}"><a href="mechselaa">MechLab.BROWSE</a></li>
-    <li class="${navimechedit}"><a href="mechluouusi">MechLab.BUILD</a></li>
     <c:if test="${naviadmin != null}"><li class="${naviyllapito}"><a href="komponenttiselaa">Mechlab.COMPONENTS</a></li></c:if>
     <li><a href="#">User.SETTINGS</a></li>
     <li class="${navilogin}"><a href="${naviloginosoite}">User.${naviloginmoodi}</a></li>
@@ -48,9 +47,12 @@
             <c:if test="${virheViesti != null}">
                 <div class="alert alert-danger">${virheViesti}</div>
             </c:if>
-                    
-            
+        <c:if test="${allcomponents != null}">
+        </div>            
+        </c:if>
             <jsp:doBody/>
-        </div>
+        <c:if test="${allcomponents == null}">
+        </div>            
+        </c:if>
     </body>
 </html>

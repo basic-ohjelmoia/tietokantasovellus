@@ -50,7 +50,9 @@ public class Reaktori extends Komponentti {
         return (this.massa*1000)+(this.cooling*this.teho*10);
 
     }
-                
+public String getKokoluokkalyhyt() {
+         return Tarkistaja.lyhentaja(getKokoluokka());
+     }                
                                                 
                                                     //equipmentid, equipmentname,equipmenttype, weight, equipmenttier, equipmentactivity, heat, volume, location);
    public static void paivitaReaktori(String idstring, String nimi, String strcooling, String strteho, String strmassa) throws SQLException, NamingException {

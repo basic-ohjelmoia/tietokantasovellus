@@ -33,7 +33,8 @@ public class MechLuoUusi extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NamingException, SQLException {
-         
+        
+        
         response.sendRedirect(response.encodeRedirectURL("mechselaa"));
          //response.sendRedirect("mechedit");
        // HttpServletResponse tamaResponse = response;
@@ -53,11 +54,15 @@ public class MechLuoUusi extends HttpServlet {
                  palaute = Mech.poistaMech(poistettava_mech_id, kayttaja.getID(), kayttaja.getOikeustaso());
                  session.setAttribute("ilmoitus", palaute);
             } else {
+          if (Mech.voikoKayttajaLuodaUudenMechin(kayttaja.getID())) {
           Mech mech = null;
           Komponentti komponentti = null;
           int mech_id = 0;
           mech_id=Mech.createNewMech(kayttaja.getID());
-                        
+                 session.setAttribute("ilmoitus", "Pre-production model #"+mech_id+" has been added to the assembly line. Click <a href=\"mechedit?id="+mech_id+"\">here</a> to edit the mech design!");
+          } else {
+                 session.setAttribute("ilmoitus", "Construction denied! You must proceed with your previous pre-production model or DELETE it from the assembly line!");
+          }
           // mech = Mech.getMech(mech_id);
     
                                 

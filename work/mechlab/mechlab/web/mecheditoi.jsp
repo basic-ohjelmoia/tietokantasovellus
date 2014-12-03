@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:pohja pageTitle="Mechlab! Create Mech!">
-   
+ 
     <h1>Mechlab!</h1>
     
 <!--    <ul class="nav nav-pills" role="tablist">
@@ -26,11 +26,15 @@
       Select parameters for a new non-weapon component (equipment) (admin access only).
      </div>
           <p>-->
-                     
+         
+          
+          
+          
          <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover" width="100%">
       <tr>
-          <td>id#</td><td>
+          <td>id#</td>
+          <td class="dropdown" style="overflow:visible">
           <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mech Name<span class="caret"></span></a>
@@ -47,7 +51,7 @@
           </ul>
           </td>
           
-          <td><ul class="nav nav-pills" role="tablist">
+          <td class="dropdown" style="overflow:visible"><ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Weight Class<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -108,27 +112,126 @@
                  </tr></div>
                 <%-- </c:forEach>--%>
   </table>
-             
+         </div>
+  
+  
+  
              <h2>Components</h2>       
-  <table class="table"><table class="table">
+              <div class="table-responsive">
+                  
+  <table class="table table-hover" width="100%">
       <tr>
           <td>
-              <h4>LEFT ARM (${mech.itemsleftarm}/${mech.itemsallowedextension}) <c:if test="${mech.itemsleftarm > mech.itemsallowedextension}">OVERLOADED</c:if></h4>
-              <c:forEach var="komponentti" items="${leftarm}">
-              <li><c:out value="${komponentti.nimi}"/> (${komponentti.massa}t) ${komponentti.kokoluokka}
-                  <%--<a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentti_id}&minne=la"><span class="glyphicon glyphicon-remove"></span></a>--%>
-                  <a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a>
-              </li>
               
-              
-                    </c:forEach>
+              <div class="panel panel-default">
+  <div class="panel-heading">Weapons Installed</div>
+  <div class="panel-body">
+       <div class="table-responsive">
+           <table class="table table-condensed">
+               <tr>
+                   <td>Loc</td><td>Name</td><td>Dmg</td><td>Rng</td><td>Heat</td><td>Ammo</td>
+               </tr>
+               
+       <c:forEach var="komponentti" items="${allcomponents}">
            
+                  <c:if test="${komponentti.kategoria == 'ASE'}"><tr>
+                          <td>${komponentti.sijaintilyhyt}</td><td>${komponentti.nimi}</td><td>${komponentti.weapondamage}</td><td>${komponentti.weaponmaxrange}</td><td>${komponentti.heat}</td><td><c:if test="${komponentti.weaponammo == 0}">&infin;</c:if><c:if test="${komponentti.weaponammo > 0}">${komponentti.weaponammo}</c:if></td>
+                      </tr>
+                 </c:if>
+                      
+              </c:forEach>
+                      <tr>
+                      <td></td><td></td><td><u>Total</u></td><td><u>Max</u></td><td><u>Total</u></td><td></td>
+                      </tr>
+                      <tr>
+                      <td></td><td></td><td>${mech.totalweapondamage}</td><td>${mech.maxweaponrange}</td><td>${mech.totalweaponheat}</td><td>(vs ${mech.heatsinks} hs)</td>
+                      </tr>
+           </table>
+  </div>
+</div>
+            
+                 
+  <div class="panel-heading">Equipment Installed</div>
+  <div class="panel-body">
+      <div class="table-responsive">
+         <table class="table table-condensed">
+               <tr>
+                   <td>Loc</td><td>Name</td><td>Tier</td><td>Weight</td><td>Heat</td>
+               </tr>
+           <c:forEach var="komponentti" items="${allcomponents}">
+                  <c:if test="${komponentti.kategoria == 'VARUSTE'}">
+                  <c:if test="${komponentti.varustetype != 'ARMOR PLATING'}">
+                      <tr>     
+                          <td>${komponentti.sijaintilyhyt}</td><td>${komponentti.nimi}</td>
+                          <td><c:if test="${komponentti.varustetier == 1}">I</c:if>
+                              <c:if test="${komponentti.varustetier == 2}">II</c:if>
+                              <c:if test="${komponentti.varustetier == 3}">III</c:if>
+                             <%-- ${komponentti.varustetier} --%>
+                          </td>
+                          
+                          <td>${komponentti.massa}</td><td>${komponentti.heat}</td>
+                      </tr>
+                 </c:if>
+                 </c:if>
+              </c:forEach>
+         </table>
+      </div>
+  </div>
+
+                               
+  <div class="panel-heading">Armor Values</div>
+  <div class="panel-body">
+       <div class="table-responsive">
+           <table class="table table-condensed">
+               <tr>
+                   <td>Loc</td><td>Armor</td><td>Internal Structure</td>
+               </tr>
+        <c:forEach var="rivi" items="${armorvalues}">
+            <tr>${rivi}</tr> 
+              </c:forEach>
+           </table>
+  <div class="panel-heading"><b>ARMOR TOTAL</b>: ${mech.armorrating}</div>
+      
+                  
+  </div>
+</div>
+              </div>
+          
+                            
+          </td>
+          <td>
+               <div class="table-responsive">
+      <table class="table table-condensed table-hover">
+      <tr>
+          <td>
+               <div class="panel panel-default">
+  <div class="panel-heading">LEFT ARM (${mech.itemsleftarm}/${mech.itemsallowedextension}) <c:if test="${mech.itemsleftarm > mech.itemsallowedextension}">OVERLOADED</c:if> </div>
+</div>
+  <div class="panel-body">
+           <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_la}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_la}"/><c:out value="%"/>;">
+      A<c:if test="${armor_la > 25}">rmor</c:if>: <c:out value="${armor_la}"/>
+    </div>
+</div>
+       <div class="table-responsive">
+           <table class="table table-condensed table-hover">
+               
+              <c:forEach var="komponentti" items="${leftarm}">
+                  <tr>
+              <td><c:out value="${komponentti.nimi}"/></td><td>${komponentti.massa}t</td><td>${komponentti.kokoluokkalyhyt}</td>
+                  <td><a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                  </tr>  
+                  </c:forEach>
+           </table>
+             </div>
+  </div>
+               
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetauto}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -136,7 +239,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Energy<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetenergy}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -144,17 +247,18 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kinetic<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetkinetic}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-</ul>
-<ul class="nav nav-pills" role="tablist">        
+<%--</ul>--%>
+                  
+<%--<ul class="nav nav-pills" role="tablist">       --%> 
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Missile<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetmissile}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -162,7 +266,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Melee<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetmelee}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -171,26 +275,44 @@
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${varusteet}">
                   <c:if test="${komponentti.sijoituspaikka == 'ALL' || komponentti.sijoituspaikka == 'NOT_LEGS' || komponentti.sijoituspaikka == 'ARMS' || komponentti.sijoituspaikka == 'ARMS_TORSO' || komponentti.sijoituspaikka == 'ARMS_LEGS'}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=la">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
             </c:if>
                 </c:forEach>
                   </ul>
         </li>
         </ul>
-               
+           
+     
           </td>
-          <td>
-              <h4>HEAD (${mech.itemshead}/${mech.itemsallowedextension}) <c:if test="${mech.itemshead > mech.itemsallowedextension}">OVERLOADED</c:if></h4>
+          
+<td>
+               <div class="panel panel-default">
+  <div class="panel-heading">HEAD (${mech.itemshead}/${mech.itemsallowedextension}) <c:if test="${mech.itemshead > mech.itemsallowedextension}">OVERLOADED</c:if></div>
+  <div class="panel-body">
+           <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_hd}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_hd}"/><c:out value="%"/>;">
+      A<c:if test="${armor_hd > 25}">rmor</c:if>: <c:out value="${armor_hd}"/>
+    </div>
+</div>
+       <div class="table-responsive">
+           <table class="table table-condensed table-hover">
+               
               <c:forEach var="komponentti" items="${head}">
-              <li><c:out value="${komponentti.nimi}"/> (${komponentti.massa}t) ${komponentti.kokoluokka}
-              <a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a>
-                    </c:forEach>
+                  <tr>
+              <td><c:out value="${komponentti.nimi}"/></td><td>${komponentti.massa}t</td><td>${komponentti.kokoluokkalyhyt}</td>
+                  <td><a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                  </tr>  
+                  </c:forEach>
+           </table>
+             </div>
+  </div>
+               
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetauto}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -198,7 +320,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Energy<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetenergy}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -206,55 +328,63 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kinetic<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetkinetic}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-</ul>
-<ul class="nav nav-pills" role="tablist">        
+
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Missile<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetmissile}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-        <%--<li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Melee<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-              <c:forEach var="komponentti" items="${aseetmelee}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
-                </c:forEach>
-              
-                  </ul>
-        </li>--%>
-          <li class="dropdown">
+        
+         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Equipment<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${varusteet}">
                   <c:if test="${komponentti.sijoituspaikka == 'ALL' || komponentti.sijoituspaikka == 'NOT_LEGS' || komponentti.sijoituspaikka == 'HEAD' || komponentti.sijoituspaikka == 'HEAD_TORSO'}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=hd">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
             </c:if>
                 </c:forEach>
                   </ul>
         </li>
         </ul>
-              
+                   
               
           </td>
-          <td>
-              <h4>RIGHT ARM (${mech.itemsrightarm}/${mech.itemsallowedextension})</h4>
+          <td class="dropdown" style="overflow:visible">
+               <div class="panel panel-default">
+  <div class="panel-heading">RIGHT ARM (${mech.itemsrightarm}/${mech.itemsallowedextension}) <c:if test="${mech.itemsrightarm > mech.itemsallowedextension}">OVERLOADED</c:if></div>
+  <div class="panel-body">
+      <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_ra}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_ra}"/><c:out value="%"/>;">
+      A<c:if test="${armor_ra > 25}">rmor</c:if>: <c:out value="${armor_ra}"/>
+    </div>
+</div>
+      
+       <div class="table-responsive">
+           <table class="table table-condensed table-hover">
+               
               <c:forEach var="komponentti" items="${rightarm}">
-              <li><c:out value="${komponentti.nimi}"/> (${komponentti.massa}t) ${komponentti.kokoluokka}
-              <a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a>
-                    </c:forEach>
+                  <tr>
+              <td><c:out value="${komponentti.nimi}"/></td><td>${komponentti.massa}t</td><td>${komponentti.kokoluokkalyhyt}</td>
+                  <td><a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                  </tr>  
+                  </c:forEach>
+           </table>
+             </div>
+  </div>
+               
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetauto}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -262,7 +392,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Energy<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetenergy}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -270,17 +400,18 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kinetic<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetkinetic}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-</ul>
-<ul class="nav nav-pills" role="tablist">        
+<%--</ul>--%>
+                  
+<%--<ul class="nav nav-pills" role="tablist">       --%> 
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Missile<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetmissile}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -288,7 +419,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Melee<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetmelee}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -297,27 +428,45 @@
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${varusteet}">
                   <c:if test="${komponentti.sijoituspaikka == 'ALL' || komponentti.sijoituspaikka == 'NOT_LEGS' || komponentti.sijoituspaikka == 'ARMS' || komponentti.sijoituspaikka == 'ARMS_TORSO' || komponentti.sijoituspaikka == 'ARMS_LEGS'}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ra">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
             </c:if>
                 </c:forEach>
                   </ul>
         </li>
         </ul>
+           
+     
           </td>
       </tr>
+      
       <tr>
-            <td>
-              <h4>LEFT TORSO (${mech.itemslefttorso}/${mech.itemsallowedtorso})</h4>
+          <td>
+               <div class="panel panel-default">
+  <div class="panel-heading">LEFT TORSO (${mech.itemslefttorso}/${mech.itemsallowedtorso}) <c:if test="${mech.itemslefttorso > mech.itemsallowedtorso}">OVERLOADED</c:if></div>
+  <div class="panel-body">
+      <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_lt}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_lt}"/><c:out value="%"/>;">
+      A<c:if test="${armor_lt > 25}">rmor</c:if>:  <c:out value="${armor_lt}"/>
+    </div>
+</div>
+           <table class="table table-condensed table-hover">
+               
               <c:forEach var="komponentti" items="${lefttorso}">
-              <li><c:out value="${komponentti.nimi}"/> (${komponentti.massa}t) ${komponentti.kokoluokka}
-              <a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a>
-                    </c:forEach>
+                  <tr>
+              <td><c:out value="${komponentti.nimi}"/></td><td>${komponentti.massa}t</td><td>${komponentti.kokoluokkalyhyt}</td>
+                  <td><a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                  </tr>  
+                  </c:forEach>
+           </table>
+             </div>
+  </div>
+               
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetauto}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=lt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=lt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -325,7 +474,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Energy<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetenergy}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=lt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=lt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -333,113 +482,89 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kinetic<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetkinetic}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=lt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=lt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-</ul>
-<ul class="nav nav-pills" role="tablist">        
+<%--</ul>--%>
+                  
+<%--<ul class="nav nav-pills" role="tablist">       --%> 
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Missile<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetmissile}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=lt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=lt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-        
+    
           <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Equipment<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${varusteet}">
                   <c:if test="${komponentti.sijoituspaikka == 'ALL' || komponentti.sijoituspaikka == 'NOT_LEGS' || komponentti.sijoituspaikka == 'ARMS_TORSO' || komponentti.sijoituspaikka == 'HEAD_TORSO' || komponentti.sijoituspaikka == 'ANY_TORSO'}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=lt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=lt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
             </c:if>
                 </c:forEach>
                   </ul>
         </li>
         </ul>
-              
-              
+           
+     
           </td>
-          <td>
-              <h4>CENTER TORSO (${mech.itemscentertorso}/${mech.itemsallowedtorso})</h4>
-          <li><c:out value="${reaktori.nimi}"/> (${reaktori.massa}t) <span class="glyphicon glyphicon-flash"></span>${reaktori.teho} <span class="glyphicon glyphicon-asterisk"></span>${reaktori.cooling} ${reaktori.kokoluokka}</li>
-              <c:forEach var="komponentti" items="${centertorso}">
-                  <c:if test="${komponentti.kategoria != 'REAKTORI'}"><li><c:out value="${komponentti.nimi}"/> (${komponentti.massa}t) ${komponentti.kokoluokka}
-              <a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a>
-                  </c:if>
-                    </c:forEach>
-<ul class="nav nav-pills" role="tablist">
-  <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-              <c:forEach var="komponentti" items="${aseetauto}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ct">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
-                </c:forEach>
-                  </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Energy<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-              <c:forEach var="komponentti" items="${aseetenergy}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ct">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
-                </c:forEach>
-                  </ul>
-        </li>
-         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kinetic<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-              <c:forEach var="komponentti" items="${aseetkinetic}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ct">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
-                </c:forEach>
-                  </ul>
-        </li>
-</ul>
-<ul class="nav nav-pills" role="tablist">        
-         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Missile<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-              <c:forEach var="komponentti" items="${aseetmissile}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ct">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
-                </c:forEach>
-                  </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reactor<span class="caret"></span></a>
+          
+<td class="dropdown" style="overflow:visible">
+               <div class="panel panel-default">
+  <div class="panel-heading">CENTER TORSO (${mech.itemscentertorso}/${mech.itemsallowedtorso}) <c:if test="${mech.itemscentertorso > mech.itemsallowedtorso}">OVERLOADED</c:if></div>
+  <div class="panel-body">
+      <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_ct}"/>" aria-valuemin="0" aria-valuemax="80" style="width: <c:out value="${armor_ct}"/><c:out value="%"/>;">
+        A<c:if test="${armor_ct > 25}">rmor</c:if>: <c:out value="${armor_ct}"/>
+    </div>
+</div>
+  <div class="table-responsive">
+           <table class="table table-condensed table-hover">
+                       <tr>
+                     <td>Reactor</td><td>Run km/h</td><td>Power</td><td>Cooling</td><td>Mass</td><td>Size</td></tr>
+                       <tr>
+                     <td><c:out value="${reaktori.nimi}"/></td><td><c:out value="${mech.runningspeed}"/></td><td>${reaktori.teho}</td><td>${reaktori.cooling}</td><td>${reaktori.massa}t</td><td>${reaktori.kokoluokkalyhyt}</td>
+                 </tr>
+           </table>
+             </div>
+                 <ul class="nav nav-pills" role="tablist">
+<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-warning-sign"></span> Install New Reactor<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${reaktorit}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&vaihdareaktori=${komponentti.reaktori_id}">${komponentti.nimi} (${komponentti.massa}t) <span class="glyphicon glyphicon-flash"></span>${komponentti.teho} <span class="glyphicon glyphicon-asterisk"></span>${komponentti.cooling}  ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&vaihdareaktori=${komponentti.reaktori_id}">${komponentti.nimi} (${komponentti.massa}t) <span class="glyphicon glyphicon-flash"></span>${komponentti.teho} <span class="glyphicon glyphicon-asterisk"></span>${komponentti.cooling}  ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
               
                   </ul>
-        </li>
-          <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Equipment<span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-              <c:forEach var="komponentti" items="${varusteet}">
-                  <c:if test="${komponentti.sijoituspaikka == 'ALL' || komponentti.sijoituspaikka == 'NOT_LEGS' || komponentti.sijoituspaikka == 'ARMS_TORSO' || komponentti.sijoituspaikka == 'HEAD_TORSO' || komponentti.sijoituspaikka == 'ANY_TORSO'}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ct">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
-            </c:if>
-                </c:forEach>
-                  </ul>
-        </li>
+        </li>                 
         </ul>
-              
-              
-          </td>
-        <td>
-              <h4>RIGHT TORSO (${mech.itemsrighttorso}/${mech.itemsallowedtorso})</h4>
-              <c:forEach var="komponentti" items="${righttorso}">
-              <li><c:out value="${komponentti.nimi}"/> (${komponentti.massa}t) ${komponentti.kokoluokka}
-              <a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a>
-                    </c:forEach>
+               </div>
+  <div class="panel-body">
+       <div class="table-responsive">
+           <table class="table table-condensed table-hover">
+               
+              <c:forEach var="komponentti" items="${centertorso}">
+                  <c:if test="${komponentti.kategoria != 'REAKTORI'}">
+                  <tr>
+              <td><c:out value="${komponentti.nimi}"/></td><td>${komponentti.massa}t</td><td>${komponentti.kokoluokkalyhyt}</td>
+                  <td><a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                  </tr>
+                  </c:if>
+                  </c:forEach>
+           </table>
+             </div>
+  </div>
+               
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetauto}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ct">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -447,7 +572,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Energy<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetenergy}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ct">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -455,17 +580,89 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kinetic<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetkinetic}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ct">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-</ul>
-<ul class="nav nav-pills" role="tablist">        
+
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Missile<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetmissile}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ct">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
+                </c:forEach>
+                  </ul>
+        </li>
+        
+         <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Equipment<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+              <c:forEach var="komponentti" items="${varusteet}">
+                  <c:if test="${komponentti.sijoituspaikka == 'ALL' || komponentti.sijoituspaikka == 'NOT_LEGS' || komponentti.sijoituspaikka == 'ARMS_TORSO' || komponentti.sijoituspaikka == 'HEAD_TORSO' || komponentti.sijoituspaikka == 'ANY_TORSO'}">
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ct">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
+            </c:if>
+                </c:forEach>
+                  </ul>
+        </li>
+        </ul>
+                   
+              
+          </td>
+          <td class="dropdown" style="overflow:visible">
+               <div class="panel panel-default">
+  <div class="panel-heading">RIGHT TORSO (${mech.itemsrighttorso}/${mech.itemsallowedtorso}) <c:if test="${mech.itemsrighttorso > mech.itemsallowedtorso}">OVERLOADED</c:if></div>
+  <div class="panel-body">
+      <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_rt}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_rt}"/><c:out value="%"/>;">
+      A<c:if test="${armor_rt > 25}">rmor</c:if>: <c:out value="${armor_rt}"/>
+    </div>
+</div>
+       <div class="table-responsive">
+           <table class="table table-condensed table-hover">
+               
+              <c:forEach var="komponentti" items="${righttorso}">
+                  <tr>
+              <td><c:out value="${komponentti.nimi}"/></td><td>${komponentti.massa}t</td><td>${komponentti.kokoluokkalyhyt}</td>
+                  <td><a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                  </tr>  
+                  </c:forEach>
+           </table>
+             </div>
+  </div>
+               
+<ul class="nav nav-pills" role="tablist">
+  <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+              <c:forEach var="komponentti" items="${aseetauto}">
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
+                </c:forEach>
+                  </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Energy<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+              <c:forEach var="komponentti" items="${aseetenergy}">
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
+                </c:forEach>
+                  </ul>
+        </li>
+         <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kinetic<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+              <c:forEach var="komponentti" items="${aseetkinetic}">
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
+                </c:forEach>
+                  </ul>
+        </li>
+<%--</ul>--%>
+                  
+<%--<ul class="nav nav-pills" role="tablist">       --%> 
+         <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Missile<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+              <c:forEach var="komponentti" items="${aseetmissile}">
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -475,33 +672,46 @@
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${varusteet}">
                   <c:if test="${komponentti.sijoituspaikka == 'ALL' || komponentti.sijoituspaikka == 'NOT_LEGS' || komponentti.sijoituspaikka == 'ARMS_TORSO' || komponentti.sijoituspaikka == 'HEAD_TORSO' || komponentti.sijoituspaikka == 'ANY_TORSO'}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rt">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
             </c:if>
                 </c:forEach>
                   </ul>
         </li>
         </ul>
-              
-              
+           
+     
           </td>
       </tr>
+      
       <tr>
-          <td>
-              <h4>LEFT LEG ( <c:if test="${mech.itemsleftleg > mech.itemsallowedextension}">!</c:if>${mech.itemsleftleg}<c:if test="${mech.itemsleftleg > mech.itemsallowedextension}">!</c:if>/${mech.itemsallowedextension})</h4>
+          <td class="dropdown" style="overflow:visible">
+               <div class="panel panel-default">
+  <div class="panel-heading">LEFT LEG (${mech.itemsleftleg}/${mech.itemsallowedextension}) <c:if test="${mech.itemsleftleg > mech.itemsallowedextension}">OVERLOADED</c:if></div>
+  <div class="panel-body">
+      <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_ll}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_ll}"/><c:out value="%"/>;">
+      A<c:if test="${armor_ll > 25}">rmor</c:if>: <c:out value="${armor_ll}"/>
+    </div>
+</div>
+       <div class="table-responsive">
+           <table class="table table-condensed table-hover">
+               
               <c:forEach var="komponentti" items="${leftleg}">
-              <li><c:out value="${komponentti.nimi}"/> (${komponentti.massa}t) ${komponentti.kokoluokka}
-                  <a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a>
-              </li>
-              
-              
-                    </c:forEach>
-           
+                  <tr>
+              <td><c:out value="${komponentti.nimi}"/></td><td>${komponentti.massa}t</td><td>${komponentti.kokoluokkalyhyt}</td>
+                  <td><a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                  </tr>  
+                  </c:forEach>
+           </table>
+             </div>
+  </div>
+               
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetauto}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ll">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ll">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -509,7 +719,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Energy<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetenergy}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ll">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ll">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -517,51 +727,66 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kinetic<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetkinetic}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ll">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ll">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-</ul>
-<ul class="nav nav-pills" role="tablist">        
+<%--</ul>--%>
+                  
+<%--<ul class="nav nav-pills" role="tablist">       --%> 
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Missile<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetmissile}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ll">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ll">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-         <li class="dropdown">
+       
+          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Equipment<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${varusteet}">
                   <c:if test="${komponentti.sijoituspaikka == 'ALL' || komponentti.sijoituspaikka == 'ARMS_LEGS'}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ll">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=ll">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
             </c:if>
                 </c:forEach>
                   </ul>
         </li>
         </ul>
+           
+     
+          </td>
+          
+          <td></td>
+          <td class="dropdown" style="overflow:visible">
+               <div class="panel panel-default">
+  <div class="panel-heading">RIGHT LEG (${mech.itemsrightleg}/${mech.itemsallowedextension}) <c:if test="${mech.itemsrightleg > mech.itemsallowedextension}">OVERLOADED</c:if></div>
+  <div class="panel-body">
+      <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_rl}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_rl}"/><c:out value="%"/>;">
+      A<c:if test="${armor_rl > 25}">rmor</c:if>: <c:out value="${armor_rl}"/>
+    </div>
+</div>
+       <div class="table-responsive">
+           <table class="table table-condensed table-hover">
                
-          </td>
-          <td>
-          </td>
-          <td>
-              <h4>RIGHT LEG ( <c:if test="${mech.itemsrightleg > mech.itemsallowedextension}">!</c:if>${mech.itemsrightleg}<c:if test="${mech.itemsrightleg > mech.itemsallowedextension}">!</c:if>/${mech.itemsallowedextension})</h4>
               <c:forEach var="komponentti" items="${rightleg}">
-              <li><c:out value="${komponentti.nimi}"/> (${komponentti.massa}t) ${komponentti.kokoluokka}
-                  <a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a>
-              </li>
-              
-              
-                    </c:forEach>
-           
+                  <tr>
+              <td><c:out value="${komponentti.nimi}"/></td><td>${komponentti.massa}t</td><td>${komponentti.kokoluokkalyhyt}</td>
+                  <td><a href="mechasennakomponentti?mechid=${mech.mech_id}&poista=${komponentti.komponentisto_id}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                  </tr>  
+                  </c:forEach>
+           </table>
+             </div>
+  </div>
+               
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetauto}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rl">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rl">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -569,7 +794,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Energy<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetenergy}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rl">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rl">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
@@ -577,36 +802,77 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kinetic<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetkinetic}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rl">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rl">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-</ul>
-<ul class="nav nav-pills" role="tablist">        
+<%--</ul>--%>
+                  
+<%--<ul class="nav nav-pills" role="tablist">       --%> 
          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Missile<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${aseetmissile}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rl">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rl">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
                   </ul>
         </li>
-         <li class="dropdown">
+          <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Equipment<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${varusteet}">
                   <c:if test="${komponentti.sijoituspaikka == 'ALL' || komponentti.sijoituspaikka == 'ARMS_LEGS'}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rl">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokka}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&lisaa=${komponentti.komponentti_id}&minne=rl">${komponentti.nimi} (${komponentti.massa}t) ${komponentti.kokoluokkalyhyt}</a></li>
             </c:if>
                 </c:forEach>
                   </ul>
         </li>
         </ul>
-               
+           
+     
+          </td>
+      </tr>
+      
+      
+      
+  </table>
+               </div>
+          </td>
+           <td>
+              
+              <div class="panel panel-default">
+  <div class="panel-heading">Construction Guide</div>
+  <div class="panel-body">
+      <c:if test="${varoitukset != null}">
+      <c:forEach var="varoitus" items="${varoitukset}">
+              <div class="alert alert-danger">${varoitus}</div>
+                  </c:forEach>
+              </c:if>
+                  <c:if test="${huomautukset != null}">
+              <c:forEach var="huomautus" items="${huomautukset}">
+              <div class="alert alert-warning">${huomautus}</div>
+                  </c:forEach>
+              </c:if>
+                  <c:if test="${saavutukset != null}">
+                            <c:forEach var="saavutus" items="${saavutukset}">
+              <div class="alert alert-success">${saavutus}</div>
+                  </c:forEach>
+              </c:if>
+      
+      
+       
+</div>
+            
+    
+              </div>
+          
+                            
           </td>
       </tr>
   </table>
-</div>
+              </div>
+             
+
 
  
 
@@ -630,4 +896,7 @@
       </center>
 <!--<link type="text/css" rel="stylesheet" href="jquery.dropdown.css" />
 <script type="text/javascript" src="jquery.dropdown.js"></script>-->
+
+</div>
+              </div>
 </t:pohja>   

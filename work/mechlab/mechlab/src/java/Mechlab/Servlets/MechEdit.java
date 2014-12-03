@@ -148,6 +148,30 @@ public class MechEdit extends HttpServlet {
                         
                         sivu.setAttribute("leftleg", mech.getMechinKomponentit("LEFT LEG"));
                         sivu.setAttribute("rightleg", mech.getMechinKomponentit("RIGHT LEG"));
+                        sivu.setAttribute("allcomponents", mech.getMechinKomponentit("ALL"));
+                        sivu.setAttribute("armorvalues", mech.getArmorratingList(false));
+                        
+                        sivu.setAttribute("varoitukset", mech.getVaroitukset(1));
+                        sivu.setAttribute("huomautukset", mech.getVaroitukset(2));
+                        sivu.setAttribute("saavutukset", mech.getVaroitukset(3));
+                        
+                        sivu.setAttribute("armor_hd", mech.getArmorvalue("h", true));
+                        sivu.setAttribute("armor_ct", mech.getArmorvalue("ct", true));
+                        sivu.setAttribute("armor_lt", mech.getArmorvalue("lt", true));
+                        sivu.setAttribute("armor_rt", mech.getArmorvalue("rt", true));
+                        sivu.setAttribute("armor_la", mech.getArmorvalue("la", true));
+                        sivu.setAttribute("armor_ra", mech.getArmorvalue("ra", true));
+                        sivu.setAttribute("armor_ll", mech.getArmorvalue("ll", true));
+                        sivu.setAttribute("armor_rl", mech.getArmorvalue("rl", true));
+                        
+                        sivu.setAttribute("is_hd", mech.getArmorvalue("h", false));
+                        sivu.setAttribute("is_ct", mech.getArmorvalue("ct", false));
+                        sivu.setAttribute("is_lt", mech.getArmorvalue("lt", false));
+                        sivu.setAttribute("is_rt", mech.getArmorvalue("rt", false));
+                        sivu.setAttribute("is_la", mech.getArmorvalue("la", false));
+                        sivu.setAttribute("is_ra", mech.getArmorvalue("ra", false));
+                        sivu.setAttribute("is_ll", mech.getArmorvalue("ll", false));
+                        sivu.setAttribute("is_rl", mech.getArmorvalue("rl", false));
                         
                         naytaJSP("mecheditoi.jsp", sivu, response);
                         session.setAttribute("kirjautunut", kayttaja);

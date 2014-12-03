@@ -33,12 +33,12 @@ public class Komponentti {
     private int varusteTier;
     private String varusteActivity;
     private int komponentisto_id;
+    private String sijainti;
     
-    private int oikeustaso;
 
     
     public Komponentti() {
-        
+        this.sijainti ="Unknown";
     }
     
     public Komponentti(int newID, String nimi, String kategoria) {
@@ -59,6 +59,7 @@ public class Komponentti {
         this.varusteTier=0;
         this.varusteActivity="none";
         this.komponentisto_id=0;
+        this.sijainti ="Unknown";
     }
     
     
@@ -77,6 +78,19 @@ public class Komponentti {
 //	varuste_type	CHAR(20),
 //	varuste_tier	INTEGER,
 //	varuste_activity CHAR(20),
+    
+    public void setSijainti(String sijainti) {
+        this.sijainti=sijainti;
+    }
+    
+    public String getSijainti() {
+        return this.sijainti;
+    }
+    
+    public String getSijaintilyhyt() {
+        return Tarkistaja.lyhentaja(this.sijainti);
+    }
+    
     
     public int getCost () {
         int hinta = 1;
@@ -130,7 +144,7 @@ public class Komponentti {
        
        if (nimi.equalsIgnoreCase("keep")) {nimi = komponentti.getNimi();}
        
-       if (nimi.length()>39) {nimi=nimi.substring(0, 38);}
+       if (nimi.length()>39) {nimi=nimi.substring(0, 38); if (!Tarkistaja.onkoAlfanumeerinen(nimi)) {nimi=null; nimi="";}}
        if (tyyppi.equalsIgnoreCase("keep")) {tyyppi = komponentti.getVarustetype();}
        if (weight.equalsIgnoreCase("keep")) {massa = komponentti.getMassa();} else {massa = Integer.parseInt(weight);}
        if (strtier.equalsIgnoreCase("keep")) {tier = komponentti.getVarustetier();} else {tier = Integer.parseInt(strtier);}
@@ -146,12 +160,12 @@ public class Komponentti {
 //                  " WHERE komponentti_id = "+id;
          
          // TARKISTETAAN SYÖTTEIDEN LAILLISUUUS:
-         if (activity.contentEquals("PASSIVE") || activity.contentEquals("PASSIVE")) {} else {activity="PASSIVE";}
+         if (activity.contentEquals("PASSIVE") || activity.contentEquals("ACTIVE")) {} else {activity="PASSIVE";}
          volume = Tarkistaja.tarkistaVolume(volume);
          location = Tarkistaja.tarkistaLocation(location);
          tyyppi = Tarkistaja.tarkistaVarusteTyyppi(tyyppi);
          if (massa<1 || massa>25) {massa=1;}
-         if (heat<0 || heat>30) {heat=1;}
+         if (heat<0 || heat>30) {heat=0;}
          if (tier<1 || tier>3) {tier=3;}
          
          
@@ -232,7 +246,7 @@ if (nimi.equalsIgnoreCase("Unnamed Component") || nimi.length()==0 || nimi.equal
        
        if (nimi.equalsIgnoreCase("keep")) {nimi = komponentti.getNimi();}
        
-       if (nimi.length()>39) {nimi=nimi.substring(0, 38);}
+       if (nimi.length()>39) {nimi=nimi.substring(0, 38); if (!Tarkistaja.onkoAlfanumeerinen(nimi)) {nimi=null; nimi="";}}
        if (tyyppi.equalsIgnoreCase("keep")) {tyyppi = komponentti.getWeapontype();}
        if (weight.equalsIgnoreCase("keep")) {massa = komponentti.getMassa();} else {massa = Integer.parseInt(weight);}
        if (strdamage.equalsIgnoreCase("keep")) {damage = komponentti.getWeapondamage();} else {damage = Integer.parseInt(strdamage);}
@@ -889,6 +903,10 @@ if (nimi.equalsIgnoreCase("Unnamed Component") || nimi.length()==0 || nimi.equal
      }
      public String getKokoluokka() {
          return this.kokoluokka;
+     }
+     
+     public String getKokoluokkalyhyt() {
+         return Tarkistaja.lyhentaja(this.kokoluokka);
      }
      
      public void setSijoituspaikka(String nimike) {

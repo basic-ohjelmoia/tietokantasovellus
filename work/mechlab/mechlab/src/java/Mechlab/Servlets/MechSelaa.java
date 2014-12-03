@@ -43,7 +43,7 @@ public class MechSelaa extends HttpServlet {
         HttpSession session = request.getSession();
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
          String ilmoitus = (String) session.getAttribute("ilmoitus");
-        
+        request.setAttribute("ilmoitus", ilmoitus);
         HttpServletRequest sivu = request;
         
         request.setAttribute("navimechselaa", "active");
@@ -54,6 +54,21 @@ public class MechSelaa extends HttpServlet {
        // request.setAttribute("kirjautuneenNimi", "Et ole kirjautunut sisään!");
         
         response.setContentType("text/html;charset=UTF-8");
+        if (null != request.getParameter("view")) {
+            String view = request.getParameter("view");
+            
+            if (view.equalsIgnoreCase("owned")) {
+                request.setAttribute("view", "owned");
+            }
+            if (view.equalsIgnoreCase("all")) {
+                request.setAttribute("view", "all");
+            }
+            if (view.equalsIgnoreCase("operational")) {
+                request.setAttribute("view", "operational");
+            }
+                
+        } else {   request.setAttribute("view", "all");}
+        
         
             if (istunto.onkoKirjautunut(request, response)) {
                     //HttpSession session = request.getSession();

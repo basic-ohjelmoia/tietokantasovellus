@@ -216,6 +216,15 @@ public class Mech {
         return this.paino;
     }
     
+    public int getTotalweapondamage() throws NamingException, SQLException {
+        return MechData.getComponentValues(this, "totalweapondamage");
+    }
+    public int getTotalweaponheat() throws NamingException, SQLException {
+        return MechData.getComponentValues(this, "totalweaponheat");
+    }
+    public int getMaxweaponrange() throws NamingException, SQLException {
+        return MechData.getComponentValues(this, "maxweaponrange");
+    }
     
      public int getHeatsinks() throws NamingException, SQLException {
         int heatsinks = 0;
@@ -242,8 +251,8 @@ public class Mech {
              if (komponentti.getKokoluokka().contentEquals("LARGE") || komponentti.getKokoluokka().contentEquals("XL")) {
                  lisays =2;
              }
-             if (komponentti.getMassa()>=5) {
-                 lisays +=(getMassa()/5);
+             if (komponentti.getMassa()>=8) {
+                 lisays +=(getMassa()/8);
              }
              if (komponentti.getKategoria().contentEquals("VARUSTE")) {
                 if (komponentti.getVarustetype().contentEquals("ARMOR PLATING")) {
@@ -256,57 +265,22 @@ public class Mech {
      }
      
      public int getArmorrating() throws NamingException, SQLException {
-        int panssari = 0;
-        int panssarikerroin = 8;
-        int lightMechPenalty = 0;
-        
-         if (this.paino<40) {
-         panssari = 16;
-         lightMechPenalty =-1;}
-         //panssarikerroin = 18;}
-         else if (this.paino<60) {
-         panssari = 20;}
-         //panssarikerroin = 15;}
-         else if (this.paino<80) {
-         panssari = 24;}
-         //panssarikerroin = 16;}
-         else  {
-         panssari = 32;}
-         //panssarikerroin = 17;}
-        //int panssari
+         ArrayList<String>lista = getArmorratingList(true);
          
-         panssari = getInnerStructure();    // KOKEILLAAN
-         
-        for (Komponentti komponentti : getMechinKomponentit("ALL")) {
-            if (komponentti.getKategoria().contentEquals("VARUSTE")) {
-                if (komponentti.getVarustetype().contentEquals("ARMOR PLATING")) {
-                    
-                    int muutos = panssarikerroin*komponentti.getMassa();
-                    
-                    if (komponentti.getMassa()==1) {}
-                    if (komponentti.getMassa()==2) {muutos+=(2-lightMechPenalty);}
-                    if (komponentti.getMassa()==3) {muutos+=(4-lightMechPenalty);}
-                    if (komponentti.getMassa()>=4) {muutos+=(6-lightMechPenalty);}
-                    
-//                    int panssarinmassa = komponentti.getMassa();
-//                    if (panssarinmassa == 1) {muutos = (muutos*panssarinmassa)+8;}
-//                    if (panssarinmassa == 2) {muutos = (muutos*panssarinmassa)+24;}
-//                    if (panssarinmassa == 3) {muutos = (muutos*panssarinmassa)+56;}        // 16 vs 56
-//                    if (panssarinmassa >= 4) {muutos = (muutos*panssarinmassa)+(20*panssarinmassa);}
-//                    
-                    if (komponentti.getVarustetier()==3) {}
-                    if (komponentti.getVarustetier()==2) {muutos +=(2-lightMechPenalty);}
-                    if (komponentti.getVarustetier()==1) {muutos +=(4-lightMechPenalty);}
-                    
-                    //muutos += panssarikerroin;
-                    
-                    panssari += muutos;
-                }
-            }
-            
-        }
-        return panssari;
-    }
+         return Integer.parseInt(lista.get(0));
+     }
+     
+     /**
+      * Jos parametriksi annetaan false, stringiin ei liitetä armorrating-arvoa ensimmäiseksi riviksi. 
+      * @param armorratingRivinKanssa 
+      * @return
+      * @throws NamingException
+      * @throws SQLException 
+      */
+     public ArrayList<String> getArmorratingList(boolean armorratingRivinKanssa) throws NamingException, SQLException {
+         return MechData.getArmorratingList(this, armorratingRivinKanssa);
+     }
+      
      
      public int getWalkingspeed() throws NamingException, SQLException {
          boolean olikoGyroscope = false;
@@ -378,6 +352,10 @@ public class Mech {
         
         return (int) ((getWalkingspeed()*kerroin)/100);
          //return (int) (getWalkingspeed()*1.4);
+     }
+     
+     public int getArmorvalue(String lokaatio, boolean pyydetaanArmorValue) throws NamingException, SQLException {
+         return (MechData.getArmorvalue(this, lokaatio, pyydetaanArmorValue));
      }
      
      public Kayttaja getOwner() throws NamingException, SQLException {
@@ -558,7 +536,35 @@ public class Mech {
   try { yhteys.close(); } catch (Exception e) {}
        }
    }
+   
+   public boolean getVaroitusvapaa() throws NamingException, SQLException {
+       if (getVaroitukset(1).size()>0) {return false;}
+       return true;
+   }
+   
+   public boolean getHuomautusvapaa() throws NamingException, SQLException {
+       if (getVaroitukset(2).size()>0) {return false;}
+       return true;
+   }
+   
+   public static boolean voikoKayttajaLuodaUudenMechin(int kayttaja_id) throws NamingException, SQLException {
+       List<Mech> mechit = getMechit();
+       for (Mech mech : mechit) {
+           if (mech.getUser_id()==kayttaja_id) {
+//                if (mech.getVaroitukset(1).size()>0) {
+//                    return false;
+//                        }
+                if (mech.getNettopaino()==0) {
+                    return false;
+                        }
+                }
+       }
+       return true;
+   }
       
+   public ArrayList<String>getVaroitukset(int varoitustaso) throws NamingException, SQLException {
+       return MechData.getVaroitukset(this, varoitustaso);
+   }
     
     public int getNettopaino() throws NamingException, SQLException {
         int nettopaino = 0;
@@ -619,6 +625,9 @@ public class Mech {
             if (komponentti.getKokoluokka().equalsIgnoreCase("LARGE")) {laskuri+=3;}
             if (komponentti.getKokoluokka().equalsIgnoreCase("MEDIUM")) {laskuri+=2;}
             if (komponentti.getKokoluokka().equalsIgnoreCase("SMALL")) {laskuri+=1;}
+//            if (komponentti.getKategoria().equalsIgnoreCase("ASE")) {
+//                if (komponentti.getWeaponammo()>0) {laskuri+=0;}
+//            }
         }
         return laskuri;
     }
@@ -648,6 +657,10 @@ public class Mech {
         return getMechinKomponentit("RIGHT LEG");
     }
     
+//    public ArrayList<Komponentti> getMechinKomponentitSijainneilla(String sijainti) throws NamingException, SQLException {
+//        
+//    }
+         
     public ArrayList<Komponentti> getMechinKomponentit(String sijainti) throws NamingException, SQLException {
          
         String sqljatko = "";
@@ -670,6 +683,7 @@ public class Mech {
     //Luodaan tuloksia vastaava olio ja palautetaan olio:
     Komponentti k = Komponentti.getKomponentti(tulokset.getInt("component_id"));
     //asennaKomponentti(k, tulokset.getString("sijainti"));
+    k.setSijainti(tulokset.getString("sijainti"));
     k.setKomponentistoID(tulokset.getInt("komponentisto_id"));
     komponentit.add(k);
     
@@ -845,6 +859,17 @@ public class Mech {
        
          Connection yhteys = Tietokanta.getYhteys();
              PreparedStatement kysely = yhteys.prepareStatement(sql);
+             //kysely.executeQuery();
+             //ResultSet tulokset = kysely.executeQuery();
+             kysely.executeUpdate();
+      //try { tulokset.close(); } catch (Exception e) {}
+  try { kysely.close(); } catch (Exception e) {}
+  try { yhteys.close(); } catch (Exception e) {}
+   
+            sql = "DELETE FROM komponentisto WHERE mech_id = "+ mech_id;
+       
+          yhteys = Tietokanta.getYhteys();
+              kysely = yhteys.prepareStatement(sql);
              //kysely.executeQuery();
              //ResultSet tulokset = kysely.executeQuery();
              kysely.executeUpdate();

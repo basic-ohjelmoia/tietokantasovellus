@@ -5,6 +5,24 @@ package Mechlab.Tietokanta;
  */
 public class Tarkistaja {
     
+    public static String lyhentaja(String kokoluokka) {
+        if (kokoluokka.equalsIgnoreCase("HEAD")) {return ("<b>H</b>");}
+        if (kokoluokka.equalsIgnoreCase("LEFT ARM")) {return ("<b>LA</b>");}
+        if (kokoluokka.equalsIgnoreCase("RIGHT ARM")) {return ("<b>RA</b>");}
+        if (kokoluokka.equalsIgnoreCase("LEFT LEG")) {return ("<b>LL</b>");}
+        if (kokoluokka.equalsIgnoreCase("RIGHT LEG")) {return ("<b>RL</b>");}
+        if (kokoluokka.equalsIgnoreCase("LEFT TORSO")) {return ("<b>LT</b>");}
+        if (kokoluokka.equalsIgnoreCase("RIGHT TORSO")) {return ("<b>RT</b>");}
+        if (kokoluokka.equalsIgnoreCase("Center TORSO")) {return ("<b>CT</b>");}
+        
+        if (kokoluokka.equalsIgnoreCase("SMALL")) {return ("Sm");}
+        if (kokoluokka.equalsIgnoreCase("MEDIUM")) {return ("Md");}
+        if (kokoluokka.equalsIgnoreCase("LARGE")) {return ("Lg");}
+        if (kokoluokka.equalsIgnoreCase("XL")) {return ("Xl");}
+        
+        return "n/a";
+    }
+    
     public static boolean onkoAlfanumeerinen(String merkkijono){
 //    String pattern= "^[a-zA-Z0-9ä-Ö]*$";
 //        if (string.matches(pattern) && string.length()<40){
@@ -105,3 +123,4 @@ public class Tarkistaja {
          
 
 }
+

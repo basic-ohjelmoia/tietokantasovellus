@@ -45,13 +45,22 @@ public class Istunto extends HttpServlet {
     protected boolean onkoKirjautunut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NamingException, SQLException {
       
+        
         HttpSession session = request.getSession(true);
+        String ilmoitus = "";
+        if (session.getAttribute("kirjautunut") == null) {
+            response.sendRedirect("login?istunnoton=kylla");
+            return false;
+        }
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
+        ilmoitus = (String) session.getAttribute("ilmoitus");
         
         if (kayttaja != null) {
             request.setAttribute("kirjautunut", kayttaja); // oli request.
               request.setAttribute("kirjautuneenNimi", kayttaja.getNimi());  // oli request.
              request.setAttribute("vierailukerta", kayttaja.getVierailukerta());
+             request.setAttribute("userid", kayttaja.getID());
+             request.setAttribute("ilmoitus", ilmoitus);
                 
             if (kayttaja.getOikeustaso()>0) {
                 
