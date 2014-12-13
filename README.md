@@ -1,5 +1,5 @@
-tietokantasovellus
-==================
+TIETOKANTASOVELLUS - MECHLAB 
+============================
 
 Aineopintojen harjoitustyö: tietokantasovellus - MechLab 
 
