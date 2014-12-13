@@ -37,7 +37,7 @@
      
         <tr>
           <td>id#</td><td>Name</td><td>Designation</td><td>Cooling Factor</td><td>Power Generation</td>
-          <td>Weigth</td><td>Physical Volume</td><td>Locations Allowed</td><td>Unit Cost</td>
+          <td>Weigth</td><td>Power/Weight Ratio</td><td>Physical Volume</td><td>Locations Allowed</td><td>Unit Cost</td><td>Number of Installs</td>
       </tr>
       
       
@@ -49,10 +49,11 @@
                 <td><c:out value="${reaktori.cooling}"/></td>
                 <td><c:out value="${reaktori.teho}"/></td>
                 <td><c:out value="${reaktori.massa}"/></td>
+                <td><c:out value="${reaktori.efficiency}"/></td>
                 <td><c:out value="${reaktori.kokoluokka}"/></td>
-                <td><c:out value="${reaktori.sijoituspaikka}"/></td>
+                <td>CENTER TORSO</td>
                 <td><c:out value="${reaktori.cost}"/> CR</td>
-                
+                <td><c:out value="${komponentti.asennuskerrat}"/></td>
                     
                     
                  
@@ -72,7 +73,21 @@ type: <input type="text" name="weapontype"  value="default"/>
                 
      <form action="komponenttieditoi" method="POST" role="form">
                 
-                    <div class="form-group">
+          <div class="form-group">
+                      <label class="radio-inline">
+  <%--<input type="radio" name="weaponid" id="weaponid" value="${komponentti.komponentti_id}" checked> id: ${komponentti.komponentti_id}--%>
+  <input type="hidden" name="reactorid" value="${reaktori.reaktori_id}"/>
+</label>
+                          </div>
+
+                    
+  <div class="form-group">
+    <label for="Component Name">Reactor name: ${komponentti.nimi}</label>
+    <input type="hidden" name="equipmentname" id="equipmentname" value="${reaktori.nimi}">
+  </div>
+  
+         
+<!--                    <div class="form-group">
                       <label class="radio-inline">
   <input type="radio" name="reactorid" id="reactorid" value="${reaktori.reaktori_id}" checked> id: ${reaktori.reaktori_id}
 </label>
@@ -83,7 +98,7 @@ type: <input type="text" name="weapontype"  value="default"/>
     <label for="Component Name">Reactor name</label>
     <input type="nimi" class="form-control" name="equipmentname" id="equipmentname" value="${reaktori.nimi}"><br>
     Leave empty to generate a common name.<br>
-  </div>
+  </div>-->
   
    <div class="form-group">
                         <label for="Component Name">Cooling Factor</label>
@@ -138,7 +153,7 @@ type: <input type="text" name="weapontype"  value="default"/>
   <%--Note: Some equipment types will automatically default to cooling rating of 0 (e.g. armor plating, actuators, cooling sinks).<br>--%>
    
    <div class="form-group">
-                        <label for="Component Name">Power Generated</label>
+                        <label for="Component Name">Power Output</label>
 
                               <label class="radio-inline">
   <input type="radio" name="power" id="power" value="80"> 80

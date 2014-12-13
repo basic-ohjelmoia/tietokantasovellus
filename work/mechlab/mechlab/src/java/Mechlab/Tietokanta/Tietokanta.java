@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 /**
- *
- * @author mikromafia
+ * Luokka, joka muodostaa yhteyksiä tietokantaan.
+ * @author Tuomas Honkala
  */
 public class Tietokanta {
 

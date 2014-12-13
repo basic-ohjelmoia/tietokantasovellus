@@ -37,7 +37,7 @@
      
         <tr>
           <td>id#</td><td>Name</td><td>Designation</td><td>Equipment Type</td><td>Equipment Tier</td><td>Active/Passive</td><td>Heat</td>
-          <td>Weigth</td><td>Physical Volume</td><td>Locations Allowed</td><td>Unit Cost</td>
+          <td>Weigth</td><td>Physical Volume</td><td>Locations Allowed</td><td>Unit Cost</td><td>Number of Installs</td>
       </tr>
       
       
@@ -54,7 +54,7 @@
                 <td><c:out value="${komponentti.kokoluokka}"/></td>
                 <td><c:out value="${komponentti.sijoituspaikka}"/></td>
                 <td><c:out value="${komponentti.cost}"/> CR</td>
-                
+                <td><c:out value="${komponentti.asennuskerrat}"/></td>
                     
                     
                  
@@ -74,7 +74,20 @@ type: <input type="text" name="weapontype"  value="default"/>
                 
      <form action="komponenttieditoi" method="POST" role="form">
                 
-                    <div class="form-group">
+          <div class="form-group">
+                      <label class="radio-inline">
+  <%--<input type="radio" name="weaponid" id="weaponid" value="${komponentti.komponentti_id}" checked> id: ${komponentti.komponentti_id}--%>
+  <input type="hidden" name="equipmentid" value="${komponentti.komponentti_id}"/>
+</label>
+                          </div>
+
+                    
+  <div class="form-group">
+    <label for="Component Name">Equipment name: ${komponentti.nimi}</label>
+    <input type="hidden" name="equipmentname" id="equipmentname" value="${komponentti.nimi}">
+  </div>
+         
+<!--                    <div class="form-group">
                       <label class="radio-inline">
   <input type="radio" name="equipmentid" id="equipmentid" value="${komponentti.komponentti_id}" checked> id: ${komponentti.komponentti_id}
 </label>
@@ -85,7 +98,7 @@ type: <input type="text" name="weapontype"  value="default"/>
     <label for="Component Name">Equipment name</label>
     <input type="nimi" class="form-control" name="equipmentname" id="equipmentname" value="${komponentti.nimi}"><br>
     Leave empty to generate a common name.<br>
-  </div>
+  </div>-->
   
     <div class="form-group">
       <label for="Component Name">Equipment type</label>

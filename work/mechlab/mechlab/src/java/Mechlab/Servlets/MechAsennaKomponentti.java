@@ -16,8 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Servletti, joka asentaa mechiin uuden komponentin
  *
- * @author mikromafia
+ * @author Tuomas Honkala
  */
 public class MechAsennaKomponentti extends HttpServlet {
 
@@ -33,121 +34,101 @@ public class MechAsennaKomponentti extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NamingException, SQLException {
-         
-         
-      Istunto istunto = new Istunto();
-             String ilmoitus="";
+
+
+        Istunto istunto = new Istunto();
+        String ilmoitus = "";
         HttpSession session = request.getSession();
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
 
-          Mech mech = null;
-          Komponentti komponentti = null;
-          int mech_id = 0;
-          if (null !=      request.getParameter("mechid")) {
-                mech_id = Integer.parseInt(request.getParameter("mechid"));
-                  mech = Mech.getMech(mech_id);
-            }
-                                
+        Mech mech = null;
+        Komponentti komponentti = null;
+        int mech_id = 0;
+        if (null != request.getParameter("mechid")) {
+            mech_id = Integer.parseInt(request.getParameter("mechid"));
+            mech = Mech.getMech(mech_id);
+        }
+
 //                        if (session.getAttribute("mech") != null) {
 //                            mech = (Mech) session.getAttribute("mech");
 //                        }
-         response.sendRedirect(response.encodeRedirectURL("mechedit?id="+mech.getMech_id()));               
-        
-        
-boolean olikoAse=false;
-boolean olikoVaruste=false;
+        response.sendRedirect(response.encodeRedirectURL("mechedit?id=" + mech.getMech_id()));
+        boolean laiton = false;
 
-String minne ="";
-String location ="";
+        if (kayttaja.getID() != mech.getUser_id() && kayttaja.getOikeustaso() == 0) {
+            laiton = true;
+            session.setAttribute("ilmoitus", "Not possible! You can only make changes to your own mechs!");
+        }
+
+        boolean olikoAse = false;
+        boolean olikoVaruste = false;
+
+        String minne = "";
+        String location = "";
 
 
 
-if (null !=      request.getParameter("minne")) {
-    minne = request.getParameter("minne").toUpperCase();
-    if (minne.contains("LA")) {
-        location ="LEFT ARM";
-    }
-    if (minne.contains("HD")) {
-        location ="HEAD";}
-    if (minne.contains("RA")) {
-        location ="RIGHT ARM";
-    }
-     if (minne.contains("CT")) {
-        location ="CENTER TORSO";}
-     if (minne.contains("LT")) {
-        location ="LEFT TORSO";}
-     if (minne.contains("RT")) {
-        location ="RIGHT TORSO";}
-     
-          if (minne.contains("LL")) {
-        location ="LEFT LEG";}
-        if (minne.contains("RL")) {
-        location ="RIGHT LEG";}
-    
-    
-}
+        if (null != request.getParameter("minne") && !laiton) {
+            minne = request.getParameter("minne").toUpperCase();
+            if (minne.contains("LA")) {
+                location = "LEFT ARM";
+            }
+            if (minne.contains("HD")) {
+                location = "HEAD";
+            }
+            if (minne.contains("RA")) {
+                location = "RIGHT ARM";
+            }
+            if (minne.contains("CT")) {
+                location = "CENTER TORSO";
+            }
+            if (minne.contains("LT")) {
+                location = "LEFT TORSO";
+            }
+            if (minne.contains("RT")) {
+                location = "RIGHT TORSO";
+            }
 
- if (null !=      request.getParameter("vaihdareaktori")) {
-                int reaktori_id = Integer.parseInt(request.getParameter("vaihdareaktori"));
-                    
-     
-              mech.vaihdaReaktori(reaktori_id);
-  }
- 
-    if (null !=      request.getParameter("painoluokka")) {
-                int painoluokka = Integer.parseInt(request.getParameter("painoluokka"));
-                    
-     
-              mech.muutaPainoluokka(painoluokka);
-  }
+            if (minne.contains("LL")) {
+                location = "LEFT LEG";
+            }
+            if (minne.contains("RL")) {
+                location = "RIGHT LEG";
+            }
 
-  if (null !=      request.getParameter("lisaa")) {
-                int komponentti_id = Integer.parseInt(request.getParameter("lisaa"));
-                    
-     
-              mech.asennaKomponentti(komponentti_id, location);
-  }
-   if (null !=      request.getParameter("poista")) {
-                int komponentti_id = Integer.parseInt(request.getParameter("poista"));
-                    
-              mech.poistaKomponentti(komponentti_id);
-              //mech.poistaKomponentti(komponentti_id, location);
-  }
-        //                    try {
-        //                         komponentti = Komponentti.getKomponentti(Integer.parseInt(request.getParameter("lisaa")));
-        //                    } catch (NamingException ex) {
-        //                        Logger.getLogger(MechEditoi.class.getName()).log(Level.SEVERE, null, ex);
-        //                    } catch (SQLException ex) {
-        //                        Logger.getLogger(MechEditoi.class.getName()).log(Level.SEVERE, null, ex);
-        //                    }
-        //                    
-        //                    
-        ////                    if (null !=      request.getParameter("minne")) {
-        ////                        String minne = request.getParameter("minne");
-        ////                        if (minne.equalsIgnoreCase("LA")) {
-        //                            try {
-        //                                mech.asennaKomponentti(komponentti, "LEFT ARM");
-        //                            } catch (NamingException ex) {
-        //                                Logger.getLogger(MechEditoi.class.getName()).log(Level.SEVERE, null, ex);
-        //                            } catch (SQLException ex) {
-        //                                Logger.getLogger(MechEditoi.class.getName()).log(Level.SEVERE, null, ex);
-        //                            }
-        ////                    }
-        //  }
-//                        Logger.getLogger(MechEditoi.class.getName()).log(Level.SEVERE, null, ex);
-//                    } catch (SQLException ex) {
-//                        Logger.getLogger(MechEditoi.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-               
-  
-         
-         
-            
-           //response.encodeRedirectURL("komponenttiselaa");
-        //    response.sendRedirect("mecheditoi");
-            session.setAttribute("kirjautunut", kayttaja);
-            //session.setAttribute("ilmoitus", ilmoitus);
-           // session.setAttribute("mech", mech);
+
+        }
+
+        if (null != request.getParameter("vaihdareaktori") && !laiton) {
+            int reaktori_id = Integer.parseInt(request.getParameter("vaihdareaktori"));
+
+
+            mech.vaihdaReaktori(reaktori_id);
+        }
+
+        if (null != request.getParameter("painoluokka") && !laiton) {
+            int painoluokka = Integer.parseInt(request.getParameter("painoluokka"));
+
+
+            mech.muutaPainoluokka(painoluokka);
+        }
+
+        if (null != request.getParameter("lisaa") && !laiton) {
+            int komponentti_id = Integer.parseInt(request.getParameter("lisaa"));
+
+
+            mech.asennaKomponentti(komponentti_id, location);
+        }
+        if (null != request.getParameter("poista") && !laiton) {
+            int komponentti_id = Integer.parseInt(request.getParameter("poista"));
+
+            mech.poistaKomponentti(komponentti_id);
+            //mech.poistaKomponentti(komponentti_id, location);
+        }
+
+        session.setAttribute("kirjautunut", kayttaja);
+        //session.setAttribute("ilmoitus", ilmoitus);
+        // session.setAttribute("mech", mech);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author mikromafia
+ * Servletti mechien selailuun 
+ * @author Tuomas Honkala
  */
 public class MechSelaa extends HttpServlet {
 
@@ -42,8 +42,13 @@ public class MechSelaa extends HttpServlet {
         Istunto istunto = new Istunto();
         HttpSession session = request.getSession();
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
-         String ilmoitus = (String) session.getAttribute("ilmoitus");
-        request.setAttribute("ilmoitus", ilmoitus);
+        
+        String ilmoitus = null;
+        if (session.getAttribute("ilmoitus") != null) {
+        ilmoitus = (String) session.getAttribute("ilmoitus");
+        session.removeAttribute(ilmoitus);
+        }
+        
         HttpServletRequest sivu = request;
         
         request.setAttribute("navimechselaa", "active");
@@ -51,6 +56,7 @@ public class MechSelaa extends HttpServlet {
         request.setAttribute("navilogin", "");
         request.setAttribute("naviloginmoodi", "POISTU");
         request.setAttribute("naviloginosoite", "Uloskirjaudu");
+        request.setAttribute("ilmoitus", ilmoitus);
        // request.setAttribute("kirjautuneenNimi", "Et ole kirjautunut sisään!");
         
         response.setContentType("text/html;charset=UTF-8");
@@ -68,6 +74,34 @@ public class MechSelaa extends HttpServlet {
             }
                 
         } else {   request.setAttribute("view", "all");}
+        
+        if (null != request.getParameter("weight")) {
+            String maxweight = request.getParameter("weight");
+            
+             if (maxweight.equalsIgnoreCase("0")) {
+                request.setAttribute("minweight", 20);
+                request.setAttribute("maxweight", 100);
+            }
+            
+            if (maxweight.equalsIgnoreCase("35")) {
+                request.setAttribute("minweight", 20);
+                request.setAttribute("maxweight", 35);
+            }
+            
+            if (maxweight.equalsIgnoreCase("55")) {
+                request.setAttribute("minweight", 40);
+                request.setAttribute("maxweight", 55);
+            }
+            if (maxweight.equalsIgnoreCase("75")) {
+                request.setAttribute("minweight", 60);
+                request.setAttribute("maxweight", 75);
+            }
+            if (maxweight.equalsIgnoreCase("100")) {
+                request.setAttribute("minweight", 80);
+                request.setAttribute("maxweight", 100);
+            }
+                
+        } else {  request.setAttribute("minweight", 20); request.setAttribute("maxweight", 100);}
         
         
             if (istunto.onkoKirjautunut(request, response)) {

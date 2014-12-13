@@ -2,6 +2,8 @@
 package Mechlab.Tietokanta;
 
 /**
+ * Erilaisia tarkistavia metodeita sisältävä apuluokka.
+ * Tarkistaja on tärkeä puskuri, joka pyrkii estämään väärää muotoa olevien tietojen tallentumista tietokantaan.
  */
 public class Tarkistaja {
     
@@ -23,6 +25,11 @@ public class Tarkistaja {
         return "n/a";
     }
     
+    /**
+     * Tarkistaa onko joku merkkijono alfanumeerinen JA riittävän lyhyt (alle 39 merkkiä).
+     * @param merkkijono
+     * @return 
+     */
     public static boolean onkoAlfanumeerinen(String merkkijono){
 //    String pattern= "^[a-zA-Z0-9ä-Ö]*$";
 //        if (string.matches(pattern) && string.length()<40){
@@ -110,6 +117,16 @@ public class Tarkistaja {
          
          public static boolean tarkistaKokoluokanRiittavyys (String kokoluokka, int mechinpaino) {
              return tarkistaLegActuatorinRiittavyys(kokoluokka, mechinpaino);
+         }
+         
+         public static boolean tarkistaKokoluokkaKokoluokkaaVastaan(String tavoiteKokoluokka, String vertailtavaKokoluokka) {
+             
+             if (tavoiteKokoluokka.equalsIgnoreCase("SMALL")) {return true;}
+             if (tavoiteKokoluokka.equalsIgnoreCase("MEDIUM") && !vertailtavaKokoluokka.equalsIgnoreCase("SMALL")) {return true;}
+             if (tavoiteKokoluokka.equalsIgnoreCase("LARGE") && !vertailtavaKokoluokka.equalsIgnoreCase("SMALL") && !vertailtavaKokoluokka.equalsIgnoreCase("MEDIUM")) {return true;}
+             if (tavoiteKokoluokka.equalsIgnoreCase("XL") && vertailtavaKokoluokka.equalsIgnoreCase("XL")) {return true;}
+
+             return false;
          }
          
          public static boolean tarkistaLegActuatorinRiittavyys(String kokoluokka, int mechinpaino) {

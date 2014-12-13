@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author mikromafia
+ * Uloskirjautumista kontrolloiva servletti
+ * @author Tuomas Honkala
  */
 public class Uloskirjaudu extends HttpServlet {
 

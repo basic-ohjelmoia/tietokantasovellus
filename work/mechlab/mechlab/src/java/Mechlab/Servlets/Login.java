@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author mikromafia
+ * Sisäänkirjautumis-servletti
+ * @author Tuomas Honkala
  */
 public class Login extends HttpServlet {
 

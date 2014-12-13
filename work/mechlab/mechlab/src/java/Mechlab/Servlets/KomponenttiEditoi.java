@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author mikromafia
+ * ASE-tyyppisten komponenttien editointiin käytettävä Servletti
+ * @author Tuomas Honkala
  */
 public class KomponenttiEditoi extends HttpServlet {
 

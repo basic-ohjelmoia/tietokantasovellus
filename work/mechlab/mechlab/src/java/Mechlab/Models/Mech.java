@@ -12,16 +12,7 @@ import java.util.List;
 import javax.naming.NamingException;
 
 /**
- * mech_id	INTEGER NOT NULL ,
-	nimi	VARCHAR(40)	NOT NULL,
-	collection_id INTEGER REFERENCES mechkokoelma(mechkokoelma_id) ON DELETE CASCADE,
-	user_id INTEGER REFERENCES kayttaja(kayttaja_id) ON DELETE CASCADE,
-	reactor_id INTEGER REFERENCES reaktori(reaktori_id) ON DELETE CASCADE,
-	paino	INTEGER		NOT NULL,
-	panssariarvo	INTEGER	,
-	CHECK (paino > 19),
-	CHECK (paino < 101),
-	PRIMARY KEY (mech_id)
+ * Malli tietokannan Mech-merkinnöille
  */
 public class Mech {
 
@@ -44,14 +35,16 @@ public class Mech {
     private ArrayList<Komponentti> leftleg;
     private ArrayList<Komponentti> rightleg;
     
-
+    private ArrayList<Komponentti> kaikkiKomponentit;
 
     public Mech() {
-        
+        this.reaktori = null;
+        this.kaikkiKomponentit = new ArrayList<Komponentti>();
     }
 
     public Mech(int mech_id, String nimi, int collection_id, int user_id, int reactor_id, int paino) {
-        
+        this.reaktori = null;
+        this.kaikkiKomponentit = new ArrayList<Komponentti>();
     }
     /**
      * Luo uuden mechin ja palauttaa uuden mechin uuden mech_id:n
@@ -77,6 +70,43 @@ public class Mech {
   return mech_id;
     }
     
+    /**
+     * Work-in-progress!
+     * Mechien kopiointiin tarkoitettu metodi, joka ei vielä toimi kunnolla! 
+     * @param kopioitava Kopioitavan mechin olio
+     * @param user_id Kopiointia yrittävän käyttäjän user_id
+     * @return Palauttaa uuden kopio-mechin mech_id:n
+     * @throws NamingException
+     * @throws SQLException 
+     */
+     public static int copyMech(Mech kopioitava, int user_id) throws NamingException, SQLException {
+       int mech_id = getUusiID();
+       
+    String sql = "INSERT INTO MECH (mech_id, nimi, collection_id, user_id, reactor_id, paino) VALUES" // jätetään reactor_id pois aluksi
+   //+"("+mech_id+", 'New Unnamed Mech', "+user_id+", "+user_id+", 20)";//
+    +"("+mech_id+", 'Carbon Copy', (SELECT mechkokoelma_id from MECHKOKOELMA where mechkokoelma_id="+user_id+"), (SELECT kayttaja_id from kayttaja where kayttaja_id="+user_id+"),  (SELECT reaktori_id from REAKTORI where reaktori_id="+kopioitava.getReactor_id()+"), "+kopioitava.getPaino()+")";
+//    +"("+mech_id+", 'New Unnamed Mech', (SELECT mechkokoelma_id from MECHKOKOELMA where mechkokoelma_id="+user_id+"), (SELECT kayttaja_id from kayttaja where kayttaja_id="+user_id+"), 20)";
+    //+" (SELECT mechkokoelma_id from MECHKOKOELMA where mechkokoelma_id="+user_id+"), (SELECT kayttaja_id from kayttaja where kayttaja_id="+user_id+"), (SELECT reaktori_id from REAKTORI where reaktori_id=2), 30)";
+ Connection yhteys = Tietokanta.getYhteys();
+             PreparedStatement kysely = yhteys.prepareStatement(sql);
+    
+             kysely.executeQuery();
+             
+             
+               try { kysely.close(); } catch (Exception e) {}
+  try { yhteys.close(); } catch (Exception e) {}
+  
+    
+  return mech_id;
+    }
+    
+     /**
+      * Palauttaa mechin mech_id:tä vastaan
+      * @param mech_id
+      * @return
+      * @throws NamingException
+      * @throws SQLException 
+      */
  public static Mech getMech(int mech_id) throws NamingException, SQLException {
             Mech k = null;
   
@@ -90,9 +120,6 @@ public class Mech {
              ResultSet tulokset = kysely.executeQuery();
   
   
-  
-
- 
   if (tulokset.next()) { 
 
     k = new Mech();
@@ -128,7 +155,12 @@ public class Mech {
   return k;
 }
     
- 
+ /**
+  * Palauttaa kaikki mechit tietokannasta listana
+  * @return
+  * @throws NamingException
+  * @throws SQLException 
+  */
  public static List<Mech> getMechit() throws NamingException, SQLException {
            
   String sql = "SELECT mech_id, nimi, collection_id, user_id, reactor_id, paino FROM mech" // WHERE kategoria='VARUSTE'"
@@ -190,6 +222,7 @@ public class Mech {
     }
    
      public int getCollection_id() {
+         if (this.collection_id==0) {return this.mech_id;}
         return this.collection_id;
     }
      
@@ -201,10 +234,22 @@ public class Mech {
         return this.reactor_id;
     }
      
-    public void setNimi(String nimi) {
-        this.nimi=nimi;
+    public void setNimi(String nimi) throws NamingException, SQLException {
+        if (getCollection_id() != this.mech_id) {
+        Mech alkuperaismalli = null;
+            if (Mech.getMech(getCollection_id()) != null) {
+                alkuperaismalli = Mech.getMech(getCollection_id());
+                this.nimi = alkuperaismalli.getNimi()+" \""+nimi+"\"";
+            }
+            else {this.nimi=nimi;}
+        } 
+        
+        else {
+  
+        this.nimi=nimi;}
     }
     public String getNimi() {
+       // if (getCollection_id() != this.mech_id) {return Mech.get
         return this.nimi;
     }
     
@@ -244,6 +289,14 @@ public class Mech {
         return heatsinks;
     }
     
+     /**
+      * Inner Structuren voi ajatella mechin "luurankona". Inner Structure vahingoittuu, kun panssaria ei ole jäljellä suojana.
+      * Tätä nimenomaista metodia hyödynnetään combat simulatorissa.
+      * 
+      * @return Palauttaa yhteenlasketun inner structure-arvon 
+      * @throws NamingException
+      * @throws SQLException 
+      */
      public int getInnerStructure() throws NamingException, SQLException {
          int innerStructure = 0;
          for (Komponentti komponentti : getMechinKomponentit("ALL")) {
@@ -296,16 +349,20 @@ public class Mech {
             }
         }
         for (Komponentti komponentti : getMechinKomponentit("LEFT LEG")) {
-            if (komponentti.getVarustetype().contentEquals("ACTUATORS")) {
-                    if (Tarkistaja.tarkistaLegActuatorinRiittavyys(komponentti.getKokoluokka(), this.paino))
-                    {olikoVasemmanJalanActuator=true;}
-                }
+            if (komponentti.getKategoria().contentEquals("VARUSTE")) {
+                    if (komponentti.getVarustetype().contentEquals("ACTUATORS")) {
+                            if (Tarkistaja.tarkistaLegActuatorinRiittavyys(komponentti.getKokoluokka(), this.paino))
+                            {olikoVasemmanJalanActuator=true;}
+                        }
+            }
         }
         for (Komponentti komponentti : getMechinKomponentit("RIGHT LEG")) {
-            if (komponentti.getVarustetype().contentEquals("ACTUATORS")) {
-                    if (Tarkistaja.tarkistaLegActuatorinRiittavyys(komponentti.getKokoluokka(), this.paino))
-                    {olikoOikeanJalanActuator=true;}
-                }
+            if (komponentti.getKategoria().contentEquals("VARUSTE")) {
+                    if (komponentti.getVarustetype().contentEquals("ACTUATORS")) {
+                            if (Tarkistaja.tarkistaLegActuatorinRiittavyys(komponentti.getKokoluokka(), this.paino))
+                            {olikoOikeanJalanActuator=true;}
+                        }
+            }
         }
          
           
@@ -330,19 +387,23 @@ public class Mech {
          boolean tier3 = false;
        
          for (Komponentti komponentti : getMechinKomponentit("LEFT LEG")) {
-            if (komponentti.getVarustetype().contentEquals("ACTUATORS")) {
-                    if (komponentti.getVarustetier()==3) {tier3=true;}
-                    if (komponentti.getVarustetier()==2) {tier2=true;}
-                    if (komponentti.getVarustetier()==1) {tier1=true;}
-                }
+             if (komponentti.getKategoria().contentEquals("VARUSTE")) {
+                    if (komponentti.getVarustetype().contentEquals("ACTUATORS")) {
+                            if (komponentti.getVarustetier()==3) {tier3=true;}
+                            if (komponentti.getVarustetier()==2) {tier2=true;}
+                            if (komponentti.getVarustetier()==1) {tier1=true;}
+                    }
+             }
         }
         
         for (Komponentti komponentti : getMechinKomponentit("RIGHT LEG")) {
-            if (komponentti.getVarustetype().contentEquals("ACTUATORS")) {
-                    if (komponentti.getVarustetier()==3) {tier3=true;}
-                    if (komponentti.getVarustetier()==2) {tier2=true;}
-                    if (komponentti.getVarustetier()==1) {tier1=true;}
-                }
+            if (komponentti.getKategoria().contentEquals("VARUSTE")) {
+                    if (komponentti.getVarustetype().contentEquals("ACTUATORS")) {
+                            if (komponentti.getVarustetier()==3) {tier3=true;}
+                            if (komponentti.getVarustetier()==2) {tier2=true;}
+                            if (komponentti.getVarustetier()==1) {tier1=true;}
+                        }
+            }
         }
         
         if (tier3) {}
@@ -396,108 +457,22 @@ public class Mech {
      
      
       public int getWeaponrating() throws NamingException, SQLException {
-        int rating = 0;
-        int sensorLevel = 5;
-        int targettingComputerLevel = 5;
-        int damageTotal = 0;
-        int heatTotal = 0;
-         
-        for (Komponentti komponentti : getMechinKomponentit("ALL")) {
-            if (komponentti.getKategoria().contentEquals("VARUSTE")) {
-                    if (komponentti.getVarustetype().contentEquals("SENSORS")) {
-                        if (komponentti.getVarustetier()<sensorLevel) {
-                            sensorLevel=komponentti.getVarustetier();
-                        }
-                    }
-            }
-            if (komponentti.getKategoria().contentEquals("VARUSTE")) {
-                if (komponentti.getVarustetype().contentEquals("TARGETTING COMPUTER")) {
-                    if (komponentti.getVarustetier()<targettingComputerLevel) {
-                        targettingComputerLevel=komponentti.getVarustetier();
-                    }
-                }
-            }
-            
-            if (komponentti.getKategoria().contentEquals("ASE")) {
-                heatTotal += komponentti.getHeat();
-                damageTotal += komponentti.getWeapondamage();
-                
-                int lisays = (komponentti.getWeapondamage()/2);
-                if (komponentti.getWeapontype().contentEquals("MELEE")) {
-                    lisays = lisays/2;
-                }
-                if (komponentti.getWeapontype().contentEquals("MISSILE")) {
-                    lisays += (komponentti.getWeaponmaxrange()/2);
-                }
-                if (komponentti.getWeaponmaxrange()>=15) {
-                    lisays +=3;
-                }
-                else if (komponentti.getWeaponmaxrange()>=12) {
-                    lisays +=2;
-                }
-                else if (komponentti.getWeaponmaxrange()>=9) {
-                    lisays +=1;
-                }
-                else if (komponentti.getWeaponmaxrange()<5) {
-                    lisays -=1;
-                }
-                rating+= lisays;
-            }
-        }
-        
-          boolean olikoVasemmanKadenActuatori = false;
-          int vasemmanKadenDamaget = 0;
-        for (Komponentti komponentti : getMechinKomponentit("LEFT ARM")) {
-            if (komponentti.getKategoria().contentEquals("ASE") && !komponentti.getWeapontype().contentEquals("MISSILE")) {
-                 vasemmanKadenDamaget += (komponentti.getWeapondamage()/2);
-            }
-            if (komponentti.getKategoria().contentEquals("VARUSTE")) {
-                if (komponentti.getVarustetype().contentEquals("ACTUATORS")) {
-                    olikoVasemmanKadenActuatori=true;
-                }
-            }
-        }
-        if (olikoVasemmanKadenActuatori) {rating+=vasemmanKadenDamaget;}
-        
-          boolean olikoOikeanKadenActuatori = false;
-          int oikeanKadenDamaget = 0;
-        for (Komponentti komponentti : getMechinKomponentit("RIGHT ARM")) {
-            if (komponentti.getKategoria().contentEquals("ASE") && !komponentti.getWeapontype().contentEquals("MISSILE")) {
-                 oikeanKadenDamaget += (komponentti.getWeapondamage()/2);
-            }
-            if (komponentti.getKategoria().contentEquals("VARUSTE")) {
-                if (komponentti.getVarustetype().contentEquals("ACTUATORS")) {
-                    olikoOikeanKadenActuatori=true;
-                }
-            }
-        }
-        if (olikoOikeanKadenActuatori) {rating+=oikeanKadenDamaget;}
-        
-        if (sensorLevel == 5) {rating = rating/5;}
-        else {rating = ((rating * (18+(3-sensorLevel)))/18);}
-        
-        if (targettingComputerLevel<5) //{rating = rating * 2;}
-        {rating = ((rating * (12+(3-sensorLevel)))/12);} 
-        
-        if ((heatTotal) > (getHeatsinks()+10)) {rating = rating - (rating/3);}
-        else if ((heatTotal) > (getHeatsinks()+5)) {rating = rating - (rating/4);}
-        else if ((heatTotal) > getHeatsinks()) {rating = rating - (rating/6);}
-        else if (heatTotal < getHeatsinks()) {int heatbonus = (getHeatsinks()-(heatTotal)); if (heatbonus<=5) {rating+=heatbonus;} else {rating+=5;}}
-        
-        return rating;
+          return MechData.getWeaponrating(this);
     }
+      public int getDefenserating() throws NamingException, SQLException {
+          return MechData.getDefenserating(this);
+    }
+      
+      public int getDefencerating() throws NamingException, SQLException {
+          return MechData.getDefenserating(this);
+    }
+      
+      
       public void poistaKomponentti(int komponentti_id, String kohde) throws NamingException, SQLException {
           
       }
       public void poistaKomponentti(int komponentisto_id) throws NamingException, SQLException {
-          //if (Tarkistaja.tarkistaKohteenLaillisuus(kohde)) {
-//       int komponentisto_id = 0;
-//       ArrayList<Komponentisto> kaikki = Komponentisto.getKomponentisto();
-//       for (Komponentisto yksilo : kaikki) {
-//           if (yksilo.getBattlemech_id()==this.mech_id && yksilo.getComponent_id()==komponentti_id && kohde.equalsIgnoreCase(kohde)) {
-//               komponentisto_id=yksilo.getKomponentisto_id();
-//           }
-//       }
+
        
        if (komponentisto_id>0) {
        String sql = "DELETE FROM komponentisto WHERE komponentisto_id = "+komponentisto_id;//+" AND sijainti = '"+kohde+"' AND component_id = "+komponentti_id;//" AND sijainti = '"+kohde+"'";
@@ -518,10 +493,17 @@ public class Mech {
    }
       
      
+      /**
+       * Asentaa uuden komponentin mechiin
+       * @param komponentti_id asennettavan komponentin id-numero
+       * @param kohde asennettavan komponentin kohdesijainti (vrt. "CENTER TORSO")
+       * @throws NamingException
+       * @throws SQLException 
+       */
    public void asennaKomponentti(int komponentti_id, String kohde) throws NamingException, SQLException {
        if (Tarkistaja.tarkistaKohteenLaillisuus(kohde)) {
        int komponentisto_id = Komponentisto.getUusiID();
-       
+       this.kaikkiKomponentit.clear();
        
        String sql = "INSERT INTO komponentisto (komponentisto_id, battlemech_id, component_id, sijainti) "
                 +"VALUES ("+komponentisto_id+", "+this.mech_id+", "+komponentti_id+", '"+kohde+"')";
@@ -547,6 +529,13 @@ public class Mech {
        return true;
    }
    
+   /**
+    * Jos käyttäjä on jo luonut yhden pre-production-model -mechin, jolle ei ole vielä tehty mitään, tämä metodi palauttaa FALSE
+    * @param kayttaja_id
+    * @return
+    * @throws NamingException
+    * @throws SQLException 
+    */
    public static boolean voikoKayttajaLuodaUudenMechin(int kayttaja_id) throws NamingException, SQLException {
        List<Mech> mechit = getMechit();
        for (Mech mech : mechit) {
@@ -562,10 +551,25 @@ public class Mech {
        return true;
    }
       
+   /**
+    * Palauttaa varoitus-luetteloita, joita käytetään paitsi mech-editoinnin Construction Guidessa, myös mechin toimintakyvyn arviointiin.
+    * Jos mechillä on nolla kappaletta tason 1 varoituksia, se tarkoittaa, että mech on OPERATIONAL.
+    * 
+    * @param varoitustaso (1 = varoitukset ("mech ei toimi, koska..."), 2=huomautukset ("nämä asiat olisi myös syytä laittaa kuntoon"), 3=saavutukset ("good work!"))
+    * @return palauttaa tasoa vastaavan varoitusluettelon
+    * @throws NamingException
+    * @throws SQLException 
+    */
    public ArrayList<String>getVaroitukset(int varoitustaso) throws NamingException, SQLException {
        return MechData.getVaroitukset(this, varoitustaso);
    }
     
+   /**
+    * Palauttaa mechin tämän hetkisen tonnimäärän, mikä voi olla pienempi kuin virallinen painoluokitus tai toisaalta suurempi, jos mech on ylittänyt painorajansa.
+    * @return
+    * @throws NamingException
+    * @throws SQLException 
+    */
     public int getNettopaino() throws NamingException, SQLException {
         int nettopaino = 0;
         for (Komponentti komponentti : getMechinKomponentit("ALL")) {
@@ -574,6 +578,10 @@ public class Mech {
         return nettopaino;
     }
     
+    /**
+     * Kuinka monta komponenttia (kokoluokasta/physical volumesta laskettuna) voi asentaa ulkoraajoihin ja päähän.
+     * @return 
+     */
     public int getItemsallowedextension() {
         if (this.paino>=100) {return 9;}
         if (this.paino>=80) {return 8;}
@@ -584,6 +592,10 @@ public class Mech {
         else {return 3;}
     }
     
+    /**
+     * Kuinka monta komponenttia (kokoluokasta/physical volumesta laskettuna) voi asentaa torso-sijainteihin.
+     * @return 
+     */
     public int getItemsallowedtorso() {
         if (this.paino>=100) {return 13;}
         else if (this.paino>=80) {return 12;}
@@ -592,6 +604,12 @@ public class Mech {
         else {return 6;}
     }
     
+    /**
+     * Tämä metodijoukko laskee asennettujen komponenttien yhteenlasketun physical volumen per sijainti.
+     * @return
+     * @throws NamingException
+     * @throws SQLException 
+     */
     public int getItemshead() throws NamingException, SQLException {
         return itemLaskuri(getHead());
     }
@@ -617,11 +635,17 @@ public class Mech {
         return itemLaskuri(getRightTorso());
     }
     
+      /**
+       * Item-laskurilla lasketaan komponenttien kokoluokkia (physical volume) yhteen.
+       * Muuntokaava on yksinkertainen: SMALL = 1, MEDIUM = 2, LARGE = 3, XL = 5
+       * @param komponentit Komponentit, joiden volume lasketaan yhteen
+       * @return 
+       */
     public int itemLaskuri(ArrayList<Komponentti> komponentit) {
         
         int laskuri = 0;
         for (Komponentti komponentti : komponentit) {
-            if (komponentti.getKokoluokka().equalsIgnoreCase("XL")) {laskuri+=4;}
+            if (komponentti.getKokoluokka().equalsIgnoreCase("XL")) {laskuri+=5;}
             if (komponentti.getKokoluokka().equalsIgnoreCase("LARGE")) {laskuri+=3;}
             if (komponentti.getKokoluokka().equalsIgnoreCase("MEDIUM")) {laskuri+=2;}
             if (komponentti.getKokoluokka().equalsIgnoreCase("SMALL")) {laskuri+=1;}
@@ -657,12 +681,37 @@ public class Mech {
         return getMechinKomponentit("RIGHT LEG");
     }
     
-//    public ArrayList<Komponentti> getMechinKomponentitSijainneilla(String sijainti) throws NamingException, SQLException {
-//        
-//    }
-         
+
+
+         /**
+          * Palauttaa listan mechiin asennetuista komponenteista, joko kaikista (sijaintiparametrilla "ALL") tai vain tiettyyn sijantiin asennetuista.
+          * TÄRKEÄÄ: tämä metodi tallentaa kullekin luettelossa palautettavalle komponentille väliaikais-luonteisena tietona sijainnin, mihin komponentti on asennettu.
+          * 
+          * @param sijainti Sijainti, josta komponentit haetaan. Voi myös olla ALL
+          * @return Lista komponenteista.
+          * @throws NamingException
+          * @throws SQLException 
+          */
     public ArrayList<Komponentti> getMechinKomponentit(String sijainti) throws NamingException, SQLException {
-         
+        if (sijainti.equalsIgnoreCase("ALL") && this.kaikkiKomponentit.size()>0) {
+            return this.kaikkiKomponentit;
+        } else if (this.kaikkiKomponentit.size()>0) {
+            ArrayList<Komponentti> nopeaPalautus = new ArrayList<Komponentti>();
+            for (Komponentti komponentti : this.kaikkiKomponentit) {
+                if (komponentti.getSijainti().equalsIgnoreCase(sijainti)) {
+                    nopeaPalautus.add(komponentti);
+                }
+            }
+            if (sijainti.equalsIgnoreCase("CENTER TORSO")) {
+                Reaktori haereaktori = getReaktori();
+                if (haereaktori != null) {
+                nopeaPalautus.add(haereaktori);
+                
+                }
+            }
+            return nopeaPalautus;
+        }
+        
         String sqljatko = "";
         if (sijainti.equalsIgnoreCase("ALL") || sijainti.length()==0) {
             sqljatko ="";
@@ -672,13 +721,16 @@ public class Mech {
                 +sqljatko
   //        "SELECT komponentti_id, nimi, massa, kokoluokka, heat, kategoria, sijoituspaikka, weapon_damage, weapon_maxrange, weapon_minrange, weapon_type, weapon_ammo FROM komponentti WHERE kategoria='ASE'"
           +" ORDER BY sijainti ASC";
+  ArrayList<Komponentti> komponentit = new ArrayList<Komponentti>();
+  
+  
   
   //Tietokanta yhteys0 = new Tietokanta();
   Connection yhteys = Tietokanta.getYhteys();
   PreparedStatement kysely = yhteys.prepareStatement(sql);
   ResultSet tulokset = kysely.executeQuery();
 
-  ArrayList<Komponentti> komponentit = new ArrayList<Komponentti>();
+  
   while (tulokset.next()) {
     //Luodaan tuloksia vastaava olio ja palautetaan olio:
     Komponentti k = Komponentti.getKomponentti(tulokset.getInt("component_id"));
@@ -693,12 +745,20 @@ public class Mech {
   try { tulokset.close(); } catch (Exception e) {}
   try { kysely.close(); } catch (Exception e) {}
   try { yhteys.close(); } catch (Exception e) {}
-
+  
+  
+  
   if (sijainti.equalsIgnoreCase("ALL") || sijainti.equalsIgnoreCase("CENTER TORSO")) {
   Reaktori haereaktori = getReaktori();
   if (haereaktori != null) {
   komponentit.add(haereaktori);
+  
   }
+  if (sijainti.equalsIgnoreCase("ALL")) {
+      this.kaikkiKomponentit.clear();
+      this.kaikkiKomponentit.addAll(komponentit);
+  }
+  
   }
   return komponentit;
         
@@ -722,9 +782,15 @@ public class Mech {
     }
     
     public Reaktori getReaktori() throws NamingException, SQLException {
+        
+        if (this.reaktori == null) {
+        
         Reaktori palautettava = Reaktori.getReaktori(this.reactor_id);
-        if (palautettava.getReaktori_id()==0 || palautettava.getNimi().equalsIgnoreCase("Unnamed Reactor")) {return null;}
-        return palautettava;
+        
+        if (palautettava.getReaktori_id()==0 || palautettava.getNimi().equalsIgnoreCase("Unnamed Reactor")) {this.reaktori = null; return null;}
+        this.reaktori = palautettava;
+        return palautettava;}
+        else {return this.reaktori;}
     }
  
     /**
@@ -748,8 +814,9 @@ public class Mech {
     }
     
      public void vaihdaReaktori(int reaktori_id) throws NamingException, SQLException {
+         this.reaktori = null;
          if (Reaktori.getReaktori(reaktori_id).getReaktori_id()>0) {
-        
+             
           
                         String sql = "UPDATE mech SET reactor_id = "+reaktori_id+" WHERE mech_id = "+this.mech_id;
                       Connection yhteys = Tietokanta.getYhteys();
@@ -764,6 +831,31 @@ public class Mech {
                 try { yhteys.close(); } catch (Exception e) {}
 
          }
+      }
+     
+     /**
+      * Tarpeeton metodi Collection-tietokantataulun käsittelyyn.
+      * Ei merkitystä sovelluksen toiminnan kannalta.
+      * 
+      * @param collectionID
+      * @throws NamingException
+      * @throws SQLException 
+      */
+      public void muutaCollectionID(int collectionID) throws NamingException, SQLException {
+        
+          
+                        String sql = "UPDATE mech SET collection_id = "+collectionID+" WHERE mech_id = "+this.mech_id;
+                      Connection yhteys = Tietokanta.getYhteys();
+                           PreparedStatement kysely = yhteys.prepareStatement(sql);
+                           
+                           kysely.executeUpdate();
+           
+                
+                try { kysely.close(); } catch (Exception e) {}
+                try { yhteys.close(); } catch (Exception e) {}
+  
+  
+        
       }
     
       public void muutaPainoluokka(int uusipainoluokka) throws NamingException, SQLException {
@@ -795,7 +887,14 @@ public class Mech {
         }
         return hinta;
     }
-      
+     
+           /**
+            * Metodi, joka muotoilee hintoja siistimmiksi taulukkoesitystä varten.
+            * 
+            * @return
+            * @throws NamingException
+            * @throws SQLException 
+            */
        public String getCoststring() throws NamingException, SQLException {
            double hinta = getCost();
            String palaute ="";
@@ -839,6 +938,16 @@ public class Mech {
            }
        }
        
+       /**
+        * Poistaa mechin KOKONAAN tietokannasta. 
+        * Jos yritetään poistaa mechiä joka ei ole käyttäjän oma, käyttäjällä on oltava oikeustaso 1 ("admin"), että poisto onnistuu.
+        * @param mech_id poistettavan mechin id
+        * @param kayttaja_id poistoa yrittävän käyttäjän id
+        * @param oikeustaso poistoa yrittävän käyttäjän oikeustaso
+        * @return
+        * @throws NamingException
+        * @throws SQLException 
+        */
        public static String poistaMech(int mech_id, int kayttaja_id, int oikeustaso) throws NamingException, SQLException {
            String sql = "";
            String palaute = "Nothing happened!";

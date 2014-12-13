@@ -7,12 +7,25 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:pohja pageTitle="Mechlab!">
-    <h1>Mechlab!</h1>
+    <div class="page-header">
+  <h1><span class="label label-info">MECHLAB!</span> <small>Welcome to wonderful world of 31st Century Armored Combat.</small></h1>
+</div>
     
+    <div class="panel panel-default">
+        
+  <div class="panel-body">
+  Create components from scratch and then use them to build your own BattleMechs. Test the combat capabilities with simulated combat. This is a course study for database programming. An interpretation of Battletech ruleset and BattleMechs are used here for education purposes only.<br>
+  <p>
+      <b>Created by TUOMAS HONKALA.</b><br>
+  </div>
+</div>
+    LOGIN:<br>
+    <p>
     <form action="Login" method="POST">
-Käyttäjänimi: <input type="text" name="username" value="${kayttaja}" />
-Salasana: <input type="password" name="password" />
-<button type="submit">Kirjaudu</button>
+Username <input type="text" name="username" value="${kayttaja}" />
+Password: <input type="password" name="password" />
+<button type="submit">Submit</button>
 </form>
+<p><center><img src="img/bigmech.png"></center>
 </t:pohja>
       

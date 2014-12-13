@@ -36,7 +36,8 @@
           <nav class="navbar navbar-inverse" role="navigation">
   <ul class="nav nav-tabs">
     <li class="${navimechselaa}"><a href="mechselaa">MechLab.BROWSE</a></li>
-    <c:if test="${naviadmin != null}"><li class="${naviyllapito}"><a href="komponenttiselaa">Mechlab.COMPONENTS</a></li></c:if>
+    <%--<c:if test="${naviadmin != null}"><li class="${naviyllapito}"><a href="komponenttiselaa">Mechlab.COMPONENTS</a></li></c:if>--%>
+    <li class="${naviyllapito}"><a href="komponenttiselaa">Mechlab.COMPONENTS</a></li>
     <li><a href="#">User.SETTINGS</a></li>
     <li class="${navilogin}"><a href="${naviloginosoite}">User.${naviloginmoodi}</a></li>
     <li><c:if test="${kirjautuneenNimi != null}"><span class="label label-default">Welcome, ${kirjautuneenNimi}! This is your visit number ${vierailukerta}.</span></c:if><c:if test="${kirjautuneenNimi == null}"><span class="label label-info">You are not logged in!</span></c:if></li>
@@ -47,11 +48,14 @@
             <c:if test="${virheViesti != null}">
                 <div class="alert alert-danger">${virheViesti}</div>
             </c:if>
-        <c:if test="${allcomponents != null}">
+                <c:if test="${ilmoitus != null}">
+                <div class="alert alert-danger">${ilmoitus}</div>
+            </c:if>  
+        <c:if test="${allcomponents != null || asekomponentit != null || mechit != null}">
         </div>            
         </c:if>
             <jsp:doBody/>
-        <c:if test="${allcomponents == null}">
+        <c:if test="${allcomponents == null || asekomponentit != null || mechit != null}">
         </div>            
         </c:if>
     </body>

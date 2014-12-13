@@ -12,13 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Käyttäjän kirjautumisstatusta käsittelevä servletti
  *
- * @author mikromafia
+ * @author Tuomas Honkala
  */
 public class Istunto extends HttpServlet {
 
     HttpServletRequest nykyinenSivu;
-   // HttpSession session;
+    // HttpSession session;
+
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -29,23 +31,32 @@ public class Istunto extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     public Istunto() {
-        
     }
-    
+
     public Istunto(HttpSession session) {
         //this.session = session;
     }
-    
-    public Istunto (HttpServletRequest request) {
+
+    public Istunto(HttpServletRequest request) {
         this.nykyinenSivu = request;
     }
-    
+
+    /**
+     * Onko käyttäjä kirjautunut järjestelmään? Jos ei, palautetaan false
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     * @throws NamingException
+     * @throws SQLException
+     */
     protected boolean onkoKirjautunut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NamingException, SQLException {
-      
-        
+
+
         HttpSession session = request.getSession(true);
         String ilmoitus = "";
         if (session.getAttribute("kirjautunut") == null) {
@@ -54,52 +65,51 @@ public class Istunto extends HttpServlet {
         }
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
         ilmoitus = (String) session.getAttribute("ilmoitus");
-        
+
         if (kayttaja != null) {
             request.setAttribute("kirjautunut", kayttaja); // oli request.
-              request.setAttribute("kirjautuneenNimi", kayttaja.getNimi());  // oli request.
-             request.setAttribute("vierailukerta", kayttaja.getVierailukerta());
-             request.setAttribute("userid", kayttaja.getID());
-             request.setAttribute("ilmoitus", ilmoitus);
-                
-            if (kayttaja.getOikeustaso()>0) {
-                
+            request.setAttribute("kirjautuneenNimi", kayttaja.getNimi());  // oli request.
+            request.setAttribute("vierailukerta", kayttaja.getVierailukerta());
+            request.setAttribute("userid", kayttaja.getID());
+            request.setAttribute("ilmoitus", ilmoitus);
+
+            if (kayttaja.getOikeustaso() > 0) {
+
                 request.setAttribute("admin", true);    // oli request.
                 request.setAttribute("naviadmin", "true");
             } else {
                 request.setAttribute("admin", "false");
             }
-            
+
             return true;
         }
-        
+
         //request.setAttribute("virheViesti", "Mechlabin käyttö edellyttää kirjautumista!");
         response.sendRedirect("login?istunnoton=kylla");
         return false;
 
     }
-    
+
     protected boolean onkoAdmin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NamingException, SQLException {
-        
+
         HttpSession session = request.getSession();
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
-        
+
         if (kayttaja != null) {
             session.setAttribute("kirjautunut", this);  // oli request.
             if (kayttaja.onkoAdmin()) {
                 return true;
             } else {
-            return false;
-        }
-        
-        //request.setAttribute("virheViesti", "Mechlabin käyttö edellyttää kirjautumista!");
-        //response.sendRedirect("login?istunnoton=kylla");
+                return false;
+            }
+
+            //request.setAttribute("virheViesti", "Mechlabin käyttö edellyttää kirjautumista!");
+            //response.sendRedirect("login?istunnoton=kylla");
         }
         return false;
 
     }
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

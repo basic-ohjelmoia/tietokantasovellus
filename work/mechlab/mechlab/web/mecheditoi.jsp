@@ -6,9 +6,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<t:pohja pageTitle="Mechlab! Create Mech!">
+<t:pohja pageTitle="Mechlab! Create a Mech!">
  
-    <h1>Mechlab!</h1>
+<div class="page-header">
+  <h1><span class="label label-info">The Mechlab</span><small>View and construct your mechs here.</small></h1>
+</div>
     
 <!--    <ul class="nav nav-pills" role="tablist">
         <li role="presentation"><a href="komponenttiselaa">List Weapons</a></li>
@@ -26,34 +28,39 @@
       Select parameters for a new non-weapon component (equipment) (admin access only).
      </div>
           <p>-->
-         
-          
-          
-          
-         <div class="table-responsive">
-            <table class="table table-hover" width="100%">
-      <tr>
-          <td>id#</td>
-          <td class="dropdown" style="overflow:visible">
-          <ul class="nav nav-pills" role="tablist">
-  <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mech Name<span class="caret"></span></a>
+        <c:if test="${naviadmin == null && userid != mech.user_id}">
+            <ul class="nav nav-pills" role="tablist">
+            <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Simulate Combat<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-              <li>  <form action="mechedit" method="POST" role="form">
+              <li>Simulate combat versus...</li>
+              
+               <c:forEach var="mech2" items="${mechit}">
+          
+          <c:if test="${mech.nettopaino > 0 && mech.varoitusvapaa == true}">
+             
+                <li><a href="mechsimuloi?attacker=${mech.mech_id}&defender=${mech2.mech_id}">${mech2.paino}t ${mech2.nimi} (${mech2.weaponrating}WR/${mech2.defencerating}DR/${mech2.armorrating}AR)</a></li>
+                
+                </c:if>
+               </c:forEach>
+                  </ul>
+        </li></ul>
+        </c:if>
+          
+        <c:if test="${naviadmin != null || userid == mech.user_id}">  
+           <ul class="nav nav-pills" role="tablist">
+               <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Rename Mech<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+               <form action="mechedit" method="POST" role="form">
                 
   <div class="form-group">
       <input type="hidden" name="mechid" value="${mech.mech_id}"/>
     <input type="nimi" class="form-control" name="mechnimi" id="mechnimi" value="${mech.nimi}">
-  </div><button type="submit" class="btn btn-default">RENAME</button>
-              </form>  </li>
-          </ul>
-  </li>
-          </ul>
-          </td>
-          
-          <td class="dropdown" style="overflow:visible"><ul class="nav nav-pills" role="tablist">
-  <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Weight Class<span class="caret"></span></a>
+  </div><button type="submit" class="btn btn-default">Rename Mech</button>
+              </form></ul>  </li>
+               <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Change Weight Class<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <li>Select a new weight class:</li>
               <li>-Light Mech-</li>
@@ -79,14 +86,42 @@
             <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&painoluokka=100">100 t</a></li>
                   </ul>
         </li>
-       
-</ul></td>
+        <%--<li role="presentation" class="disabled"><a href="mechluouusi?kopioi=${mech.mech_id}">Copy As A New Prototype</a></li>--%>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Simulate Combat<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+              <li>Simulate combat versus...</li>
+              
+               <c:forEach var="mech2" items="${mechit}">
+          
+          <c:if test="${mech.nettopaino > 0 && mech.varoitusvapaa == true}">
+             
+                <li><a href="mechsimuloi?attacker=${mech.mech_id}&defender=${mech2.mech_id}">${mech2.paino}t ${mech2.nimi} (${mech2.weaponrating}WR/${mech2.defencerating}DR/${mech2.armorrating}AR)</a></li>
+                
+                </c:if>
+               </c:forEach>
+                  </ul>
+        </li>
+        <li role="presentation"><a href="mechselaa">Save & Exit</a></li>
+        
+        </ul>
+          <p>
+          </c:if>
+              
+         <div class="table-responsive">
+            <table class="table table-hover" width="100%">
+<!--      <tr>
+          <td>id#</td>
+          <td>Mech Name</td>
           
           
-          <td>Weapon Rating</td><td>Armor Rating</td><td>Heat Sinks</td>
-          <td>Walk (Run) Speed</td><td>Jump Rating</td><td>Owner</td><td>Unit Cost</td><td>Edit</td><td>Delete</td>
-      </tr>
-      
+          <td>Weight Class</td>
+          
+          
+          <td>Weapon Rating</td><td>Defence Rating</td><td>Armor Value</td><td>Heat Sinks</td>
+          <td>Walk (Run) Speed</td><td>Jump Rating</td><td>Owner</td><td>Unit Cost</td>
+      </tr>-->
+      <t:mechselaaetiketit/>
       <%--<c:forEach var="mech" items="${mechit}">--%>
                                   
   
@@ -95,17 +130,23 @@
      
         <tr>
                 <td>${mech.mech_id}</td>
-                <td><c:out value="${mech.nimi}"/></td>
+                <td><span class="label label-default"><c:out value="${mech.nimi}"/></span></td>
                 <td><c:out value="${mech.nettopaino}"/>t / <c:out value="${mech.paino}"/>t</td>
                 <td><c:out value="${mech.weaponrating}"/></td>
+                <td><c:out value="${mech.defencerating}"/></td>
                 <td><c:out value="${mech.armorrating}"/></td>
                 <td><c:out value="${mech.heatsinks}"/></td>
-                <td><c:out value="${mech.walkingspeed}"/> km/h (<c:out value="${mech.runningspeed}"/> km/h)</td>
+                <td><c:out value="${mech.walkingspeed}"/> km/h</td>
+                <td><c:out value="${mech.runningspeed}"/> km/h</td>
                 <td><c:out value="${mech.jumprating}"/> m</td>
                 <td><c:out value="${mech.ownername}"/></td>
                 <td><c:out value="${mech.coststring}"/> CR</td>
-                <td><a href="komponenttieditoi?id=${mech.mech_id}&reactor=kylla">EDIT</a></td>
-                <td><a href="komponenttipoista?id=${mech.mech_id}&reactor=kylla">DELETE</a></td>
+                <td> <c:if test="${mech.varoitusvapaa == false && mech.nettopaino==0}">Pre-production</c:if>
+                    <c:if test="${mech.varoitusvapaa == false && mech.nettopaino>0}">Prototype</c:if>
+                    <span class="label label-success"><c:if test="${mech.varoitusvapaa == true}">Operational</span> <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></c:if>
+                </td>
+                <td></td>
+                <td></td>
                     
                     
                  
@@ -115,8 +156,11 @@
          </div>
   
   
-  
-             <h2>Components</h2>       
+   <div class="panel panel-default">
+        <div class="panel-heading"><h3><span class="label label-default">${mech.nimi}: ${mech.paino} ton ${mech.mechclass} Mech</span></h3></div>
+  <div class="panel-body"></div>
+</div>
+              
               <div class="table-responsive">
                   
   <table class="table table-hover" width="100%">
@@ -124,7 +168,7 @@
           <td>
               
               <div class="panel panel-default">
-  <div class="panel-heading">Weapons Installed</div>
+                  <div class="panel-heading">Weapons Installed <t:weaponsinstalled></t:weaponsinstalled></div>
   <div class="panel-body">
        <div class="table-responsive">
            <table class="table table-condensed">
@@ -151,7 +195,7 @@
 </div>
             
                  
-  <div class="panel-heading">Equipment Installed</div>
+                      <div class="panel-heading">Equipment Installed <t:equipmentinstalled></t:equipmentinstalled></div>
   <div class="panel-body">
       <div class="table-responsive">
          <table class="table table-condensed">
@@ -179,7 +223,7 @@
   </div>
 
                                
-  <div class="panel-heading">Armor Values</div>
+                      <div class="panel-heading">Armor Values <t:armorvalues></t:armorvalues></div>
   <div class="panel-body">
        <div class="table-responsive">
            <table class="table table-condensed">
@@ -199,19 +243,23 @@
           
                             
           </td>
-          <td>
+          
+              <td>
                <div class="table-responsive">
       <table class="table table-condensed table-hover">
       <tr>
           <td>
                <div class="panel panel-default">
-  <div class="panel-heading">LEFT ARM (${mech.itemsleftarm}/${mech.itemsallowedextension}) <c:if test="${mech.itemsleftarm > mech.itemsallowedextension}">OVERLOADED</c:if> </div>
+  <div class="panel-heading">LEFT ARM (${mech.itemsleftarm}/${mech.itemsallowedextension}) <c:if test="${mech.itemsleftarm > mech.itemsallowedextension}">OVERLOADED</c:if> <t:volumeLA></t:volumeLA>   
 </div>
   <div class="panel-body">
            <div class="progress">
     <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_la}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_la}"/><c:out value="%"/>;">
-      A<c:if test="${armor_la > 25}">rmor</c:if>: <c:out value="${armor_la}"/>
-    </div>
+      <c:if test="${armor_la > 11}">A<c:if test="${armor_la > 18}">rmor</c:if>:</c:if> <c:out value="${armor_la}"/>
+  </div>
+      <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<c:out value="${is_la}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${is_la}"/><c:out value="%"/>;">
+          <c:if test="${is_la > 11}">S<c:if test="${is_la > 18}">tructure</c:if>:</c:if> <c:out value="${is_la}"/>
+      </div>
 </div>
        <div class="table-responsive">
            <table class="table table-condensed table-hover">
@@ -225,6 +273,7 @@
            </table>
              </div>
   </div>
+    <span class="label label-default">ADD A NEW COMPONENT</span> <t:addnewcomponent></t:addnewcomponent>
                
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
@@ -282,17 +331,20 @@
         </li>
         </ul>
            
-     
+     </div>
           </td>
           
 <td>
                <div class="panel panel-default">
-  <div class="panel-heading">HEAD (${mech.itemshead}/${mech.itemsallowedextension}) <c:if test="${mech.itemshead > mech.itemsallowedextension}">OVERLOADED</c:if></div>
+  <div class="panel-heading">HEAD (${mech.itemshead}/${mech.itemsallowedextension}) <c:if test="${mech.itemshead > mech.itemsallowedextension}">OVERLOADED</c:if> <t:volumeHD></t:volumeHD></div>
   <div class="panel-body">
            <div class="progress">
     <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_hd}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_hd}"/><c:out value="%"/>;">
-      A<c:if test="${armor_hd > 25}">rmor</c:if>: <c:out value="${armor_hd}"/>
+      <c:if test="${armor_hd > 11}">A<c:if test="${armor_hd > 18}">rmor</c:if>:</c:if> <c:out value="${armor_hd}"/>
     </div>
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<c:out value="${is_hd}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${is_hd}"/><c:out value="%"/>;">
+      <c:if test="${is_hd > 11}">S<c:if test="${is_hd > 18}">truct.</c:if>:</c:if> <c:out value="${is_hd}"/>
+      </div>
 </div>
        <div class="table-responsive">
            <table class="table table-condensed table-hover">
@@ -306,6 +358,7 @@
            </table>
              </div>
   </div>
+    <span class="label label-default">ADD A NEW COMPONENT</span> <t:addnewcomponent></t:addnewcomponent>
                
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
@@ -354,16 +407,19 @@
         </li>
         </ul>
                    
-              
+              </div>
           </td>
           <td class="dropdown" style="overflow:visible">
                <div class="panel panel-default">
-  <div class="panel-heading">RIGHT ARM (${mech.itemsrightarm}/${mech.itemsallowedextension}) <c:if test="${mech.itemsrightarm > mech.itemsallowedextension}">OVERLOADED</c:if></div>
+  <div class="panel-heading">RIGHT ARM (${mech.itemsrightarm}/${mech.itemsallowedextension}) <c:if test="${mech.itemsrightarm > mech.itemsallowedextension}">OVERLOADED</c:if> <t:volumeRA></t:volumeRA></div>
   <div class="panel-body">
       <div class="progress">
     <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_ra}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_ra}"/><c:out value="%"/>;">
-      A<c:if test="${armor_ra > 25}">rmor</c:if>: <c:out value="${armor_ra}"/>
+        <c:if test="${armor_ra > 11}">A<c:if test="${armor_ra > 18}">rmor</c:if>:</c:if> <c:out value="${armor_ra}"/>
     </div>
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<c:out value="${is_ra}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${is_ra}"/><c:out value="%"/>;">
+      <c:if test="${is_ra > 11}">S<c:if test="${is_ra > 18}">truct.</c:if>:</c:if> <c:out value="${is_ra}"/>
+      </div>
 </div>
       
        <div class="table-responsive">
@@ -378,7 +434,8 @@
            </table>
              </div>
   </div>
-               
+    
+            <span class="label label-default">ADD A NEW COMPONENT</span> <t:addnewcomponent></t:addnewcomponent>   
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
@@ -435,19 +492,22 @@
         </li>
         </ul>
            
-     
+     </div>
           </td>
       </tr>
       
       <tr>
           <td>
                <div class="panel panel-default">
-  <div class="panel-heading">LEFT TORSO (${mech.itemslefttorso}/${mech.itemsallowedtorso}) <c:if test="${mech.itemslefttorso > mech.itemsallowedtorso}">OVERLOADED</c:if></div>
+  <div class="panel-heading">LEFT TORSO (${mech.itemslefttorso}/${mech.itemsallowedtorso}) <c:if test="${mech.itemslefttorso > mech.itemsallowedtorso}">OVERLOADED</c:if><t:volumeLT></t:volumeLT></div>
   <div class="panel-body">
       <div class="progress">
     <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_lt}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_lt}"/><c:out value="%"/>;">
-      A<c:if test="${armor_lt > 25}">rmor</c:if>:  <c:out value="${armor_lt}"/>
+      <c:if test="${armor_lt > 11}">A<c:if test="${armor_lt > 18}">rmor</c:if>:</c:if> <c:out value="${armor_lt}"/>
     </div>
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<c:out value="${is_lt}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${is_lt}"/><c:out value="%"/>;">
+      <c:if test="${is_lt > 11}">S<c:if test="${is_lt > 18}">truct.</c:if>:</c:if> <c:out value="${is_lt}"/>
+      </div>
 </div>
            <table class="table table-condensed table-hover">
                
@@ -459,7 +519,7 @@
                   </c:forEach>
            </table>
              </div>
-  </div>
+  <span class="label label-default">ADD A NEW COMPONENT</span> <t:addnewcomponent></t:addnewcomponent>
                
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
@@ -510,17 +570,20 @@
         </li>
         </ul>
            
-     
+     </div>
           </td>
           
 <td class="dropdown" style="overflow:visible">
                <div class="panel panel-default">
-  <div class="panel-heading">CENTER TORSO (${mech.itemscentertorso}/${mech.itemsallowedtorso}) <c:if test="${mech.itemscentertorso > mech.itemsallowedtorso}">OVERLOADED</c:if></div>
+  <div class="panel-heading">CENTER TORSO (${mech.itemscentertorso}/${mech.itemsallowedtorso}) <c:if test="${mech.itemscentertorso > mech.itemsallowedtorso}">OVERLOADED</c:if><t:volumeCT></t:volumeCT></div>
   <div class="panel-body">
       <div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_ct}"/>" aria-valuemin="0" aria-valuemax="80" style="width: <c:out value="${armor_ct}"/><c:out value="%"/>;">
-        A<c:if test="${armor_ct > 25}">rmor</c:if>: <c:out value="${armor_ct}"/>
+    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_ct}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_ct}"/><c:out value="%"/>;">
+      <c:if test="${armor_ct > 11}">A<c:if test="${armor_ct > 18}">rmor</c:if>:</c:if> <c:out value="${armor_ct}"/>
     </div>
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<c:out value="${is_ct}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${is_ct}"/><c:out value="%"/>;">
+      <c:if test="${is_ct > 11}">S<c:if test="${is_ct > 18}">truct.</c:if>:</c:if> <c:out value="${is_ct}"/>
+      </div>
 </div>
   <div class="table-responsive">
            <table class="table table-condensed table-hover">
@@ -531,18 +594,21 @@
                  </tr>
            </table>
              </div>
+  </div>
+        
+                     <span class="label label-default"><c:if test="${reaktori.teho > 10}">CHANGE REACTOR TYPE</c:if><c:if test="${reaktori.teho < 10 || reaktori == null}">INSTALL A NEW REACTOR</c:if> </span><c:if test="${reaktori.teho < 10}"><span class="glyphicon glyphicon-warning-sign"></span></c:if>  <t:newreactor></t:newreactor>
                  <ul class="nav nav-pills" role="tablist">
 <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-warning-sign"></span> Install New Reactor<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reactor<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
               <c:forEach var="komponentti" items="${reaktorit}">
-            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&vaihdareaktori=${komponentti.reaktori_id}">${komponentti.nimi} (${komponentti.massa}t) <span class="glyphicon glyphicon-flash"></span>${komponentti.teho} <span class="glyphicon glyphicon-asterisk"></span>${komponentti.cooling}  ${komponentti.kokoluokkalyhyt}</a></li>
+            <li ><a href="mechasennakomponentti?mechid=${mech.mech_id}&vaihdareaktori=${komponentti.reaktori_id}">${komponentti.nimi} (${komponentti.massa}t) <span class="glyphicon glyphicon-flash"></span>${komponentti.teho} <span class="glyphicon glyphicon-asterisk"></span>${komponentti.cooling} <span class="glyphicon glyphicon-inbo"></span>${komponentti.kokoluokkalyhyt}</a></li>
                 </c:forEach>
               
                   </ul>
         </li>                 
         </ul>
-               </div>
+               
   <div class="panel-body">
        <div class="table-responsive">
            <table class="table table-condensed table-hover">
@@ -557,8 +623,10 @@
                   </c:forEach>
            </table>
              </div>
-  </div>
-               
+  
+               </div>
+                 
+                     <span class="label label-default">ADD A NEW COMPONENT</span> <t:addnewcomponent></t:addnewcomponent> 
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
@@ -605,17 +673,20 @@
                   </ul>
         </li>
         </ul>
-                   
-              
+     
+              </div>
           </td>
           <td class="dropdown" style="overflow:visible">
                <div class="panel panel-default">
-  <div class="panel-heading">RIGHT TORSO (${mech.itemsrighttorso}/${mech.itemsallowedtorso}) <c:if test="${mech.itemsrighttorso > mech.itemsallowedtorso}">OVERLOADED</c:if></div>
+  <div class="panel-heading">RIGHT TORSO (${mech.itemsrighttorso}/${mech.itemsallowedtorso}) <c:if test="${mech.itemsrighttorso > mech.itemsallowedtorso}">OVERLOADED</c:if><t:volumeRT></t:volumeRT></div>
   <div class="panel-body">
       <div class="progress">
     <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_rt}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_rt}"/><c:out value="%"/>;">
-      A<c:if test="${armor_rt > 25}">rmor</c:if>: <c:out value="${armor_rt}"/>
+      <c:if test="${armor_rt > 11}">A<c:if test="${armor_rt > 18}">rmor</c:if>:</c:if> <c:out value="${armor_rt}"/>
     </div>
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<c:out value="${is_rt}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${is_rt}"/><c:out value="%"/>;">
+      <c:if test="${is_rt > 11}">S<c:if test="${is_rt > 18}">truct.</c:if>:</c:if> <c:out value="${is_rt}"/>
+      </div>
 </div>
        <div class="table-responsive">
            <table class="table table-condensed table-hover">
@@ -629,7 +700,7 @@
            </table>
              </div>
   </div>
-               
+               <span class="label label-default">ADD A NEW COMPONENT</span> <t:addnewcomponent></t:addnewcomponent>
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
@@ -679,19 +750,22 @@
         </li>
         </ul>
            
-     
+               </div>
           </td>
       </tr>
       
       <tr>
           <td class="dropdown" style="overflow:visible">
                <div class="panel panel-default">
-  <div class="panel-heading">LEFT LEG (${mech.itemsleftleg}/${mech.itemsallowedextension}) <c:if test="${mech.itemsleftleg > mech.itemsallowedextension}">OVERLOADED</c:if></div>
+  <div class="panel-heading">LEFT LEG (${mech.itemsleftleg}/${mech.itemsallowedextension}) <c:if test="${mech.itemsleftleg > mech.itemsallowedextension}">OVERLOADED</c:if><t:volumeLL></t:volumeLL></div>
   <div class="panel-body">
       <div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_ll}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_ll}"/><c:out value="%"/>;">
-      A<c:if test="${armor_ll > 25}">rmor</c:if>: <c:out value="${armor_ll}"/>
+   <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_ll}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_ll}"/><c:out value="%"/>;">
+      <c:if test="${armor_ll > 11}">A<c:if test="${armor_ll > 18}">rmor</c:if>:</c:if> <c:out value="${armor_ll}"/>
     </div>
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<c:out value="${is_ll}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${is_ll}"/><c:out value="%"/>;">
+      <c:if test="${is_ll > 11}">S<c:if test="${is_ll > 18}">truct.</c:if>:</c:if> <c:out value="${is_ll}"/>
+      </div>
 </div>
        <div class="table-responsive">
            <table class="table table-condensed table-hover">
@@ -705,7 +779,7 @@
            </table>
              </div>
   </div>
-               
+               <span class="label label-default">ADD A NEW COMPONENT</span> <t:addnewcomponent></t:addnewcomponent>
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
@@ -755,18 +829,21 @@
         </li>
         </ul>
            
-     
+               </div>
           </td>
           
           <td></td>
           <td class="dropdown" style="overflow:visible">
                <div class="panel panel-default">
-  <div class="panel-heading">RIGHT LEG (${mech.itemsrightleg}/${mech.itemsallowedextension}) <c:if test="${mech.itemsrightleg > mech.itemsallowedextension}">OVERLOADED</c:if></div>
+  <div class="panel-heading">RIGHT LEG (${mech.itemsrightleg}/${mech.itemsallowedextension}) <c:if test="${mech.itemsrightleg > mech.itemsallowedextension}">OVERLOADED</c:if><t:volumeRL></t:volumeRL></div>
   <div class="panel-body">
       <div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_rl}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_rl}"/><c:out value="%"/>;">
-      A<c:if test="${armor_rl > 25}">rmor</c:if>: <c:out value="${armor_rl}"/>
+   <div class="progress-bar" role="progressbar" aria-valuenow="<c:out value="${armor_rl}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${armor_rl}"/><c:out value="%"/>;">
+      <c:if test="${armor_rl > 11}">A<c:if test="${armor_rl > 18}">rmor</c:if>:</c:if> <c:out value="${armor_rl}"/>
     </div>
+    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<c:out value="${is_rl}"/>" aria-valuemin="0" aria-valuemax="100" style="width: <c:out value="${is_rl}"/><c:out value="%"/>;">
+      <c:if test="${is_rl > 11}">S<c:if test="${is_rl > 18}">truct.</c:if>:</c:if> <c:out value="${is_rl}"/>
+      </div>
 </div>
        <div class="table-responsive">
            <table class="table table-condensed table-hover">
@@ -780,7 +857,7 @@
            </table>
              </div>
   </div>
-               
+               <span class="label label-default">ADD A NEW COMPONENT</span> <t:addnewcomponent></t:addnewcomponent>
 <ul class="nav nav-pills" role="tablist">
   <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Auto<span class="caret"></span></a>
@@ -829,7 +906,7 @@
         </li>
         </ul>
            
-     
+               </div>
           </td>
       </tr>
       
@@ -841,21 +918,21 @@
            <td>
               
               <div class="panel panel-default">
-  <div class="panel-heading">Construction Guide</div>
+                  <div class="panel-heading">Construction Guide <t:constructionguide></t:constructionguide></div>
   <div class="panel-body">
       <c:if test="${varoitukset != null}">
       <c:forEach var="varoitus" items="${varoitukset}">
-              <div class="alert alert-danger">${varoitus}</div>
+              <div class="alert alert-danger"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> ${varoitus}</div>
                   </c:forEach>
               </c:if>
                   <c:if test="${huomautukset != null}">
               <c:forEach var="huomautus" items="${huomautukset}">
-              <div class="alert alert-warning">${huomautus}</div>
+              <div class="alert alert-warning"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> ${huomautus}</div>
                   </c:forEach>
               </c:if>
                   <c:if test="${saavutukset != null}">
                             <c:forEach var="saavutus" items="${saavutukset}">
-              <div class="alert alert-success">${saavutus}</div>
+              <div class="alert alert-success"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> ${saavutus}</div>
                   </c:forEach>
               </c:if>
       
@@ -879,7 +956,7 @@
 <!-- Navbar -->
         
 
-      <center>
+<!--      <center>
           <div class="container">     
                  <nav>
                 <ul class="pagination">
@@ -893,7 +970,7 @@
                 </ul>
                 </nav>
           </div>
-      </center>
+      </center>-->
 <!--<link type="text/css" rel="stylesheet" href="jquery.dropdown.css" />
 <script type="text/javascript" src="jquery.dropdown.js"></script>-->
 

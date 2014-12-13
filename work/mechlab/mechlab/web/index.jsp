@@ -24,9 +24,19 @@
     <ul>
       <!-- Korvaa ohessa olevat sanat GITHUBTUNNUS ja 
            REPOSITORIO omilla tiedoillasi: -->
+      <li><a href="http://t-tuho.users.cs.helsinki.fi/mechlab/login">Mechlabin kirjautumissivu</a></li>
       <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus">Työn repositorio</a></li>
       <li><a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf?raw=true">Työn dokumentaatio</a> (päivitetty 23.11.2014)</li>
-
+    </ul>
+    
+    Sovellusta voi käyttää seuraavilla <b>käyttäjätunnus</b> : salasana -yhdistelmillä:<br>
+    
+      <ul>
+          <li><b>Testi Testaaja</b> : 12345</li>
+          <li><b>abc</b> : 123</li>
+          <li><b>admin</b> : admin</li>
+      </ul>
+        Huom! Sovelluksen kaikkien toimintojen käyttäminen edellyttää admin-tunnuksilla kirjautumista!<bR>
       <!-- Viikolla 2 voit laittaa kommentoidut linkitkin sivuille. 
            Ota kommenttimerkit pois sen kielen ympäriltä, jota käytät -->
 
@@ -35,7 +45,7 @@
            Tietokantasovellus tietokantasovelluksesi usersille 
            pystytetyllä nimellä: 
       -->
-    </ul>
+    
       <p>
   <u> Uutta viikolla 2:</u><br>
       </p>
@@ -146,8 +156,12 @@
           <li> BUILD-osiosta (Mechien editointi) löytyy joitakin servlettejä, joita kutsuessa sovellus ei tarkista sisäänkirjautumista. Tämän korjaaminen on "To-do-listallano".</li>
           <li> Sovellus ei vielä osaa siivota komponentisto-taulua sen jälkeen, kun mechejä poistetaan kannasta. Poistetussa mechissä olleet komponentit (tai niiden viitteet) jäävät siis roikkumaan tauluun tyhjän panttina.</li>
       </ul>      
-      <p>
-
+      
+              <p>
+       <u>Uutta viikolla 6:</u><br>
+      </p>
+      Lopullinen palautus tehty.<br>
+      
     <!--
     <h2>Kirjautumistunnuksia testausta varten</h2>
 
