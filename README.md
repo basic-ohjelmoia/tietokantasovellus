@@ -3,7 +3,7 @@ TIETOKANTASOVELLUS - MECHLAB
 
 Aineopintojen harjoitustyö: tietokantasovellus - MechLab 
 
-LOPULLINEN PALAUTUS TEHTY
+<b>LOPULLINEN PALAUTUS TEHTY</b>
 
 Pahoittelut aavistuksen sekavasta kansiorakenteesta. Tietokantasovelluksen varsinainen lähdekoodi löytyy hakemistosta:
 
@@ -12,6 +12,10 @@ Pahoittelut aavistuksen sekavasta kansiorakenteesta. Tietokantasovelluksen varsi
 SQL-taulut ovat nähtävillä hakemistossa:
 
 <a href="https://github.com/basic-ohjelmoia/tietokantasovellus/tree/master/work/mechlab/mechlab/web/sql">tietokantasovellus / work / mechlab / mechlab / web / sql /</a>
+
+Dokumentaatio on nähtävillä täällä:
+
+<a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf">tietokantasovellus / doc /</a>
 
 Mechlabia voi testata osoitteessa:
 
