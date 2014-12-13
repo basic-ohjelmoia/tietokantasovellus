@@ -15,7 +15,7 @@ SQL-taulut ovat nähtävillä hakemistossa:
 
 Dokumentaatio on nähtävillä täällä:
 
-<a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc/dokumentaatio.pdf">tietokantasovellus / doc /</a>
+<a href="https://github.com/basic-ohjelmoia/tietokantasovellus/blob/master/doc">tietokantasovellus / doc /</a>
 
 Mechlabia voi testata osoitteessa:
 
