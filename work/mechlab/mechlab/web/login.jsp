@@ -8,7 +8,7 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:pohja pageTitle="Mechlab!">
     <div class="page-header">
-  <h1><span class="label label-info">MECHLAB!</span> <small>Welcome to wonderful world of 31st Century Armored Combat.</small></h1>
+  <h1><span class="label label-info">MECHLAB!</span> <small>Welcome to the Wonderful World of 31st Century Armored Combat.</small></h1>
 </div>
     
     <div class="panel panel-default">
